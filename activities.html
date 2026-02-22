@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activities | UHV CELL NBKRIST</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-style.css">
+    <style>
+        .activity-card {
+            background: var(--bg-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .activity-header {
+            background: rgba(0, 243, 255, 0.1);
+            color: var(--primary);
+            padding: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .activity-body {
+            padding: 30px;
+        }
+
+        @media(min-width: 768px) {
+            .activity-card {
+                flex-direction: row;
+            }
+
+            .activity-header {
+                width: 250px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                flex-shrink: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-left-group">
+                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                    <div class="logo-text">
+                        <span>UHV CELL NBKRIST</span>
+                        <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                    </div>
+                </div>
+                <div class="second-logo-wrapper">
+                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                    <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                    <span class="logo-caption">Correspondent</span>
+                </div>
+            </a>
+            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="activities.html" class="active">Activities</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="team.html">Our Team</a></li>
+                <li><a href="newsletter.html">Newsletter</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li class="download-item"><a href="https://emotionallytonightintelligent.com/x8hwqv72xz?key=38d45a1aedbbb6ea28d603baadb16c3d" class="btn-download-app" target="_blank"><i class="fa-solid fa-download"></i>
+                        Download App</a></li>
+            </ul>
+        </div>
+    </header>
+    <script src="app-utils.js"></script>
+
+    <div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
+        <h1 style="font-size: 3rem;">Our Activities</h1>
+        <p>Workshops, Talks, and Interactive Sessions</p>
+    </div>
+
+    <section style="padding: 80px 0;">
+        <div class="container">
+
+            <!-- Activity 1 -->
+            <div class="activity-card fade-in" id="activity-workshops">
+                <div class="activity-header">
+                    <i class="fa-solid fa-chalkboard-user"
+                        style="font-size: 2rem; display: block; margin-bottom: 10px; width: 100%;"></i>
+                    UHV Workshops
+                </div>
+                <div class="activity-body">
+                    <h3>UHV Level 1 & 2 Workshops</h3>
+                    <p style="color: var(--text-muted); margin: 10px 0;">Organizing comprehensive 3-8 day workshops for
+                        faculty and students to introduce the proposal of Co-existence.</p>
+                    <span class="btn btn-secondary"
+                        style="padding: 5px 15px; font-size: 0.8rem; border-radius: 4px;">Ongoing</span>
+
+                    <div style="margin-top: 20px;">
+                        <a href="activity-details.html?id=activity-workshops" class="btn btn-primary"
+                            style="padding: 8px 20px; font-size: 0.8rem;">
+                            View Full Gallery <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity 2 -->
+            <div class="activity-card fade-in" id="activity-gd">
+                <div class="activity-header" style="background: rgba(188, 19, 254, 0.1); color: var(--secondary);">
+                    <i class="fa-solid fa-comments"
+                        style="font-size: 2rem; display: block; margin-bottom: 10px; width: 100%;"></i>
+                    Value Education
+                </div>
+                <div class="activity-body">
+                    <h3>Group Discussions</h3>
+                    <p style="color: var(--text-muted); margin: 10px 0;">Conducting weekly dialogue-based sessions where
+                        students share their reflections on relationships and society.</p>
+
+                    <div style="margin-top: 20px;">
+                        <a href="activity-details.html?id=activity-gd" class="btn btn-primary"
+                            style="padding: 8px 20px; font-size: 0.8rem;">
+                            View Full Gallery <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity 3 -->
+            <div class="activity-card fade-in" id="activity-talks">
+                <div class="activity-header" style="background: rgba(255, 0, 85, 0.1); color: var(--accent);">
+                    <i class="fa-solid fa-microphone-lines"
+                        style="font-size: 2rem; display: block; margin-bottom: 10px; width: 100%;"></i>
+                    Expert Talks
+                </div>
+                <div class="activity-body">
+                    <h3>Invited Resource Persons</h3>
+                    <p style="color: var(--text-muted); margin: 10px 0;">Hosting talks by renowned value education
+                        experts to deepen understanding of universal values.</p>
+
+                    <div style="margin-top: 20px;">
+                        <a href="activity-details.html?id=activity-talks" class="btn btn-primary"
+                            style="padding: 8px 20px; font-size: 0.8rem;">
+                            View Full Gallery <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">
+                        <div class="logo-left-group">
+                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                            <div class="logo-text">
+                                <span>UHV CELL NBKRIST</span>
+                                <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                            </div>
+                        </div>
+                        <div class="second-logo-wrapper">
+                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                            <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                            <span class="logo-caption">Correspondent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="activities.html">Activities</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <p style="color: #94a3b8;">uhvcell@nbkrist.org</p>
+                    <p style="color: #94a3b8;">+91 89858 42025</p>
+                    <p style="color: #94a3b8; margin-top: 10px;">Vidyanagar, Nellore District</p>
+                </div>
+            </div>
+            <div class="copyright">&copy; <span id="current-year">2026</span> UHV CELL NBKRIST.</div>
+        </div>
+    </footer>
+    <script src="admin.js"></script>
+</body>
+
+</html>

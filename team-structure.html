@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Structure | UHV CELL NBKRIST</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .structure-member-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .structure-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: #1e293b;
+        }
+
+        .structure-placeholder {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.5rem;
+            color: #94a3b8;
+        }
+
+        .hierarchy-level {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .groups-row {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            width: 100%;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .coord-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            min-width: 220px;
+        }
+
+        .co-coord-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .connector-v {
+            width: 2px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .member-box {
+            padding: 15px 25px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 200px;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-left-group">
+                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                    <div class="logo-text">
+                        <span>UHV CELL NBKRIST</span>
+                        <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                    </div>
+                </div>
+                <div class="second-logo-wrapper">
+                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                    <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                    <span class="logo-caption">Correspondent</span>
+                </div>
+            </a>
+            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="activities.html">Activities</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="team.html">Our Team</a></li>
+                <li><a href="newsletter.html">Newsletter</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li class="download-item"><a href="https://emotionallytonightintelligent.com/x8hwqv72xz?key=38d45a1aedbbb6ea28d603baadb16c3d" class="btn-download-app" target="_blank"><i class="fa-solid fa-download"></i>
+                        Download App</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <script src="app-utils.js"></script>
+
+    <div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
+        <h1 style="font-size: 3rem;">Team Structure</h1>
+        <p>The organizational framework of the UHV Cell at NBKRIST.</p>
+    </div>
+
+    <section class="section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="card fade-in"
+                style="max-width: 1200px; margin: 0 auto; padding: 40px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <h2 class="section-title">Hierarchy & Organization</h2>
+                    <p class="section-subtitle">How we work together to achieve our goals.</p>
+                </div>
+
+                <div class="structure-visual" id="structureContainer"
+                    style="display: flex; flex-direction: column; align-items: center; gap: 0;">
+                    <!-- Dynamically generated from team-data.js -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shared Team Data -->
+    <script src="team-data.js"></script>
+
+    <script>
+        function getMemberPhoto(member) {
+            if (member.image) {
+                return `<img src="${member.image}" alt="${member.name}" class="structure-photo">`;
+            } else {
+                return `<div class="structure-placeholder"><i class="fa-solid ${member.icon || 'fa-user'}"></i></div>`;
+            }
+        }
+
+        function createMemberBox(member, type = 'default') {
+            let style = '';
+            let roleColor = '#fff';
+
+            if (type === 'gold') {
+                style = 'background: rgba(212, 175, 55, 0.1); border: 2px solid #d4af37;';
+                roleColor = '#d4af37';
+            } else if (type === 'primary') {
+                style = 'background: rgba(37, 99, 235, 0.1); border: 2px solid var(--primary);';
+                roleColor = 'var(--primary)';
+            } else if (type === 'student') {
+                style = 'background: rgba(30, 41, 59, 0.5); border: 1px dashed rgba(255,255,255,0.3);';
+                roleColor = '#94a3b8';
+            } else {
+                style = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);';
+                roleColor = '#8ba1b3';
+            }
+
+            // Lead Badge removed as requested
+
+            return `
+                <div class="member-box ${member.special ? 'special-member' : ''}" style="${style}; position: relative;">
+                    ${member.special ? '<div class="special-badge">Core Team</div>' : ''}
+                    <div class="structure-member-card">
+                        ${getMemberPhoto(member)}
+                        <div>
+                            <h3 style="margin-bottom: 5px; font-size: 1rem; color: ${roleColor};">${member.role}</h3>
+                            <p style="font-size: 0.9rem; font-weight: 600; color: #fff;">${member.name}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateStructure() {
+            const container = document.getElementById('structureContainer');
+            container.innerHTML = '';
+            const allMembers = [...facultyCoordinators, ...studentCoordinators];
+
+            // 1. Top Level: Chairperson
+            const chairperson = allMembers.find(m => m.role.toLowerCase().includes("chairperson"));
+            if (chairperson) {
+                container.innerHTML += createMemberBox(chairperson, 'gold');
+                container.innerHTML += '<div class="connector-v"></div>';
+            }
+
+            // 2. Convener
+            const convener = allMembers.find(m => m.role.toLowerCase().includes("convener"));
+            if (convener) {
+                container.innerHTML += createMemberBox(convener, 'primary');
+                container.innerHTML += '<div class="connector-v"></div>';
+            }
+
+            // 3. Main Lead Coordinator (Faculty)
+            const mainLead = allMembers.find(m => m.role.toLowerCase() === "uhv coordinator");
+            if (mainLead) {
+                container.innerHTML += createMemberBox(mainLead, 'primary');
+                container.innerHTML += '<div class="connector-v"></div>';
+            }
+
+            // 4. Sub Lead Coordinator (Faculty)
+            const subLead = allMembers.find(m => m.role.toLowerCase().includes("uhv co-coordinator") || (m.role.toLowerCase().includes("co-coordinator") && !m.role.toLowerCase().includes("skill") && !m.role.toLowerCase().includes("technical")));
+            if (subLead) {
+                container.innerHTML += createMemberBox(subLead, 'default');
+                container.innerHTML += '<div class="connector-v" style="height: 40px; margin-bottom: 20px;"></div>';
+            }
+
+            // 5. COORDINATORS LINE (Row of all other lead coordinators)
+            let rowHtml = '<div class="groups-row">';
+
+            // Find all "Coordinators" that haven't been placed yet and ARE NOT "Co-Coordinators"
+            const leads = allMembers.filter(m => {
+                const r = m.role.toLowerCase();
+                const isCoord = r.includes("coordinator");
+                const isCoCoord = r.includes("co-coordinator");
+                const placedAlready = [chairperson, convener, mainLead, subLead].some(p => p && p.name === m.name);
+                return isCoord && !isCoCoord && !placedAlready;
+            });
+
+            leads.forEach(lead => {
+                let groupHtml = '<div class="coord-group">';
+                const isStudentLead = studentCoordinators.some(s => s.name === lead.name);
+                groupHtml += createMemberBox(lead, isStudentLead ? 'student' : 'default');
+
+                // Find RESPECTIVE Co-Coordinators
+                // Logic: Extract the prefix before " Coordinator" or match specific keyword
+                const leadRole = lead.role.toLowerCase();
+                let prefix = "";
+                if (leadRole.includes("technical")) prefix = "technical";
+                else if (leadRole.includes("skill")) prefix = "skill";
+                else if (leadRole === "student coordinator") prefix = "student"; // though Student Co-Coord is rare
+                else prefix = lead.role.split(' Coordinator')[0].toLowerCase();
+
+                const cos = allMembers.filter(m => {
+                    const r = m.role.toLowerCase();
+                    const isCo = r.includes("co-coordinator");
+                    const matchesPrefix = r.includes(prefix);
+                    const isAlreadyPlaced = [subLead].some(p => p && p.name === m.name);
+                    return isCo && matchesPrefix && !isAlreadyPlaced;
+                });
+
+                if (cos.length > 0) {
+                    groupHtml += '<div class="connector-v"></div>';
+                    groupHtml += '<div class="co-coord-stack">';
+                    cos.forEach(co => {
+                        const isStudentCo = studentCoordinators.some(s => s.name === co.name);
+                        groupHtml += createMemberBox(co, isStudentCo ? 'student' : 'default');
+                    });
+                    groupHtml += '</div>';
+                }
+
+                groupHtml += '</div>';
+                rowHtml += groupHtml;
+            });
+
+            rowHtml += '</div>';
+            container.innerHTML += rowHtml;
+        }
+
+        window.onload = generateStructure;
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">
+                        <div class="logo-left-group">
+                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                            <div class="logo-text">
+                                <span>UHV CELL NBKRIST</span>
+                                <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                            </div>
+                        </div>
+                        <div class="second-logo-wrapper">
+                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                            <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                            <span class="logo-caption">Correspondent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="activities.html">Activities</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <p style="color: #94a3b8;">uhvcell@nbkrist.org</p>
+                    <p style="color: #94a3b8;">+91 89858 42025</p>
+                    <p style="color: #94a3b8; margin-top: 10px;">Vidyanagar, Nellore District</p>
+                </div>
+            </div>
+            <div class="copyright">&copy; <span id="current-year">2026</span> UHV CELL NBKRIST.</div>
+        </div>
+    </footer>
+    <script src="admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+/* Admin Login Button in Header */
+.nav-links .login-item a.btn-login {
+    background: var(--secondary);
+    color: var(--white);
+    padding: 8px 20px;
+    border-radius: 50px;
+    box-shadow: 0 0 15px rgba(188, 19, 254, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.nav-links .login-item a.btn-register {
+    background: transparent;
+    color: var(--primary);
+    padding: 8px 20px;
+    border-radius: 50px;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.1) inset;
+    border: 1px solid var(--primary);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.nav-links .login-item a.btn-login:hover {
+    background: var(--primary);
+    box-shadow: 0 0 25px rgba(0, 243, 255, 0.6);
+    transform: translateY(-2px);
+    color: var(--bg-body);
+}
+
+.nav-links .login-item a.btn-register:hover {
+    background: var(--primary);
+    color: var(--bg-body);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+}
+
+.nav-links .login-item a.btn-login::after,
+.nav-links .login-item a.btn-register::after {
+    display: none;
+    /* Remove the underline effect from standard links */
+}
+
+.nav-links {
+    align-items: center;
+    /* Ensure vertical alignment with button */
+}
+
+/* Edit Mode Styles */
+body.admin-mode [contenteditable="true"] {
+    outline: 2px dashed rgba(0, 243, 255, 0.3);
+    outline-offset: 5px;
+    cursor: text;
+    transition: outline 0.2s;
+}
+
+body.admin-mode [contenteditable="true"]:focus {
+    outline: 2px solid var(--primary);
+    background: rgba(0, 243, 255, 0.05);
+}
+
+.admin-toolbar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(15, 16, 32, 0.95);
+    border: 1px solid var(--primary);
+    padding: 15px;
+    border-radius: 12px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.auth-form-container {
+    background: var(--bg-surface);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-hover);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--white);
+    font-family: inherit;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}

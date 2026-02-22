@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team | UHV CELL NBKRIST</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-left-group">
+                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                    <div class="logo-text">
+                        <span>UHV CELL NBKRIST</span>
+                        <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                    </div>
+                </div>
+                <div class="second-logo-wrapper">
+                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                    <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                    <span class="logo-caption">Correspondent</span>
+                </div>
+            </a>
+            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="activities.html">Activities</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="team.html" class="active">Our Team</a></li>
+                <li><a href="newsletter.html">Newsletter</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li class="download-item"><a href="https://emotionallytonightintelligent.com/x8hwqv72xz?key=38d45a1aedbbb6ea28d603baadb16c3d" class="btn-download-app" target="_blank"><i class="fa-solid fa-download"></i>
+                        Download App</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <script src="app-utils.js"></script>
+
+    <div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
+        <h1 style="font-size: 3rem;">Meet Our Team</h1>
+        <p>Dedicated Faculty and Student Coordinators</p>
+    </div>
+
+    <section class="section" style="padding: 80px 0;">
+        <div class="container">
+            <!-- Faculty Coordinators -->
+            <h2 class="section-title" style="text-align: left; font-size: 2rem; margin-top: 40px;">Faculty Coordinators
+            </h2>
+            <div class="grid-3" id="facultyGrid" style="margin-top: 30px;">
+                <!-- Dynamically generated from team-data.js -->
+            </div>
+
+            <!-- Student Coordinators -->
+            <h2 class="section-title" style="text-align: left; font-size: 2rem; margin-top: 80px;">Student Coordinators
+            </h2>
+            <div class="grid-3" id="studentGrid" style="margin-top: 30px;">
+                <!-- Dynamically generated from team-data.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Shared Team Data -->
+    <script src="team-data.js"></script>
+
+    <!-- Dynamic Profile Generation -->
+    <script>
+        function createProfileCard(member, delay = 0) {
+            const card = document.createElement('div');
+            card.className = member.special ? 'profile-card fade-in special-member' : 'profile-card fade-in';
+            if (delay > 0) {
+                card.style.animationDelay = `${delay}s`;
+            }
+
+            // Lead Badge removed as requested
+
+            // Check if member has an image
+            const imageContent = member.image
+                ? `<img src="${member.image}" alt="${member.name}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">`
+                : `<div class="profile-placeholder"><i class="fa-solid ${member.icon}"></i></div>`;
+
+            card.innerHTML = `
+                ${member.special ? '<div class="special-badge">Core Team</div>' : ''}
+                <div class="profile-img-container">
+                    ${imageContent}
+                </div>
+                <div class="profile-name">${member.name}</div>
+                <div class="profile-role">${member.role}</div>
+                ${member.detail ? `<div class="profile-detail">${member.detail}</div>` : ''}
+            `;
+
+            return card;
+        }
+
+        // Populate Faculty Coordinators
+        const facultyGrid = document.getElementById('facultyGrid');
+        facultyCoordinators.forEach((member, index) => {
+            facultyGrid.appendChild(createProfileCard(member, index * 0.1));
+        });
+
+        // Populate Student Coordinators with grouping
+        const studentGrid = document.getElementById('studentGrid');
+
+        // Grouping logic (Reordered: Student first)
+        const groups = {
+            'Student': [],
+            'Technical': [],
+            'Skill': [],
+            'Content': []
+        };
+
+        studentCoordinators.forEach(member => {
+            const role = member.role.toLowerCase();
+            if (role.includes('technical')) groups['Technical'].push(member);
+            else if (role.includes('skill')) groups['Skill'].push(member);
+            else if (role.includes('content')) groups['Content'].push(member);
+            else groups['Student'].push(member);
+        });
+
+        studentGrid.style.display = 'block';
+
+        Object.keys(groups).forEach((groupName, gIndex) => {
+            if (groups[groupName].length === 0) return;
+
+            // Remove "Student Team" heading as requested
+            if (groupName !== 'Student') {
+                const groupTitle = document.createElement('h3');
+                groupTitle.textContent = groupName + " Team";
+                groupTitle.style.margin = "40px 0 20px 0";
+                groupTitle.style.fontSize = "1.5rem";
+                groupTitle.style.color = "var(--primary)";
+                studentGrid.appendChild(groupTitle);
+            }
+
+            const rowGrid = document.createElement('div');
+            rowGrid.className = 'grid-3';
+            groups[groupName].forEach((member, mIndex) => {
+                rowGrid.appendChild(createProfileCard(member, (gIndex * 0.3) + (mIndex * 0.1)));
+            });
+            studentGrid.appendChild(rowGrid);
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">
+                        <div class="logo-left-group">
+                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                            <div class="logo-text">
+                                <span>UHV CELL NBKRIST</span>
+                                <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                            </div>
+                        </div>
+                        <div class="second-logo-wrapper">
+                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                            <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                            <span class="logo-caption">Correspondent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="activities.html">Activities</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <p style="color: #94a3b8;">uhvcell@nbkrist.org</p>
+                    <p style="color: #94a3b8;">+91 89858 42025</p>
+                    <p style="color: #94a3b8; margin-top: 10px;">Vidyanagar, Nellore District</p>
+                </div>
+            </div>
+            <div class="copyright">&copy; <span id="current-year">2026</span> UHV CELL NBKRIST.</div>
+        </div>
+    </footer>
+    <script src="admin.js"></script>
+</body>
+
+</html>

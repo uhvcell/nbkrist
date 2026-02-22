@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | UHV CELL NBKRIST</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+        }
+
+        .gallery-item::after {
+            content: '\f03e';
+            /* FontAwesome Picture Icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover::after {
+            color: var(--primary);
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-left-group">
+                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                    <div class="logo-text">
+                        <span>UHV CELL NBKRIST</span>
+                        <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                    </div>
+                </div>
+                <div class="second-logo-wrapper">
+                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                    <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                    <span class="logo-caption">Correspondent</span>
+                </div>
+            </a>
+            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="activities.html" class="active">Activities</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="team.html">Our Team</a></li>
+                <li><a href="newsletter.html">Newsletter</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+    <script src="app-utils.js"></script>
+
+    <div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
+        <h1 id="gallery-title" style="font-size: 3rem;">Activity Gallery</h1>
+        <p id="gallery-desc">Images and Memories</p>
+    </div>
+
+    <section style="padding: 80px 0;">
+        <div class="container">
+            <a href="activities.html" class="btn btn-secondary" style="margin-bottom: 20px;"><i
+                    class="fa-solid fa-arrow-left"></i> Back to Activities</a>
+
+            <div class="gallery-grid" id="gallery-container">
+                <!-- Javascript will populate this -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">
+                        <div class="logo-left-group">
+                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                            <div class="logo-text">
+                                <span>UHV CELL NBKRIST</span>
+                                <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                            </div>
+                        </div>
+                        <div class="second-logo-wrapper">
+                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                            <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                            <span class="logo-caption">Correspondent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="activities.html">Activities</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <p style="color: #94a3b8;">uhvcell@nbkrist.org</p>
+                    <p style="color: #94a3b8;">+91 89858 42025</p>
+                    <p style="color: #94a3b8; margin-top: 10px;">Vidyanagar, Nellore District</p>
+                </div>
+            </div>
+            <div class="copyright">&copy; <span id="current-year">2026</span> UHV CELL NBKRIST.</div>
+        </div>
+    </footer>
+    <script>
+        const activityData = {
+            'activity-workshops': {
+                title: 'UHV Workshops Gallery',
+                desc: 'Capturing moments from our Level 1 & 2 value education workshops.',
+                images: [
+                    'sdg_day1_1.jpg', 'sdg_day1_2.jpg', 'sdg_day1_3.jpg', 'sdg_day1_4.jpg',
+                    'sdg_day2_1.jpg', 'sdg_day2_2.jpg',
+                    'sdg_day3_1.jpg', 'sdg_day3_2.jpg', 'sdg_day3_3.jpg'
+                ]
+            },
+            'activity-gd': {
+                title: 'Group Discussions Gallery',
+                desc: 'Dialogue and self-reflection sessions with students.',
+                images: 6 // Fallback to icons
+            },
+            'activity-talks': {
+                title: 'Expert Talks Gallery',
+                desc: 'Insights shared by invited resource persons.',
+                images: 4 // Fallback to icons
+            }
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const activityId = urlParams.get('id');
+
+        if (activityId && activityData[activityId]) {
+            const data = activityData[activityId];
+            document.getElementById('gallery-title').textContent = data.title;
+            document.getElementById('gallery-desc').textContent = data.desc;
+
+            const container = document.getElementById('gallery-container');
+
+            if (activityId === 'activity-workshops') {
+                container.className = 'workshops-detailed-view';
+                container.style.display = 'flex';
+                container.style.flexDirection = 'column';
+                container.style.gap = '60px';
+
+                const sections = [
+                    {
+                        title: 'DAY 1 SDG PANEL DISCUSSION',
+                        // Moved 3rd image (sdg_day1_3.jpg) to 1st place
+                        images: ['sdg_day1_3.jpg', 'sdg_day1_1.jpg', 'sdg_day1_2.jpg', 'sdg_day1_4.jpg'],
+                        color: 'var(--primary)' // Cyan
+                    },
+                    {
+                        title: 'DAY 2 WORKSHOP SESSIONS',
+                        images: ['sdg_day2_1.jpg', 'sdg_day2_2.jpg'],
+                        color: 'var(--secondary)' // Magenta
+                    },
+                    {
+                        title: 'DAY 3 CONCLUDING CEREMONY',
+                        images: ['sdg_day3_1.jpg', 'sdg_day3_2.jpg', 'sdg_day3_3.jpg'],
+                        color: '#a855f7' // Purple Accent
+                    }
+                ];
+
+                sections.forEach(section => {
+                    const sectionDiv = document.createElement('div');
+                    let imagesHtml = '';
+                    section.images.forEach(img => {
+                        imagesHtml += '<div class="gallery-item large-view fade-in" style="height: auto; aspect-ratio: 16/9; width: 100%; max-width: 900px; margin: 0 auto; padding: 0;">' +
+                            '<img src="' + img + '" alt="' + section.title + '" style="width:100%; height:100%; object-fit:cover; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">' +
+                            '</div>';
+                    });
+
+                    // Use specific section color for the heading without effects
+                    sectionDiv.innerHTML = '<h2 class="section-title fade-in" style="margin-bottom:30px; color: ' + section.color + '; text-transform: uppercase;">' + section.title + '</h2>' +
+                        '<div style="display: flex; flex-direction: column; gap: 30px;">' + imagesHtml + '</div>';
+                    container.appendChild(sectionDiv);
+                });
+            } else {
+                // Default grid view for others
+                const total = Array.isArray(data.images) ? data.images.length : data.images;
+                for (let i = 0; i < total; i++) {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item fade-in';
+                    item.style.animationDelay = `${i * 0.1}s`;
+
+                    if (Array.isArray(data.images)) {
+                        item.innerHTML = `<img src="${data.images[i]}" alt="Gallery Image ${i + 1}" style="width:100%; height:100%; object-fit:cover;">`;
+                        item.style.padding = '0';
+                    }
+
+                    item.title = `Gallery Image ${i + 1}`;
+                    container.appendChild(item);
+                }
+            }
+        }
+
+    </script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

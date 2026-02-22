@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | UHV CELL NBKRIST</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-style.css">
+    <script src="https://geo.dailymotion.com/libs/player/x8p5u.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-left-group">
+                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                    <div class="logo-text">
+                        <span>UHV CELL NBKRIST</span>
+                        <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                    </div>
+                </div>
+                <div class="second-logo-wrapper">
+                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                    <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                    <span class="logo-caption">Correspondent</span>
+                </div>
+            </a>
+            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="activities.html">Activities</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="team.html">Our Team</a></li>
+                <li><a href="newsletter.html">Newsletter</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li class="download-item"><a
+                        href="https://emotionallytonightintelligent.com/x8hwqv72xz?key=38d45a1aedbbb6ea28d603baadb16c3d"
+                        class="btn-download-app" target="_blank"><i class="fa-solid fa-download"></i>
+                        Download App</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <script src="app-utils.js"></script>
+
+    <!-- Top Image Slider Section -->
+    <section class="slider-section">
+        <div class="poster-slider-container" id="posterSlider">
+            <div class="slider-track" id="sliderTrack"></div>
+            <div class="slider-nav">
+                <button class="slider-btn prev" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="slider-btn next" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div class="slider-dots" id="sliderDots"></div>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content fade-in">
+                <div class="hero-badge">NBKRIST UHV Cell</div>
+                <h1>Empowering Minds with <br><span>Universal Human Values</span></h1>
+                <p>Join us in a journey of self-exploration and holistic development. We strive to nurture responsible
+                    and ethical individuals for a harmonious society.</p>
+                <div class="btn-group">
+                    <a href="team-structure.html" class="btn btn-primary">Discover More</a>
+                    <a href="registration.html" class="btn btn-secondary">Join Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's New Section (Syncs with posters-data.js) -->
+    <section class="section" style="padding: 80px 0; background: rgba(0, 243, 255, 0.02);">
+        <div class="container">
+            <div class="header-glow" style="text-align: center; margin-bottom: 50px;">
+                <h2 class="section-title">What's New?</h2>
+                <p class="section-subtitle">Latest activities and event posters</p>
+            </div>
+            <div id="latestPostersGrid" class="grid-3" style="margin-top: 30px;">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Videos Section (Syncs with videos-data.js) -->
+    <section class="section" style="padding: 80px 0;">
+        <div class="container">
+            <div
+                style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; flex-wrap: wrap; gap: 20px;">
+                <div style="flex: 1; min-width: 250px;">
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 10px;">Videos</h2>
+                    <p class="section-subtitle" style="text-align: left; margin: 0;">Featured learning resources and
+                        sessions</p>
+                </div>
+                <a href="videos.html" class="btn btn-secondary">View All Videos <i class="fa-solid fa-arrow-right"
+                        style="margin-left: 8px;"></i></a>
+            </div>
+            <div id="homeVideoGrid" class="grid-3">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="video-modal">
+        <div class="video-modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="video-container" id="videoContainer">
+                <div id="dailymotion-player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                </div>
+            </div>
+            <div class="video-info">
+                <h3 id="modalTitle"></h3>
+                <p id="modalDesc"></p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .video-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal-content {
+            width: 90%;
+            max-width: 1000px;
+            position: relative;
+            background: var(--bg-surface);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--primary-dim);
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulsePlay {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+                box-shadow: 0 0 40px rgba(0, 243, 255, 0.6);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: var(--white);
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* 16:9 ratio */
+            height: 0;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 1;
+        }
+
+        .video-info {
+            padding: 25px;
+        }
+
+        .video-info h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .video-info p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Ensure slide images fit completely */
+        .slider-slide img {
+            object-fit: contain !important;
+            background: #000;
+        }
+    </style>
+
+    <!-- Team Marquee Section -->
+    <section class="home-team-section">
+        <div class="container">
+            <div class="header-glow"
+                style="text-align: center; margin-bottom: 40px; background: transparent; border: none;">
+                <h2 class="section-title">Our Dedicated Team</h2>
+                <p class="section-subtitle">Click on a member to view details</p>
+            </div>
+        </div>
+
+        <div class="team-marquee-container">
+            <div class="team-marquee-track" id="marqueeTrack">
+                <!-- Items injected via JS -->
+            </div>
+        </div>
+
+        <div class="container active-member-display" id="activeMemberDisplay" style="transition: opacity 0.3s ease;">
+            <div class="instruction-text">Select a team member to view details</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">
+                        <div class="logo-left-group">
+                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                            <div class="logo-text">
+                                <span>UHV CELL NBKRIST</span>
+                                <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                            </div>
+                        </div>
+                        <div class="second-logo-wrapper">
+                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                            <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                            <span class="logo-caption">Correspondent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="activities.html">Activities</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <p style="color: #94a3b8;">uhvcell@nbkrist.org</p>
+                    <p style="color: #94a3b8;">+91 89858 42025</p>
+                    <p style="color: #94a3b8; margin-top: 10px;">Vidyanagar, Nellore District</p>
+                </div>
+            </div>
+            <div class="copyright">&copy; <span id="current-year">2026</span> UHV CELL NBKRIST.</div>
+        </div>
+    </footer>
+
+    <!-- Shared Team Data -->
+    <script src="team-data.js"></script>
+
+    <!-- Script for Mobile Menu & Team Marquee -->
+    <script>
+        // Use shared team data
+        const teamMembers = allTeamMembers;
+
+        const track = document.getElementById('marqueeTrack');
+        const display = document.getElementById('activeMemberDisplay');
+
+        // Function to create a card item
+        function createMarqueeItem(member) {
+            const item = document.createElement('div');
+            item.className = 'marquee-item';
+
+            // Check if member has an image, otherwise use icon placeholder
+            if (member.image) {
+                item.innerHTML = `
+                    <img src="${member.image}" alt="${member.name}" class="marquee-img" loading="lazy">
+                `;
+            } else {
+                item.innerHTML = `
+                    <div class="marquee-placeholder">
+                        <i class="fa-solid ${member.icon}"></i>
+                    </div>
+                `;
+            }
+
+            item.addEventListener('click', () => {
+                showMemberDetails(member);
+            });
+
+            return item;
+        }
+
+        // Populate track (Duplicate list 3 times for seamless loop on wide screens)
+        const allMembers = [...teamMembers, ...teamMembers, ...teamMembers];
+
+        allMembers.forEach(member => {
+            track.appendChild(createMarqueeItem(member));
+        });
+
+        // Handler for detail view
+        function showMemberDetails(member) {
+            display.style.opacity = '0';
+
+            setTimeout(() => {
+                // Check if member has an image
+                const imageContent = member.image
+                    ? `<img src="${member.image}" alt="${member.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" loading="lazy">`
+                    : `<div class="profile-placeholder"><i class="fa-solid ${member.icon}"></i></div>`;
+
+                display.innerHTML = `
+                    <div class="active-card-view ${member.special ? 'special-member' : ''}">
+                        ${member.special ? '<div class="special-badge">Core Team</div>' : ''}
+                        <div class="profile-img-container">
+                            ${imageContent}
+                        </div>
+                        <div class="profile-name">${member.name}</div>
+                        <div class="profile-role">${member.role}</div>
+                        <div class="profile-detail">${member.detail}</div>
+                    </div>
+                `;
+                display.style.opacity = '1';
+            }, 300);
+        }
+
+        // Pause animation on hover
+        const marqueeContainer = document.querySelector('.team-marquee-container');
+        marqueeContainer.addEventListener('mouseenter', () => {
+            track.style.animationPlayState = 'paused';
+        });
+        marqueeContainer.addEventListener('mouseleave', () => {
+            track.style.animationPlayState = 'running';
+        });
+    </script>
+    <script src="posters-data.js"></script>
+    <script src="videos-data.js"></script>
+
+    <script>
+        // Poster Slider Logic
+        const sliderTrack = document.getElementById('sliderTrack');
+        const sliderDots = document.getElementById('sliderDots');
+        let currentSlide = 0;
+        let slideInterval;
+
+        function initSlider() {
+            if (typeof posterImages === 'undefined' || posterImages.length === 0) return;
+
+            // Create slides
+            sliderTrack.innerHTML = posterImages.map(poster => `
+                <div class="slider-slide">
+                    <img src="${poster.url}" alt="${poster.title}" loading="lazy">
+                    <div class="slider-caption">
+                        <h4>${poster.title}</h4>
+                        <p>${poster.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Create dots
+            sliderDots.innerHTML = posterImages.map((_, index) => `
+                <div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
+            `).join('');
+
+            // Nav buttons
+            document.getElementById('prevBtn').onclick = () => moveSlide(-1);
+            document.getElementById('nextBtn').onclick = () => moveSlide(1);
+
+            startSlideShow();
+        }
+
+        function moveSlide(direction) {
+            currentSlide = (currentSlide + direction + posterImages.length) % posterImages.length;
+            goToSlide(currentSlide);
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            // Update dots
+            const dots = document.querySelectorAll('.slider-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+
+            // Reset interval
+            clearInterval(slideInterval);
+            startSlideShow();
+        }
+
+        function startSlideShow() {
+            slideInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % posterImages.length;
+                goToSlide(currentSlide);
+            }, 5000);
+        }
+
+
+        function initHomeSync() {
+            // Sync Posters (What's New) - Show latest 4 in a professional grid
+            const posterGrid = document.getElementById('latestPostersGrid');
+            if (typeof posterImages !== 'undefined' && posterGrid) {
+                const latestPosters = posterImages.slice(-4).reverse();
+                posterGrid.innerHTML = latestPosters.map((poster, index) => `
+                    <div class="card fade-in" onclick="location.href='posters.html'" style="padding: 0; overflow: hidden; animation-delay: ${index * 0.1}s; border: 1px solid rgba(0, 243, 255, 0.1); cursor: pointer;">
+                        <div style="position: relative; overflow: hidden; aspect-ratio: 3/4;">
+                            <img src="${poster.url}" alt="${poster.title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                            <div style="position: absolute; top: 10px; right: 10px; background: var(--primary); color: #000; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 700;">NEW</div>
+                        </div>
+                        <div style="padding: 15px; background: var(--bg-surface);">
+                            <h3 style="font-size: 1rem; margin-bottom: 5px; color: var(--white);">${poster.title}</h3>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">${poster.description}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Sync Videos - Thumbnail Gallery style
+            const videoGrid = document.getElementById('homeVideoGrid');
+            if (typeof videoResources !== 'undefined' && videoGrid) {
+                const homeVideos = videoResources.slice(0, 3);
+                videoGrid.innerHTML = ''; // Clear first
+                homeVideos.forEach((video, index) => {
+                    const videoCard = document.createElement('div');
+                    videoCard.className = 'card fade-in';
+                    videoCard.style.cssText = `padding: 0; overflow: hidden; animation-delay: ${index * 0.2}s; border: 1px solid rgba(0, 243, 255, 0.15); cursor: pointer;`;
+                    videoCard.innerHTML = `
+                         <div style="aspect-ratio: 16/9; background: #000; display: flex; align-items: center; justify-content: center; position: relative; border-radius: 12px 12px 0 0; overflow: hidden;">
+                            <img src="${video.thumbnail}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: all 0.5s ease;" class="card-thumb">
+                            <div style="position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6));"></div>
+                            
+                            <!-- Perfectly Centered Pro Play Button -->
+                            <div class="play-trigger" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(0, 243, 255, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); border: 2px solid var(--primary); z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: pulsePlay 2s infinite ease-in-out;">
+                                <i class="fa-solid fa-play" style="font-size: 2.5rem; color: var(--primary); margin-left: 8px; filter: drop-shadow(0 0 15px var(--primary));"></i>
+                            </div>
+
+                             <div style="position: absolute; bottom: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px; z-index: 3;">
+                                <strong style="display: block; font-size: 1rem; color: var(--white); margin-bottom: 4px;">${video.title}</strong>
+                                <span style="font-size: 0.75rem; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">${video.type || 'Resource'}</span>
+                            </div>
+                        </div>
+                    `;
+                    videoCard.addEventListener('mouseenter', () => {
+                        videoCard.querySelector('.card-thumb').style.transform = 'scale(1.1)';
+                        videoCard.querySelector('.play-trigger').style.animation = 'none'; // Pause animation during hover for micro-interaction
+                        videoCard.querySelector('.play-trigger').style.transform = 'translate(-50%, -50%) scale(1.2)';
+                        videoCard.querySelector('.play-trigger').style.boxShadow = '0 0 50px var(--primary)';
+                    });
+                    videoCard.addEventListener('mouseleave', () => {
+                        videoCard.querySelector('.card-thumb').style.transform = 'scale(1)';
+                        videoCard.querySelector('.play-trigger').style.animation = 'pulsePlay 2s infinite ease-in-out';
+                        videoCard.querySelector('.play-trigger').style.transform = 'translate(-50%, -50%) scale(1)';
+                    });
+                    videoCard.addEventListener('click', () => openVideo(video));
+                    videoGrid.appendChild(videoCard);
+                });
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initSlider();
+            initHomeSync();
+        });
+    </script>
+    <script src="app-utils.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

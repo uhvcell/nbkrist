@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos | UHV CELL NBKRIST</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-style.css">
+    <script src="https://geo.dailymotion.com/libs/player/x8p5u.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-left-group">
+                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                    <div class="logo-text">
+                        <span>UHV CELL NBKRIST</span>
+                        <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                    </div>
+                </div>
+                <div class="second-logo-wrapper">
+                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                    <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                    <span class="logo-caption">Correspondent</span>
+                </div>
+            </a>
+            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="activities.html">Activities</a></li>
+                <li><a href="resources.html" class="active">Resources</a></li>
+                <li><a href="team.html">Our Team</a></li>
+                <li><a href="newsletter.html">Newsletter</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li class="download-item"><a href="https://emotionallytonightintelligent.com/x8hwqv72xz?key=38d45a1aedbbb6ea28d603baadb16c3d" class="btn-download-app" target="_blank"><i class="fa-solid fa-download"></i>
+                        Download App</a></li>
+            </ul>
+        </div>
+    </header>
+    <script src="app-utils.js"></script>
+
+    <div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
+        <h1 style="font-size: 3rem;">Videos</h1>
+        <p>Recorded sessions and expert talks on human values</p>
+    </div>
+
+    <section style="padding: 80px 0;">
+        <div class="container">
+            <a href="resources.html" class="btn btn-secondary" style="margin-bottom: 20px;"><i
+                    class="fa-solid fa-arrow-left"></i> Back to Resources</a>
+
+            <div
+                style="background: var(--bg-surface); padding: 40px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-top: 20px;">
+                <h2 style="margin-bottom: 30px;">Featured Resources & Talks</h2>
+
+                <!-- Dynamic Video Grid -->
+                <div id="videoGrid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                    <!-- Videos will be injected here -->
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="video-modal">
+        <div class="video-modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="video-container" id="videoContainer">
+                <div id="dailymotion-player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                </div>
+            </div>
+            <div class="video-info">
+                <h3 id="modalTitle"></h3>
+                <p id="modalDesc"></p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .video-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal-content {
+            width: 90%;
+            max-width: 1000px;
+            position: relative;
+            background: var(--bg-surface);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--primary-dim);
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulsePlay {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+                box-shadow: 0 0 40px rgba(0, 243, 255, 0.6);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: var(--white);
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 30;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .video-info {
+            padding: 25px;
+        }
+
+        .video-info h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .video-info p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+    </style>
+
+    <script src="videos-data.js"></script>
+    <script>
+        const modal = document.getElementById('videoModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const closeModal = document.querySelector('.close-modal');
+        let dmPlayer = null;
+
+        function createVideoCard(video, index) {
+            const card = document.createElement('div');
+            card.className = 'card fade-in';
+            card.style.padding = '0';
+            card.style.overflow = 'hidden';
+            card.style.animationDelay = `${index * 0.2}s`;
+            card.style.cursor = 'pointer';
+
+            card.innerHTML = `
+                <div style="aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                    <img src="${video.thumbnail}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: all 0.5s ease;" class="card-thumb">
+                    <div style="position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6));"></div>
+                    
+                    <div class="play-trigger" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(0, 243, 255, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); border: 2px solid var(--primary); z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: pulsePlay 2s infinite ease-in-out;">
+                        <i class="fa-solid fa-play" style="font-size: 2.5rem; color: var(--primary); margin-left: 8px; filter: drop-shadow(0 0 15px var(--primary));"></i>
+                    </div>
+                </div>
+                <div style="padding: 20px; background: var(--bg-surface);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span style="font-size: 0.75rem; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">${video.type || 'Resource'}</span>
+                    </div>
+                    <h3 style="font-size: 1.1rem; margin-bottom: 8px;">${video.title}</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">${video.description}</p>
+                </div>
+            `;
+
+            card.addEventListener('mouseenter', () => {
+                card.querySelector('.card-thumb').style.transform = 'scale(1.1)';
+                card.querySelector('.play-trigger').style.animation = 'none';
+                card.querySelector('.play-trigger').style.transform = 'translate(-50%, -50%) scale(1.2)';
+                card.querySelector('.play-trigger').style.boxShadow = '0 0 50px var(--primary)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.querySelector('.card-thumb').style.transform = 'scale(1)';
+                card.querySelector('.play-trigger').style.animation = 'pulsePlay 2s infinite ease-in-out';
+                card.querySelector('.play-trigger').style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+
+            card.addEventListener('click', () => openVideo(video));
+
+            return card;
+        }
+
+
+
+        /*
+        function setupCustomControls(player) {
+            const playBtn = document.getElementById('ctrlPlayPause');
+            const muteBtn = document.getElementById('ctrlMute');
+            const fsBtn = document.getElementById('ctrlFullscreen');
+            const castBtn = document.getElementById('ctrlCast');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const progressContainer = document.getElementById('videoProgressContainer');
+            const progressBar = document.getElementById('videoProgressBar');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const container = document.getElementById('videoContainer');
+
+            playBtn.onclick = () => player.togglePlay();
+            player.on(dailymotion.events.PLAYER_PLAY, () => playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>');
+            player.on(dailymotion.events.PLAYER_PAUSE, () => playBtn.innerHTML = '<i class="fa-solid fa-play"></i>');
+
+            muteBtn.onclick = () => {
+                player.getMuted().then(isMuted => {
+                    player.setMuted(!isMuted);
+                    muteBtn.innerHTML = isMuted ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark"></i>';
+                });
+            };
+
+            volumeSlider.oninput = (e) => player.setVolume(parseFloat(e.target.value));
+
+            fsBtn.onclick = () => {
+                if (!document.fullscreenElement) {
+                    container.requestFullscreen().catch(() => player.setFullscreen(true));
+                } else {
+                    document.exitFullscreen();
+                }
+            };
+
+            player.on(dailymotion.events.PLAYER_TIMEUPDATE, () => {
+                const current = player.currentTime;
+                const duration = player.duration;
+                const percent = (current / duration) * 100;
+                progressBar.style.width = percent + '%';
+                const fmtTime = (s) => {
+                    const m = Math.floor(s / 60);
+                    const rs = Math.floor(s % 60);
+                    return `${m}:${rs < 10 ? '0' : ''}${rs}`;
+                };
+                timeDisplay.innerText = `${fmtTime(current)} / ${fmtTime(duration)}`;
+            });
+
+            progressContainer.onclick = (e) => {
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                player.seek(pos * player.duration);
+            };
+
+            castBtn.onclick = () => alert("Use the browser's Cast menu to stream this video.");
+        */
+
+
+
+        const grid = document.getElementById('videoGrid');
+        if (typeof videoResources !== 'undefined') {
+            videoResources.forEach((video, index) => {
+                grid.appendChild(createVideoCard(video, index));
+            });
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">
+                        <div class="logo-left-group">
+                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                            <div class="logo-text">
+                                <span>UHV CELL NBKRIST</span>
+                                <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                            </div>
+                        </div>
+                        <div class="second-logo-wrapper">
+                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                            <span class="correspondent-name">SRI N.RAM KUMAR</span>
+                            <span class="logo-caption">Correspondent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="activities.html">Activities</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="newsletter.html">Newsletter</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <p style="color: #94a3b8;">uhvcell@nbkrist.org</p>
+                    <p style="color: #94a3b8;">+91 89858 42025</p>
+                    <p style="color: #94a3b8; margin-top: 10px;">Vidyanagar, Nellore District</p>
+                </div>
+            </div>
+            <div class="copyright">&copy; <span id="current-year">2026</span> UHV CELL NBKRIST.</div>
+        </div>
+    </footer>
+    <script src="app-utils.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>
