@@ -43,7 +43,7 @@
                 <li><a href="newsletter.html">Newsletter</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li class="download-item"><a
-                        href="https://emotionallytonightintelligent.com/x8hwqv72xz?key=38d45a1aedbbb6ea28d603baadb16c3d"
+                        href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
                         class="btn-download-app" target="_blank"><i class="fa-solid fa-download"></i>
                         Download App</a></li>
             </ul>
@@ -395,12 +395,11 @@
             if (typeof posterImages === 'undefined' || posterImages.length === 0) return;
 
             // Create slides
-            sliderTrack.innerHTML = posterImages.map(poster => `
+            sliderTrack.innerHTML = posterImages.map((poster, index) => `
                 <div class="slider-slide">
-                    <img src="${poster.url}" alt="${poster.title}" loading="lazy">
+                    <img src="${poster.url}" alt="Poster ${index + 1}" loading="lazy">
                     <div class="slider-caption">
-                        <h4>${poster.title}</h4>
-                        <p>${poster.description}</p>
+                        <h4>Poster ${index + 1}</h4>
                     </div>
                 </div>
             `).join('');
@@ -452,13 +451,9 @@
                 const latestPosters = posterImages.slice(-4).reverse();
                 posterGrid.innerHTML = latestPosters.map((poster, index) => `
                     <div class="card fade-in" onclick="location.href='posters.html'" style="padding: 0; overflow: hidden; animation-delay: ${index * 0.1}s; border: 1px solid rgba(0, 243, 255, 0.1); cursor: pointer;">
-                        <div style="position: relative; overflow: hidden; aspect-ratio: 3/4;">
-                            <img src="${poster.url}" alt="${poster.title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                        <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; border-radius: 12px;">
+                            <img src="${poster.url}" alt="Poster" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
                             <div style="position: absolute; top: 10px; right: 10px; background: var(--primary); color: #000; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 700;">NEW</div>
-                        </div>
-                        <div style="padding: 15px; background: var(--bg-surface);">
-                            <h3 style="font-size: 1rem; margin-bottom: 5px; color: var(--white);">${poster.title}</h3>
-                            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">${poster.description}</p>
                         </div>
                     </div>
                 `).join('');

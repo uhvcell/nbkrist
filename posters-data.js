@@ -5,23 +5,18 @@
 
 const posterImages = [
     {
-        url: "poster1.jpg",
-        title: "Inaugural Ceremony - Poster 1",
-        description: "Official poster for the UHV Cell Inaugural Ceremony."
+        url: "poster1.jpg"
     },
     {
-        url: "poster2.jpg",
-        title: "Inaugural Ceremony - Poster 2",
-        description: "Universal Human Values Cell Launch Events."
+        url: "poster2.jpg"
     },
     {
-        url: "poster3.jpg",
-        title: "Inaugural Ceremony - Poster 3",
-        description: "Join us for the Nodal Centre inauguration."
+        url: "poster3.jpg"
     },
     {
-        url: "poster4.jpg",
-        title: "Inaugural Ceremony - Poster 4",
-        description: "Building a harmonious society together."
+        url: "poster4.jpg"
+    },
+    {
+        url: "poster5.jpg"
     }
 ];

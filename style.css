@@ -436,6 +436,7 @@ header {
     font-size: 1.5rem;
     color: var(--white);
     cursor: pointer;
+    z-index: 1000;
 }
 
 /* Hero Section */
