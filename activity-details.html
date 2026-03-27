@@ -218,6 +218,19 @@
                     container.appendChild(sectionDiv);
                 });
             } else {
+                if (activityId === 'activity-gd') {
+                    const videoDiv = document.createElement('div');
+                    videoDiv.className = 'fade-in';
+                    videoDiv.style.width = '100%';
+                    videoDiv.style.gridColumn = '1 / -1';
+                    videoDiv.style.marginBottom = '20px';
+                    videoDiv.innerHTML = '<div style="border-radius: 12px; overflow: hidden; position: relative; background: #000; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); max-width: 100%;">' +
+                        '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden; max-width: 100%;">' +
+                        '<iframe sandbox="allow-scripts allow-same-origin allow-presentation" src="https://geo.dailymotion.com/player.html?video=xa2rzvy&autoplay=0&ui-logo=0&queue-enable=0&sharing-enable=0&ui-display-sharing=0&ui-display-logo=0&ui-display-cast=1&playsinline=1" style="width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden; border:none; max-width: 100%;" allowfullscreen title="Group Discussions Video" allow="web-share"></iframe>' +
+                        '</div></div>';
+                    container.appendChild(videoDiv);
+                }
+
                 // Default grid view for others
                 const total = Array.isArray(data.images) ? data.images.length : data.images;
                 for (let i = 0; i < total; i++) {

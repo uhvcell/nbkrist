@@ -65,7 +65,7 @@
 
                 <!-- Dynamic Video Grid -->
                 <div id="videoGrid"
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
                     <!-- Videos will be injected here -->
                 </div>
 
@@ -233,6 +233,28 @@
 
             return card;
         }
+
+        function openVideo(video) {
+            modalTitle.textContent = video.title || 'Video';
+            modalDesc.textContent = video.description || '';
+            
+            const container = document.getElementById('dailymotion-player');
+            container.innerHTML = `<iframe sandbox="allow-scripts allow-same-origin allow-presentation" style="width:100%; height:100%; border:none; position:absolute; left:0; top:0;" src="${video.videoUrl}&playsinline=1" allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe>`;
+            
+            modal.style.display = 'flex';
+        }
+
+        closeModal.onclick = () => {
+            modal.style.display = 'none';
+            document.getElementById('dailymotion-player').innerHTML = '';
+        };
+
+        window.onclick = (e) => {
+            if (e.target == modal) {
+                modal.style.display = 'none';
+                document.getElementById('dailymotion-player').innerHTML = '';
+            }
+        };
 
 
 
