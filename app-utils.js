@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Check for custom User-Agent set by Android App
     if (navigator.userAgent.includes("MyWebsiteAndroidApp")) {
         document.body.classList.add('is-app');
-        console.log("App detected: MyWebsiteAndroidApp");
     }
 
     // 2. Mobile Menu Toggle Logic
@@ -97,11 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    window.onclick = (event) => {
-        if (event.target == modal) {
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
             if (closeModal) closeModal.onclick();
         }
-    };
+    });
 
     // 5. Global Download App Link
     document.querySelectorAll('.btn-download-app').forEach(btn => {

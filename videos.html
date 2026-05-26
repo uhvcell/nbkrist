@@ -4,10 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UHV Cell NBKRIST - Universal Human Values Cell at N.B.K.R. Institute of Science and Technology.">
     <title>Videos | UHV CELL NBKRIST</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -16,24 +20,25 @@
 </head>
 
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <header>
         <div class="container navbar">
             <a href="index.html" class="logo">
                 <div class="logo-left-group">
-                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                    <img src="logo.jpg" alt="UHV Cell NBKRIST Logo" class="logo-main-img">
                     <div class="logo-text">
                         <span>UHV CELL NBKRIST</span>
                         <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
                     </div>
                 </div>
                 <div class="second-logo-wrapper">
-                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                    <img src="second_logo.png" alt="Correspondent Logo" class="logo-second-img">
                     <span class="correspondent-name">SRI N.RAM KUMAR</span>
                     <span class="logo-caption">Correspondent</span>
                 </div>
             </a>
-            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+            <div class="menu-toggle" role="button" aria-label="Toggle navigation menu" tabindex="0"><i class="fa-solid fa-bars"></i></div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
@@ -42,7 +47,7 @@
                 <li><a href="team.html">Our Team</a></li>
                 <li><a href="newsletter.html">Newsletter</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li class="download-item"><a href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796" class="btn-download-app" target="_blank"><i class="fa-solid fa-download"></i>
+                <li class="download-item"><a href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796" class="btn-download-app" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-download"></i>
                         Download App</a></li>
             </ul>
         </div>
@@ -201,7 +206,7 @@
 
             card.innerHTML = `
                 <div style="aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                    <img src="${video.thumbnail}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: all 0.5s ease;" class="card-thumb">
+                    <img loading="lazy" src="${video.thumbnail}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: all 0.5s ease;" class="card-thumb">
                     <div style="position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6));"></div>
                     
                     <div class="play-trigger" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(0, 243, 255, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); border: 2px solid var(--primary); z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: pulsePlay 2s infinite ease-in-out;">
@@ -330,14 +335,14 @@
                 <div class="footer-col">
                     <div class="logo" style="margin-bottom: 20px;">
                         <div class="logo-left-group">
-                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                            <img src="logo.jpg" alt="UHV Cell NBKRIST Logo" class="logo-main-img">
                             <div class="logo-text">
                                 <span>UHV CELL NBKRIST</span>
                                 <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
                             </div>
                         </div>
                         <div class="second-logo-wrapper">
-                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                            <img src="second_logo.png" alt="Correspondent Logo" class="logo-second-img">
                             <span class="correspondent-name">SRI N.RAM KUMAR</span>
                             <span class="logo-caption">Correspondent</span>
                         </div>

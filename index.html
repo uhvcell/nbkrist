@@ -4,36 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UHV Cell NBKRIST - Universal Human Values Cell at N.B.K.R. Institute of Science and Technology. Empowering minds with universal human values through self-exploration and holistic development.">
+    <meta name="keywords" content="UHV, Universal Human Values, NBKRIST, NBK Reddy, education, values, holistic development">
+    <meta property="og:title" content="UHV CELL NBKRIST - Universal Human Values">
+    <meta property="og:description" content="Empowering minds with universal human values through self-exploration and holistic development.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="logo.jpg">
+    <meta name="twitter:card" content="summary_large_image">
     <title>Home | UHV CELL NBKRIST</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://geo.dailymotion.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="admin-style.css">
-    <script src="https://geo.dailymotion.com/libs/player/x8p5u.js"></script>
+    <script src="https://geo.dailymotion.com/libs/player/x8p5u.js" defer></script>
 </head>
 
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <header>
         <div class="container navbar">
             <a href="index.html" class="logo">
                 <div class="logo-left-group">
-                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                    <img src="logo.jpg" alt="UHV Cell NBKRIST Logo" class="logo-main-img">
                     <div class="logo-text">
                         <span>UHV CELL NBKRIST</span>
                         <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
                     </div>
                 </div>
                 <div class="second-logo-wrapper">
-                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                    <img src="second_logo.png" alt="Correspondent Logo" class="logo-second-img">
                     <span class="correspondent-name">SRI N.RAM KUMAR</span>
                     <span class="logo-caption">Correspondent</span>
                 </div>
             </a>
-            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+            <div class="menu-toggle" role="button" aria-label="Toggle navigation menu" tabindex="0"><i class="fa-solid fa-bars"></i></div>
             <ul class="nav-links">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
@@ -44,7 +56,7 @@
                 <li><a href="contact.html">Contact</a></li>
                 <li class="download-item"><a
                         href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
-                        class="btn-download-app" target="_blank"><i class="fa-solid fa-download"></i>
+                        class="btn-download-app" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-download"></i>
                         Download App</a></li>
             </ul>
         </div>
@@ -52,13 +64,14 @@
 
     <script src="app-utils.js"></script>
 
+    <main id="main-content">
     <!-- Top Image Slider Section -->
     <section class="slider-section">
         <div class="poster-slider-container" id="posterSlider">
             <div class="slider-track" id="sliderTrack"></div>
             <div class="slider-nav">
-                <button class="slider-btn prev" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
-                <button class="slider-btn next" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                <button class="slider-btn prev" id="prevBtn" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="slider-btn next" id="nextBtn" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
             <div class="slider-dots" id="sliderDots"></div>
         </div>
@@ -116,7 +129,7 @@
     <!-- Video Modal -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
-            <span class="close-modal">&times;</span>
+            <span class="close-modal" role="button" aria-label="Close video player" tabindex="0">&times;</span>
             <div class="video-container" id="videoContainer">
                 <div id="dailymotion-player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
                 </div>
@@ -260,6 +273,7 @@
             <div class="instruction-text">Select a team member to view details</div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer>
@@ -268,14 +282,14 @@
                 <div class="footer-col">
                     <div class="logo" style="margin-bottom: 20px;">
                         <div class="logo-left-group">
-                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                            <img src="logo.jpg" alt="UHV Cell NBKRIST Logo" class="logo-main-img">
                             <div class="logo-text">
                                 <span>UHV CELL NBKRIST</span>
                                 <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
                             </div>
                         </div>
                         <div class="second-logo-wrapper">
-                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                            <img src="second_logo.png" alt="Correspondent Logo" class="logo-second-img">
                             <span class="correspondent-name">SRI N.RAM KUMAR</span>
                             <span class="logo-caption">Correspondent</span>
                         </div>
@@ -506,7 +520,6 @@
             initHomeSync();
         });
     </script>
-    <script src="app-utils.js"></script>
     <script src="admin.js"></script>
 </body>
 
