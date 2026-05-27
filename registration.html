@@ -8,6 +8,8 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -31,8 +33,8 @@
                     <span class="logo-caption">Correspondent</span>
                 </div>
             </a>
-            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
-            <ul class="nav-links">
+            <button type="button" class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="site-nav"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+            <ul class="nav-links" id="site-nav">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="activities.html">Activities</a></li>
@@ -45,10 +47,7 @@
             </ul>
         </div>
     </header>
-
-    <script src="app-utils.js"></script>
-
-    <div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
+<div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
         <h1 style="font-size: 3rem;">Membership Registration</h1>
         <p>Join the UHV Cell at NBKRIST and be part of a transformative journey.</p>
     </div>
@@ -124,6 +123,7 @@
             <div class="copyright">&copy; <span id="current-year">2026</span> UHV CELL NBKRIST.</div>
         </div>
     </footer>
+    <script src="app-utils.js" defer></script>
     <script src="admin.js"></script>
 </body>
 

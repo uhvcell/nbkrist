@@ -1,115 +1,185 @@
 /**
  * App Detection & Utils
- * Handles hiding the download button when viewed inside the Android app
- * and common UI interactions like the mobile menu.
+ * Mobile menu, video modal, app mode, and shared UI helpers.
  */
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Check for custom User-Agent set by Android App
-    if (navigator.userAgent.includes("MyWebsiteAndroidApp")) {
-        document.body.classList.add('is-app');
-        console.log("App detected: MyWebsiteAndroidApp");
-    }
+(function () {
+    if (window.__uhvAppUtilsInit) return;
+    window.__uhvAppUtilsInit = true;
 
-    // 2. Mobile Menu Toggle Logic
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+    const DM_SDK = 'https://geo.dailymotion.com/libs/player/x8p5u.js';
+    let dmSdkPromise = null;
 
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            navLinks.classList.toggle('active');
-        });
+    function loadDailymotionSDK() {
+        if (typeof dailymotion !== 'undefined') return Promise.resolve();
+        if (dmSdkPromise) return dmSdkPromise;
 
-        // Close menu when clicking a link
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
-
-        // Close menu when clicking anywhere else
-        document.addEventListener('click', (e) => {
-            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
-                navLinks.classList.remove('active');
+        dmSdkPromise = new Promise((resolve, reject) => {
+            const existing = document.querySelector('script[data-dm-sdk="true"]');
+            if (existing) {
+                existing.addEventListener('load', () => resolve(), { once: true });
+                existing.addEventListener('error', () => reject(new Error('Dailymotion SDK failed')), { once: true });
+                return;
             }
+
+            const script = document.createElement('script');
+            script.src = DM_SDK;
+            script.defer = true;
+            script.dataset.dmSdk = 'true';
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error('Dailymotion SDK failed'));
+            document.head.appendChild(script);
+        });
+
+        return dmSdkPromise;
+    }
+
+    function updateHeaderOffset() {
+        const header = document.querySelector('header');
+        if (!header) return;
+        document.documentElement.style.setProperty('--header-offset', `${header.offsetHeight}px`);
+    }
+
+    function initMobileMenu() {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        if (!menuToggle || !navLinks) return;
+
+        let overlay = document.querySelector('.nav-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'nav-overlay';
+            overlay.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(overlay);
+        }
+
+        const setMenuOpen = (open) => {
+            navLinks.classList.toggle('active', open);
+            overlay.classList.toggle('active', open);
+            document.body.classList.toggle('menu-open', open);
+            menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            overlay.setAttribute('aria-hidden', open ? 'false' : 'true');
+        };
+
+        const closeMenu = () => setMenuOpen(false);
+        const openMenu = () => {
+            updateHeaderOffset();
+            setMenuOpen(true);
+        };
+
+        menuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (navLinks.classList.contains('active')) closeMenu();
+            else openMenu();
+        });
+
+        overlay.addEventListener('click', closeMenu);
+
+        navLinks.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeMenu();
+        });
+
+        window.addEventListener('resize', () => {
+            updateHeaderOffset();
+            if (window.innerWidth > 1200) closeMenu();
         });
     }
 
-    // 3. Auto-update Current Year
-    const yearElement = document.getElementById('current-year');
-    if (yearElement) {
-        yearElement.textContent = new Date().getFullYear();
+    function initAppMode() {
+        if (navigator.userAgent.includes('MyWebsiteAndroidApp')) {
+            document.body.classList.add('is-app');
+        }
+
+        document.querySelectorAll('.btn-download-app').forEach((btn) => {
+            btn.href = '#';
+            btn.removeAttribute('target');
+            btn.addEventListener('click', (e) => e.preventDefault());
+        });
     }
 
-    // 4. Universal Video Player Logic
-    // This makes the Pro-Level Dailymotion player the default for all videos sitewide.
-    window.dmPlayer = null;
+    function initYear() {
+        const yearElement = document.getElementById('current-year');
+        if (yearElement) yearElement.textContent = String(new Date().getFullYear());
+    }
 
-    window.openVideo = async function (video) {
-        const modal = document.getElementById('videoModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalDesc = document.getElementById('modalDesc');
+    function initLazyImages() {
+        document.querySelectorAll('img:not([loading])').forEach((img) => {
+            if (!img.closest('header')) img.loading = 'lazy';
+        });
+    }
 
-        if (!modal) return;
-
-        modalTitle.innerText = video.title;
-        modalDesc.innerText = video.description;
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-
-        const videoId = video.videoUrl.split('video=')[1].split('&')[0];
-        const playerContainer = document.getElementById('dailymotion-player');
-
-        if (!playerContainer) return;
-
-        // Reset container to ensure a fresh player instance for every click
-        playerContainer.innerHTML = '';
+    function initVideoModal() {
         window.dmPlayer = null;
 
-        if (typeof dailymotion !== 'undefined') {
-            dailymotion.createPlayer('dailymotion-player', {
-                video: videoId,
-                player: 'x8p5u',
-                params: {
-                    autoplay: true,
-                    mute: false,
-                    controls: true
-                    // Default settings allow for monetization/ads
-                }
-            }).then((p) => {
-                window.dmPlayer = p;
-                // Auto-fullscreen on play
+        window.openVideo = async function (video) {
+            const modal = document.getElementById('videoModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDesc = document.getElementById('modalDesc');
+            const playerContainer = document.getElementById('dailymotion-player');
+
+            if (!modal || !playerContainer || !video?.videoUrl) return;
+
+            modalTitle.textContent = video.title || 'Video';
+            modalDesc.textContent = video.description || '';
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            const match = video.videoUrl.match(/video=([^&]+)/);
+            const videoId = match ? match[1] : null;
+            if (!videoId) return;
+
+            playerContainer.innerHTML = '';
+            window.dmPlayer = null;
+
+            try {
+                await loadDailymotionSDK();
+                const player = await dailymotion.createPlayer('dailymotion-player', {
+                    video: videoId,
+                    player: 'x8p5u',
+                    params: { autoplay: true, mute: false, controls: true }
+                });
+                window.dmPlayer = player;
                 window.dmPlayer.on(dailymotion.events.PLAYER_PLAY, () => {
                     window.dmPlayer.setFullscreen(true);
                 });
-            }).catch(err => console.error("Video player error:", err));
-        }
-    };
-
-    // Global Modal Close Handlers
-    const closeModal = document.querySelector('.close-modal');
-    const modal = document.getElementById('videoModal');
-
-    if (closeModal) {
-        closeModal.onclick = () => {
-            if (modal) modal.style.display = 'none';
-            if (window.dmPlayer) window.dmPlayer.pause();
-            document.body.style.overflow = 'auto';
+            } catch (err) {
+                console.error('Video player error:', err);
+            }
         };
+
+        const closeModal = document.querySelector('.close-modal');
+        const modal = document.getElementById('videoModal');
+
+        const hideModal = () => {
+            if (!modal) return;
+            modal.style.display = 'none';
+            if (window.dmPlayer) window.dmPlayer.pause();
+            document.body.style.overflow = '';
+        };
+
+        if (closeModal) closeModal.addEventListener('click', hideModal);
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) hideModal();
+        });
     }
 
-    window.onclick = (event) => {
-        if (event.target == modal) {
-            if (closeModal) closeModal.onclick();
-        }
-    };
+    function init() {
+        initAppMode();
+        updateHeaderOffset();
+        initMobileMenu();
+        initYear();
+        initLazyImages();
+        initVideoModal();
+    }
 
-    // 5. Download App - no external link
-    document.querySelectorAll('.btn-download-app').forEach(btn => {
-        btn.href = '#';
-        btn.removeAttribute('target');
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-        });
-    });
-});
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
