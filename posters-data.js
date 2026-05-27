@@ -18,5 +18,8 @@ const posterImages = [
     },
     {
         url: "poster5.jpg"
+    },
+    {
+        url: "poster6.jpg"
     }
 ];

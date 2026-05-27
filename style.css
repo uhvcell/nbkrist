@@ -21,6 +21,7 @@
     /* Dark Surface */
     --bg-glass: rgba(15, 16, 32, 0.7);
 
+    --accent: #ff0055;
     --text-muted: #94a3b8;
     --special-glow: 0 0 20px rgba(0, 243, 255, 0.4);
     --text-main: #f8fafc;
@@ -39,8 +40,7 @@
     /* Layout */
     --container-width: 1400px;
     /* More standard wide container */
-    --header-height: 100px;
-    --mobile-header-height: 80px;
+    --header-height: 130px;
     --radius: 16px;
 
     /* Shadows */
@@ -54,12 +54,27 @@
     display: none !important;
 }
 
+
+
 .admin-mode [contenteditable="true"]:hover {
     outline: 2px dashed var(--primary);
     background: rgba(0, 243, 255, 0.05);
 }
 
-
+.admin-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--bg-surface);
+    border-bottom: 2px solid var(--primary);
+    padding: 10px 20px;
+    z-index: 9999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
 
 
 /* Base Reset & Typography */
@@ -97,7 +112,12 @@ img {
     max-width: var(--container-width);
     margin: 0 auto;
     padding: 0 40px;
-    /* Increased padding to move elements away from very edge */
+}
+
+@media (max-width: 1400px) {
+    .container {
+        padding: 0 20px;
+    }
 }
 
 .btn {
@@ -210,14 +230,14 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 100%;
+    height: auto;
+    gap: 24px;
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: 40px;
-    /* Reduced from 60px to move elements left */
     text-decoration: none;
     flex-shrink: 0;
     color: var(--white);
@@ -256,19 +276,17 @@ img {
 .nav-links {
     display: flex;
     gap: 20px;
-    /* Reduced from 30px */
     list-style: none;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     white-space: nowrap;
     align-items: center;
     margin-left: 20px;
-    /* Reduced from 40px */
 }
 
 .logo-main-img,
 .logo-second-img {
-    height: 60px;
-    width: 60px;
+    height: 70px;
+    width: 70px;
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid var(--primary);
@@ -367,20 +385,19 @@ h4 {
 
 /* Header & Navigation */
 header {
-    height: var(--header-height);
+    height: auto;
+    padding: 18px 0;
     background: rgba(5, 5, 16, 0.8);
     backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
     z-index: 100;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition: height 0.3s ease;
 }
 
-@media (max-width: 768px) {
-    header {
-        height: var(--mobile-header-height);
-    }
+header .container.navbar {
+    max-width: 100%;
+    padding: 0 40px;
 }
 
 /* Consolidated above */
@@ -419,10 +436,10 @@ header {
 
 .menu-toggle {
     display: none;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     color: var(--white);
     cursor: pointer;
-    z-index: 1000;
+    z-index: 2100; /* Higher than nav-links */
 }
 
 /* Hero Section */
@@ -539,7 +556,21 @@ header {
     box-shadow: 0 15px 30px rgba(0, 243, 255, 0.3);
 }
 
+/* Handled in media query below */
+.active-member-display {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 20px;
+}
 
+.instruction-text {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    font-style: italic;
+}
 
 /* Feature Cards */
 .features {
@@ -551,6 +582,12 @@ header {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
 }
 
 .card {
@@ -740,40 +777,57 @@ footer .logo-text .subtitle {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .menu-toggle {
         display: block;
     }
 
     .logo {
-        gap: 20px;
+        gap: 15px;
     }
 
     .nav-links {
-        position: absolute;
+        position: fixed;
         top: var(--header-height);
         left: 0;
         width: 100%;
-        background: rgba(5, 5, 16, 0.98);
-        backdrop-filter: blur(20px);
+        height: calc(100vh - var(--header-height));
+        background: rgba(5, 5, 16, 0.99);
+        backdrop-filter: blur(25px);
         flex-direction: column;
         padding: 40px 20px;
         border-bottom: 2px solid var(--primary);
-        transform: translateY(-150%);
+        transform: translateX(100%);
         transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 99;
+        z-index: 1500;
         margin-left: 0;
+        overflow-y: auto;
+        justify-content: flex-start;
+        gap: 15px;
     }
 
     .nav-links.active {
-        transform: translateY(0);
+        transform: translateX(0);
     }
 
     .nav-links li {
         width: 100%;
         text-align: center;
+        padding: 10px 0;
     }
 
+    .login-item, .download-item {
+        margin-top: 10px;
+    }
+    
+    .btn-download-app {
+        width: 220px;
+        justify-content: center;
+    }
+}
+
+
+@media (max-width: 1200px) {
     .hero {
         min-height: auto;
         padding: 60px 0;
@@ -829,7 +883,7 @@ footer .logo-text .subtitle {
         height: 35px;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
         .logo-text span:first-child {
             font-size: 1.1rem;
         }
@@ -1354,55 +1408,4 @@ footer .logo-text .subtitle {
 
 .slider-btn i {
     font-size: 0.9rem;
-}
-
-/* Utility Classes */
-.section-padding {
-    padding: 80px 0;
-}
-
-.text-left {
-    text-align: left;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.page-header {
-    padding: 100px 0;
-    text-align: center;
-}
-
-/* Skip to Content Link for Accessibility */
-.skip-link {
-    position: absolute;
-    top: -100%;
-    left: 0;
-    background: var(--primary);
-    color: var(--bg-body);
-    padding: 10px 20px;
-    z-index: 9999;
-    font-weight: 600;
-    transition: top 0.3s ease;
-}
-
-.skip-link:focus {
-    top: 0;
-}
-
-/* Reduce Motion for users who prefer it */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-
-    .team-marquee-track {
-        animation: none !important;
-    }
 }

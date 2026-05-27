@@ -4,14 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="UHV Cell NBKRIST - Universal Human Values Cell at N.B.K.R. Institute of Science and Technology.">
     <title>Team Structure | UHV CELL NBKRIST</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -91,29 +87,45 @@
             min-width: 200px;
             transition: all 0.3s ease;
         }
+
+        .hierarchy-card {
+            padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .hierarchy-card {
+                padding: 20px;
+            }
+            .member-box {
+                min-width: 150px;
+                padding: 10px 15px;
+            }
+            .groups-row {
+                gap: 15px;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <header>
         <div class="container navbar">
             <a href="index.html" class="logo">
                 <div class="logo-left-group">
-                    <img src="logo.jpg" alt="UHV Cell NBKRIST Logo" class="logo-main-img">
+                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
                     <div class="logo-text">
                         <span>UHV CELL NBKRIST</span>
                         <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
                     </div>
                 </div>
                 <div class="second-logo-wrapper">
-                    <img src="second_logo.png" alt="Correspondent Logo" class="logo-second-img">
+                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
                     <span class="correspondent-name">SRI N.RAM KUMAR</span>
                     <span class="logo-caption">Correspondent</span>
                 </div>
             </a>
-            <div class="menu-toggle" role="button" aria-label="Toggle navigation menu" tabindex="0"><i class="fa-solid fa-bars"></i></div>
+            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
@@ -122,7 +134,7 @@
                 <li><a href="team.html">Our Team</a></li>
                 <li><a href="newsletter.html">Newsletter</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li class="download-item"><a href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796" class="btn-download-app" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-download"></i>
+                <li class="download-item"><a href="#" class="btn-download-app"><i class="fa-solid fa-download"></i>
                         Download App</a></li>
             </ul>
         </div>
@@ -137,8 +149,8 @@
 
     <section class="section" style="padding: 80px 0;">
         <div class="container">
-            <div class="card fade-in"
-                style="max-width: 1200px; margin: 0 auto; padding: 40px; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div class="card fade-in hierarchy-card"
+                style="max-width: 1200px; margin: 0 auto; border: 1px solid rgba(255, 255, 255, 0.1);">
                 <div style="text-align: center; margin-bottom: 50px;">
                     <h2 class="section-title">Hierarchy & Organization</h2>
                     <p class="section-subtitle">How we work together to achieve our goals.</p>
@@ -158,7 +170,7 @@
     <script>
         function getMemberPhoto(member) {
             if (member.image) {
-                return `<img loading="lazy" src="${member.image}" alt="${member.name}" class="structure-photo">`;
+                return `<img src="${member.image}" alt="${member.name}" class="structure-photo">`;
             } else {
                 return `<div class="structure-placeholder"><i class="fa-solid ${member.icon || 'fa-user'}"></i></div>`;
             }
@@ -181,8 +193,6 @@
                 style = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);';
                 roleColor = '#8ba1b3';
             }
-
-            // Lead Badge removed as requested
 
             return `
                 <div class="member-box ${member.special ? 'special-member' : ''}" style="${style}; position: relative;">
@@ -249,12 +259,11 @@
                 groupHtml += createMemberBox(lead, isStudentLead ? 'student' : 'default');
 
                 // Find RESPECTIVE Co-Coordinators
-                // Logic: Extract the prefix before " Coordinator" or match specific keyword
                 const leadRole = lead.role.toLowerCase();
                 let prefix = "";
                 if (leadRole.includes("technical")) prefix = "technical";
                 else if (leadRole.includes("skill")) prefix = "skill";
-                else if (leadRole === "student coordinator") prefix = "student"; // though Student Co-Coord is rare
+                else if (leadRole === "student coordinator") prefix = "student";
                 else prefix = lead.role.split(' Coordinator')[0].toLowerCase();
 
                 const cos = allMembers.filter(m => {
@@ -293,14 +302,14 @@
                 <div class="footer-col">
                     <div class="logo" style="margin-bottom: 20px;">
                         <div class="logo-left-group">
-                            <img src="logo.jpg" alt="UHV Cell NBKRIST Logo" class="logo-main-img">
+                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
                             <div class="logo-text">
                                 <span>UHV CELL NBKRIST</span>
                                 <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
                             </div>
                         </div>
                         <div class="second-logo-wrapper">
-                            <img src="second_logo.png" alt="Correspondent Logo" class="logo-second-img">
+                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
                             <span class="correspondent-name">SRI N.RAM KUMAR</span>
                             <span class="logo-caption">Correspondent</span>
                         </div>
