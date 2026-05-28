@@ -1,0 +1,4 @@
+.continue/
+.env
+node_modules/
+.vscode/
