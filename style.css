@@ -5,20 +5,22 @@
 
 :root {
     /* Neon Color Palette */
-    --primary: #00f3ff;
+    --primary: #28f7ff;
     /* Neon Cyan */
-    --primary-dim: rgba(0, 243, 255, 0.1);
-    --secondary: #bc13fe;
+    --primary-dim: rgba(40, 247, 255, 0.14);
+    --secondary: #c63bff;
     /* Neon Purple */
-    --accent: #ff0055;
+    --accent: #ff4da6;
     /* Neon Pink */
-    --success: #0aff00;
+    --success: #78ff3d;
     /* Neon Green */
+    --warning: #ffd166;
+    /* Warm glow accent */
 
-    --bg-body: #050510;
+    --bg-body: #060612;
     /* Deepest Dark */
-    --bg-dark: #080b1a;
-    --bg-surface: #0f1020;
+    --bg-dark: #0c1030;
+    --bg-surface: #141733;
     /* Dark Surface */
     --bg-glass: rgba(15, 16, 32, 0.7);
     --text-muted: #94a3b8;
@@ -27,14 +29,14 @@
     --white: #ffffff;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    --gradient-glow: linear-gradient(135deg, rgba(0, 243, 255, 0.2) 0%, rgba(188, 19, 254, 0.2) 100%);
+    --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 45%, var(--accent) 100%);
+    --gradient-glow: linear-gradient(135deg, rgba(40, 247, 255, 0.25) 0%, rgba(198, 59, 255, 0.24) 45%, rgba(255, 77, 166, 0.2) 100%);
     --gradient-text: linear-gradient(to right, #fff, #00f3ff);
 
     /* Effects */
-    --glow: 0 0 15px rgba(0, 243, 255, 0.5);
-    --glow-text: 0 0 10px rgba(0, 243, 255, 0.3);
-    --border-glow: 1px solid rgba(0, 243, 255, 0.3);
+    --glow: 0 0 24px rgba(40, 247, 255, 0.55);
+    --glow-text: 0 0 16px rgba(40, 247, 255, 0.35);
+    --border-glow: 1px solid rgba(40, 247, 255, 0.35);
 
     /* Layout */
     --container-width: 1400px;
@@ -87,14 +89,27 @@
 body {
     font-family: 'Outfit', 'Segoe UI', sans-serif;
     background:
-        radial-gradient(circle at 15% 10%, rgba(0, 243, 255, 0.08), transparent 35%),
-        radial-gradient(circle at 85% 15%, rgba(188, 19, 254, 0.08), transparent 32%),
-        linear-gradient(180deg, #04040c 0%, #060713 50%, #050510 100%);
+        radial-gradient(circle at 12% 12%, rgba(40, 247, 255, 0.18), transparent 38%),
+        radial-gradient(circle at 85% 10%, rgba(198, 59, 255, 0.16), transparent 36%),
+        radial-gradient(circle at 55% 88%, rgba(255, 77, 166, 0.12), transparent 34%),
+        linear-gradient(180deg, #070716 0%, #0b0f2a 50%, #070716 100%);
+    background-size: 120% 120%;
     color: var(--text-main);
     line-height: 1.6;
     overflow-x: hidden;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    animation: auroraShift 18s ease-in-out infinite alternate;
+}
+
+@keyframes auroraShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 
 a {
@@ -404,11 +419,23 @@ h4 {
     font-weight: 700;
     text-align: center;
     margin-bottom: 1rem;
-    background: var(--gradient-primary);
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+    background-size: 220% 100%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+    text-shadow: 0 0 35px rgba(40, 247, 255, 0.24);
+    animation: titleFlow 7s linear infinite;
+}
+
+@keyframes titleFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 220% 50%;
+    }
 }
 
 .section-subtitle {
@@ -428,13 +455,13 @@ h4 {
 header {
     height: auto;
     padding: 18px 0;
-    background: linear-gradient(180deg, rgba(7, 9, 24, 0.94), rgba(6, 7, 19, 0.84));
+    background: linear-gradient(180deg, rgba(10, 14, 38, 0.95), rgba(10, 10, 26, 0.86));
     backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 1px solid rgba(0, 243, 255, 0.18);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    border-bottom: 1px solid rgba(40, 247, 255, 0.26);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.42), 0 0 28px rgba(198, 59, 255, 0.16);
 }
 
 header .container.navbar {
@@ -540,8 +567,9 @@ body.menu-open {
     left: 0;
     z-index: 0;
     background:
-        radial-gradient(circle at 10% 20%, rgba(188, 19, 254, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.15) 0%, transparent 40%);
+        radial-gradient(circle at 10% 20%, rgba(198, 59, 255, 0.24) 0%, transparent 42%),
+        radial-gradient(circle at 90% 80%, rgba(40, 247, 255, 0.2) 0%, transparent 42%),
+        radial-gradient(circle at 45% 50%, rgba(255, 77, 166, 0.12) 0%, transparent 38%);
 }
 
 .hero-bg::after {
@@ -629,7 +657,7 @@ body.menu-open {
     padding: 18px 45px;
     font-size: 1rem;
     background: var(--gradient-primary);
-    box-shadow: 0 15px 30px rgba(0, 243, 255, 0.3);
+    box-shadow: 0 16px 36px rgba(40, 247, 255, 0.28), 0 0 24px rgba(198, 59, 255, 0.2);
 }
 
 /* Handled in media query below */
@@ -667,10 +695,10 @@ body.menu-open {
 }
 
 .card {
-    background: linear-gradient(170deg, rgba(20, 24, 48, 0.95), rgba(13, 15, 32, 0.92));
+    background: linear-gradient(170deg, rgba(28, 34, 72, 0.96), rgba(16, 19, 44, 0.94));
     padding: 40px 30px;
     border-radius: var(--radius);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all 0.4s ease;
     position: relative;
     z-index: 1;
@@ -693,8 +721,8 @@ body.menu-open {
 
 .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 24px 50px -16px rgba(2, 10, 22, 0.85), 0 0 0 1px rgba(0, 243, 255, 0.16);
-    border-color: rgba(0, 243, 255, 0.28);
+    box-shadow: 0 24px 56px -16px rgba(6, 12, 38, 0.86), 0 0 0 1px rgba(40, 247, 255, 0.18), 0 0 36px rgba(255, 77, 166, 0.14);
+    border-color: rgba(40, 247, 255, 0.35);
 }
 
 @media (hover: none) {
@@ -714,7 +742,7 @@ body.menu-open {
 .card-icon {
     width: 60px;
     height: 60px;
-    background: rgba(0, 243, 255, 0.1);
+    background: linear-gradient(135deg, rgba(40, 247, 255, 0.18), rgba(198, 59, 255, 0.16));
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -723,7 +751,7 @@ body.menu-open {
     color: var(--primary);
     margin-bottom: 25px;
     transition: all 0.3s ease;
-    box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+    box-shadow: 0 0 20px rgba(40, 247, 255, 0.2);
 }
 
 .card:hover .card-icon {
@@ -745,8 +773,8 @@ body.menu-open {
 
 /* Footer */
 footer {
-    background: #02020a;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(180deg, #090b1d, #05050f);
+    border-top: 1px solid rgba(40, 247, 255, 0.15);
     padding: 80px 0 30px;
 }
 
@@ -1107,7 +1135,7 @@ footer .logo-text .subtitle {
 -------------------------------- */
 .home-team-section {
     padding: 80px 0;
-    background: linear-gradient(180deg, var(--bg-dark), var(--bg-surface));
+    background: linear-gradient(180deg, #0b1130, #141733);
     overflow: hidden;
 }
 
@@ -1143,7 +1171,7 @@ footer .logo-text .subtitle {
     border-radius: 50%;
     overflow: hidden;
     cursor: pointer;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.18);
     transition: all 0.3s ease;
     flex-shrink: 0;
     position: relative;
@@ -1152,7 +1180,7 @@ footer .logo-text .subtitle {
 .marquee-item:hover {
     transform: scale(1.2);
     border-color: var(--primary);
-    box-shadow: 0 0 15px var(--primary);
+    box-shadow: 0 0 16px var(--primary), 0 0 28px rgba(198, 59, 255, 0.45);
     z-index: 10;
 }
 
@@ -1268,9 +1296,9 @@ footer .logo-text .subtitle {
 .active-card-view {
     width: 100%;
     max-width: 400px;
-    background: rgba(15, 16, 32, 0.8);
-    border: 1px solid rgba(0, 243, 255, 0.3);
-    box-shadow: 0 0 40px rgba(0, 243, 255, 0.1);
+    background: linear-gradient(160deg, rgba(24, 27, 54, 0.9), rgba(17, 19, 40, 0.86));
+    border: 1px solid rgba(40, 247, 255, 0.36);
+    box-shadow: 0 0 42px rgba(40, 247, 255, 0.16), 0 0 30px rgba(198, 59, 255, 0.16);
     animation: fadeInScale 0.4s ease-out;
     padding: 40px 20px;
 
@@ -1342,7 +1370,7 @@ footer .logo-text .subtitle {
 
 /* Download App Button in Nav */
 .nav-links .download-item a.btn-download-app {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
     /* Theme Gradient */
     color: var(--white);
     padding: 10px 25px;
@@ -1350,7 +1378,7 @@ footer .logo-text .subtitle {
     font-weight: 700;
     font-size: 0.9rem;
     transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+    box-shadow: 0 0 16px rgba(40, 247, 255, 0.55), 0 0 16px rgba(198, 59, 255, 0.35);
     /* Neon Glow */
     display: flex;
     align-items: center;
@@ -1363,8 +1391,8 @@ footer .logo-text .subtitle {
 
 .nav-links .download-item a.btn-download-app:hover {
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 0 30px rgba(0, 243, 255, 0.8), 0 0 10px var(--secondary);
-    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    box-shadow: 0 0 28px rgba(40, 247, 255, 0.72), 0 0 18px rgba(255, 77, 166, 0.58);
+    background: linear-gradient(135deg, var(--secondary), var(--accent), var(--primary));
     color: var(--white);
     animation: none;
 }
@@ -1634,6 +1662,14 @@ footer .logo-text .subtitle {
     .logo-text span:first-child {
         animation-name: themeTitleFlow !important;
         animation-duration: 1.6s !important;
+        animation-iteration-count: infinite !important;
+        animation-timing-function: linear !important;
+    }
+
+    /* Keep team marquee looping continuously on home page */
+    .team-marquee-track {
+        animation-name: scrollMarquee !important;
+        animation-duration: 30s !important;
         animation-iteration-count: infinite !important;
         animation-timing-function: linear !important;
     }
