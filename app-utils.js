@@ -114,11 +114,55 @@
 
     function initLazyImages() {
         document.querySelectorAll('img:not([loading])').forEach((img) => {
-            if (!img.closest('header')) img.loading = 'lazy';
+            if (!img.closest('header') && !img.closest('.slider-slide')) {
+                img.loading = 'lazy';
+            }
+        });
+
+        document.querySelectorAll('img:not([decoding])').forEach((img) => {
+            img.decoding = 'async';
         });
 
         document.querySelectorAll('iframe:not([loading])').forEach((frame) => {
             frame.loading = 'lazy';
+        });
+    }
+
+    /** Pause JS timers when tab hidden; CSS animations keep running. */
+    function initTimerPause() {
+        const timers = new Set();
+        window.UHV = window.UHV || {};
+
+        UHV.registerInterval = function (id) {
+            if (id != null) timers.add(id);
+            return id;
+        };
+
+        UHV.clearRegisteredIntervals = function () {
+            timers.forEach((id) => clearInterval(id));
+        };
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                UHV.clearRegisteredIntervals();
+            } else {
+                window.dispatchEvent(new CustomEvent('uhv:resume-timers'));
+            }
+        }, { passive: true });
+    }
+
+    function initTouchMarqueePause() {
+        document.querySelectorAll('.team-marquee-container').forEach((container) => {
+            const track = container.querySelector('.team-marquee-track');
+            if (!track) return;
+
+            container.addEventListener('touchstart', () => {
+                track.style.animationPlayState = 'paused';
+            }, { passive: true });
+
+            container.addEventListener('touchend', () => {
+                track.style.animationPlayState = 'running';
+            }, { passive: true });
         });
     }
 
@@ -192,6 +236,8 @@
         initMobileMenu();
         initYear();
         initLazyImages();
+        initTimerPause();
+        initTouchMarqueePause();
         initVideoModal();
     }
 
