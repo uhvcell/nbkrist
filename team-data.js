@@ -1,161 +1,155 @@
-// Shared Team Data - Edit this file to update both Team Page and Home Page Marquee
+// Shared Team Data - Overwrite contents of team-data.js with this
 
-// Default Static Data (used as fallback when LocalStorage is empty)
 const defaultFacultyCoordinators = [
     {
-        name: "Dr. V. Vijay Kumar Reddy",
-        role: "Chairperson",
-        detail: "Director, NBKRIST",
-        icon: "fa-user-tie",
-        image: "director.jpg"
+        "name": "Dr. V. Vijay Kumar Reddy Sir",
+        "role": "Chairperson",
+        "detail": "Director, NBKRIST",
+        "image": "director.jpg",
+        "icon": "fa-user-tie"
     },
     {
-        name: "Dr. M. Srinivasulu",
-        role: "Convener",
-        detail: "Principal, NBKRIST",
-        icon: "fa-chalkboard-user",
-        image: "srinivasulu.jpg"
+        "name": "Dr. M. Srinivasulu",
+        "role": "Convener",
+        "detail": "Principal, NBKRIST",
+        "icon": "fa-chalkboard-user",
+        "image": "srinivasulu.jpg"
     },
     {
-        name: "Mrs. B. Raghavamma",
-        role: "UHV Coordinator",
-        detail: "Dept. of S&H",
-        icon: "fa-user-gear",
-        image: "raghavamma.jpg"
+        "name": "Mrs. B. Raghavamma",
+        "role": "UHV Coordinator",
+        "detail": "Dept. of S&H",
+        "icon": "fa-user-gear",
+        "image": "raghavamma.jpg"
     },
     {
-        name: "Mr. K. Narendra",
-        role: "UHV Co-Coordinator",
-        detail: "Dept. of S&H",
-        icon: "fa-user",
-        image: "narendra.jpg"
-    },
+        "name": "Mr. K. Narendra",
+        "role": "UHV Co-Coordinator",
+        "detail": "Dept. of S&H",
+        "icon": "fa-user",
+        "image": "narendra.jpg"
+    }
 ];
 
 const defaultStudentCoordinators = [
-    // Student Row
     {
-        name: "T. Varunemdhar Reddy",
-        role: "Student Coordinator",
-        detail: "",
-        icon: "fa-graduation-cap",
-        image: "varun.jpg"
+        "name": "T. Varunemdhar Reddy",
+        "role": "Student Coordinator",
+        "detail": "",
+        "icon": "fa-graduation-cap",
+        "image": "varun.jpg"
     },
     {
-        name: "V.Bramhani",
-        role: "Student Co-Coordinator",
-        detail: "",
-        icon: "fa-user-graduate",
-        image: "bramhani.jpg"
+        "name": "V.Bramhani",
+        "role": "Student Co-Coordinator",
+        "detail": "",
+        "icon": "fa-user-graduate",
+        "image": "bramhani.jpg"
     },
     {
-        name: "P.Charuhaaini",
-        role: "Student Co-Coordinator",
-        detail: "",
-        icon: "fa-user-graduate",
-        image: "charuhaaini.jpg"
+        "name": "P.Charuhaaini",
+        "role": "Student Co-Coordinator",
+        "detail": "",
+        "icon": "fa-user-graduate",
+        "image": "charuhaaini.jpg"
     },
     {
-        name: "N.Prathyush",
-        role: "Student Co-Coordinator",
-        detail: "",
-        icon: "fa-user-graduate",
-        image: "prathyush.jpg"
+        "name": "N.Prathyush",
+        "role": "Student Co-Coordinator",
+        "detail": "",
+        "icon": "fa-user-graduate",
+        "image": "prathyush.jpg"
     },
     {
-        name: "K.Chandu",
-        role: "Student Co-Coordinator",
-        detail: "",
-        icon: "fa-user-graduate",
-        image: "chandu.jpg"
-    },
-    // Technical Row
-    {
-        name: "G.LAKSHMIDHAR REDDY",
-        role: "TECHNICAL COORDINATOR",
-        detail: "",
-        icon: "fa-code",
-        image: "lakshmidhar.png"
+        "name": "K.Chandu",
+        "role": "Student Co-Coordinator",
+        "detail": "",
+        "icon": "fa-user-graduate",
+        "image": "chandu.jpg"
     },
     {
-        name: "M.Manoj",
-        role: "Technical Co-Coordinator",
-        detail: "",
-        icon: "fa-code-branch",
-        image: "manoj.jpg"
+        "name": "G.LAKSHMIDHAR REDDY",
+        "role": "TECHNICAL COORDINATOR",
+        "detail": "",
+        "icon": "fa-code",
+        "image": "lakshmidhar.png"
     },
     {
-        name: "R.Mahesh",
-        role: "Technical Co-Coordinator",
-        detail: "",
-        icon: "fa-code-branch",
-        image: "mahesh.jpg"
-    },
-    // Skill Row
-    {
-        name: "K.Rithika Reddy",
-        role: "Skill Coordinator",
-        detail: "",
-        icon: "fa-pencil",
-        image: "rithika.jpg"
+        "name": "M.Manoj",
+        "role": "Technical Co-Coordinator",
+        "detail": "",
+        "icon": "fa-code-branch",
+        "image": "manoj.jpg"
     },
     {
-        name: "V.Rakshitha Reddy",
-        role: "Skill Co-Coordinator",
-        detail: "",
-        icon: "fa-pencil-ruler",
-        image: "rakshitha.jpg"
+        "name": "R.Mahesh",
+        "role": "Technical Co-Coordinator",
+        "detail": "",
+        "icon": "fa-code-branch",
+        "image": "mahesh.jpg"
     },
     {
-        name: "SK.Latheef",
-        role: "Skill Co-Coordinator",
-        detail: "",
-        icon: "fa-user-pen",
-        image: "latheef.jpg"
-    },
-    // Content Row
-    {
-        name: "Y.Mahidhar Reddy",
-        role: "Content Coordinator",
-        detail: "",
-        icon: "fa-file-lines",
-        image: "mahidhar.png"
+        "name": "K.Rithika Reddy",
+        "role": "Skill Coordinator",
+        "detail": "",
+        "icon": "fa-pencil",
+        "image": "rithika.jpg"
     },
     {
-        name: "A.Ajay Kumar",
-        role: "Content Co-Coordinator",
-        detail: "",
-        icon: "fa-file-pen",
-        image: "ajay_kumar.jpg"
+        "name": "V.Rakshitha Reddy",
+        "role": "Skill Co-Coordinator",
+        "detail": "",
+        "icon": "fa-pencil-ruler",
+        "image": "rakshitha.jpg"
     },
     {
-        name: "O.Penchal Das",
-        role: "Content Co-Coordinator",
-        detail: "",
-        icon: "fa-file-pen",
-        image: "penchal_das.jpg"
+        "name": "SK.Latheef",
+        "role": "Skill Co-Coordinator",
+        "detail": "",
+        "icon": "fa-user-pen",
+        "image": "latheef.jpg"
     },
     {
-        name: "P.Lokanadh",
-        role: "Content Co-Coordinator",
-        detail: "",
-        icon: "fa-file-pen",
-        image: "lokanadh.jpg"
+        "name": "Y.Mahidhar Reddy",
+        "role": "Content Coordinator",
+        "detail": "",
+        "icon": "fa-file-lines",
+        "image": "mahidhar.png"
     },
     {
-        name: "G.Varalakshmi",
-        role: "Content Co-Coordinator",
-        detail: "",
-        icon: "fa-file-pen",
-        image: "varalakshmi.jpg"
+        "name": "A.Ajay Kumar",
+        "role": "Content Co-Coordinator",
+        "detail": "",
+        "icon": "fa-file-pen",
+        "image": "ajay_kumar.jpg"
     },
+    {
+        "name": "O.Penchal Das",
+        "role": "Content Co-Coordinator",
+        "detail": "",
+        "icon": "fa-file-pen",
+        "image": "penchal_das.jpg"
+    },
+    {
+        "name": "P.Lokanadh",
+        "role": "Content Co-Coordinator",
+        "detail": "",
+        "icon": "fa-file-pen",
+        "image": "lokanadh.jpg"
+    },
+    {
+        "name": "G.Varalakshmi",
+        "role": "Content Co-Coordinator",
+        "detail": "",
+        "icon": "fa-file-pen",
+        "image": "varalakshmi.jpg"
+    }
 ];
 
-// Initialize and Sync with LocalStorage
 function loadTeamData() {
     const localFaculty = localStorage.getItem('uhv_team_faculty');
     const localStudent = localStorage.getItem('uhv_team_student');
-    
+
     if (!localFaculty) {
         localStorage.setItem('uhv_team_faculty', JSON.stringify(defaultFacultyCoordinators));
     }
