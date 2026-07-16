@@ -2,7 +2,7 @@
 
 const defaultFacultyCoordinators = [
     {
-        "name": "Dr. V. Vijay Kumar Reddy Sir",
+        "name": "Dr. V. Vijay Kumar Reddy",
         "role": "Chairperson",
         "detail": "Director, NBKRIST",
         "image": "director.jpg",
