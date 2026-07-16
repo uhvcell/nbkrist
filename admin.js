@@ -4,67 +4,52 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function checkAdminStatus() {
+    // Use same key as admin-panel.html
     const isLoggedIn = localStorage.getItem('uhvAdminLoggedIn') === 'true';
     const body = document.body;
 
     if (isLoggedIn) {
         body.classList.add('admin-mode');
 
-        // Add Admin Toolbar/Floating Action Button
+        // Add floating Admin Toolbar
         if (!document.querySelector('.admin-toolbar')) {
             const adminName = localStorage.getItem('uhvAdminName') || 'Admin';
             const toolbar = document.createElement('div');
             toolbar.className = 'admin-toolbar';
+            toolbar.style.cssText = 'display:flex; align-items:center; gap:12px;';
             toolbar.innerHTML = `
-                <span style="color: var(--white); font-weight: bold; margin-right: 10px;">Hi, ${adminName} (Edit Mode)</span>
-                <button onclick="logoutAdmin()" class="btn btn-secondary" style="padding: 5px 15px; font-size: 0.8rem;">Logout</button>
+                <i class="fa-solid fa-shield-halved" style="color:var(--primary);"></i>
+                <span style="color: var(--white); font-weight: bold; font-size:0.9rem;">Hi, ${adminName}</span>
+                <a href="admin-panel.html" class="btn btn-primary" style="padding: 5px 15px; font-size: 0.8rem; text-decoration: none;">
+                    <i class="fa-solid fa-gauge-high"></i> Dashboard
+                </a>
+                <button onclick="logoutAdmin()" class="btn btn-secondary" style="padding: 5px 15px; font-size: 0.8rem; cursor: pointer;">
+                    <i class="fa-solid fa-sign-out-alt"></i> Logout
+                </button>
             `;
             body.appendChild(toolbar);
         }
-
-        // Make text elements editable
-        const editableSelectors = 'h1, h2, h3, p, span, .profile-name, .profile-role, .profile-detail';
-        const elements = document.querySelectorAll(editableSelectors);
-
-        elements.forEach(el => {
-            // Avoid editing structural/nav elements to prevent breaking layout
-            if (!el.closest('.nav-links') && !el.closest('script')) {
-                el.setAttribute('contenteditable', 'true');
-                el.setAttribute('title', 'Click to edit');
-            }
-        });
-
-        // Image Editing Hint (Simulated)
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-            img.style.cursor = 'pointer';
-            img.setAttribute('title', 'Admin: Click to replace image (Demo)');
-            img.addEventListener('click', (e) => {
-                if (e.ctrlKey || confirm('Admin Action: Replace this image?\n(This is a demo. In a real app, a file uploader would appear.)')) {
-                    // Demo action
-                    // img.src = prompt('Enter new image URL:', img.src) || img.src;
-                }
-            });
-        });
     } else {
         body.classList.remove('admin-mode');
     }
 }
 
 function logoutAdmin() {
+    // Clear both keys to ensure full logout
     localStorage.removeItem('uhvAdminLoggedIn');
+    localStorage.removeItem('uhvAdminName');
     window.location.reload();
 }
 
 function checkAppMode() {
-    // Check for custom User-Agent set by Android App
-    if (navigator.userAgent.includes("MyWebsiteAndroidApp")) {
-        const downloadItems = document.querySelectorAll('.download-item');
-        downloadItems.forEach(item => {
+    // Hide download button when running inside Android WebView app
+    if (navigator.userAgent.includes('MyWebsiteAndroidApp')) {
+        document.querySelectorAll('.download-item').forEach(item => {
             item.style.display = 'none';
         });
     }
 }
-// Export functions to window for inline event handlers
+
+// Export functions for inline event handlers
 window.logoutAdmin = logoutAdmin;
 window.checkAdminStatus = checkAdminStatus;

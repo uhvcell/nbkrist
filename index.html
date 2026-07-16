@@ -292,6 +292,7 @@
                         <li><a href="team.html">Our Team</a></li>
                         <li><a href="newsletter.html">Newsletter</a></li>
                         <li><a href="contact.html">Contact</a></li>
+                        <li><a href="admin-panel.html" style="opacity: 0.5;"><i class="fa-solid fa-lock" style="font-size:0.75rem;"></i> Portal</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -416,10 +417,17 @@
                 const imgAttrs = index === 0
                     ? `src="${poster.url}" loading="eager" fetchpriority="high"`
                     : `data-src="${poster.url}" loading="lazy"`;
+                const titleText = poster.title || `Poster ${index + 1}`;
+                const subtext = poster.subtitle || 'NBKR Institute of Science & Technology';
+                const actionLink = poster.link ? `<a href="${poster.link}" class="slider-action-btn">Explore</a>` : '';
                 return `
                     <div class="slider-slide">
-                        <img ${imgAttrs} alt="Poster ${index + 1}" decoding="async" class="responsive-media">
-                        <div class="slider-caption"><h4>Poster ${index + 1}</h4></div>
+                        <img ${imgAttrs} alt="${titleText}" decoding="async" class="responsive-media">
+                        <div class="slider-caption">
+                            <h4>${titleText}</h4>
+                            <p>${subtext}</p>
+                            ${actionLink}
+                        </div>
                     </div>`;
             }).join('');
 

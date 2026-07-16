@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard | UHV CELL NBKRIST</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body style="background: #060612; overflow: hidden;">
+
+    <!-- Mobile Warning -->
+    <div class="mobile-warning">
+        <i class="fa-solid fa-desktop"></i>
+        <h2>Desktop Required</h2>
+        <p>The Admin Dashboard is designed for desktop screens.<br>Please open this page on a laptop or desktop computer for the best experience.</p>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Auth Login Overlay -->
+    <div id="adminLoginOverlay" class="admin-modal" style="display: flex; background: #060612;">
+        <div class="auth-form-container">
+            <div style="margin-bottom: 25px;">
+                <img src="logo.jpg" alt="Logo" style="width: 70px; height: 70px; border-radius: 50%; margin: 0 auto 15px; border: 2px solid var(--primary);">
+                <h2 style="color: var(--white); margin-bottom: 8px;">UHV CELL NBKRIST</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Administrator Portal</p>
+            </div>
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminUsername">Username</label>
+                    <input type="text" id="adminUsername" required placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Security Pin / Password</label>
+                    <input type="password" id="adminPassword" required placeholder="Enter password">
+                </div>
+                <div id="loginError" style="color: var(--accent); margin-bottom: 15px; font-size: 0.9rem; display: none;">
+                    Invalid credentials!
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: bold; text-transform: uppercase;">
+                    Authorize Access
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Admin Dashboard Container -->
+    <div class="admin-layout" id="adminDashboardLayout" style="display: none;">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <div>
+                <div class="sidebar-brand">
+                    <h2><i class="fa-solid fa-gauge-high"></i> UHV CELL</h2>
+                </div>
+                <nav class="sidebar-nav">
+                    <button class="nav-tab-btn active" onclick="switchTab('dashboard')">
+                        <i class="fa-solid fa-home"></i> Overview
+                    </button>
+                    <button class="nav-tab-btn" onclick="switchTab('team')">
+                        <i class="fa-solid fa-users"></i> Team Members
+                    </button>
+                    <button class="nav-tab-btn" onclick="switchTab('videos')">
+                        <i class="fa-solid fa-video"></i> Video Resources
+                    </button>
+                    <button class="nav-tab-btn" onclick="switchTab('posters')">
+                        <i class="fa-solid fa-images"></i> Slider Banners
+                    </button>
+                    <button class="nav-tab-btn" onclick="switchTab('newsletters')">
+                        <i class="fa-solid fa-newspaper"></i> Newsletters
+                    </button>
+                    <button class="nav-tab-btn" onclick="switchTab('settings')">
+                        <i class="fa-solid fa-gear"></i> Global Settings
+                    </button>
+                </nav>
+            </div>
+            
+            <div class="sidebar-footer">
+                <a href="index.html" class="btn btn-primary" style="text-align: center; text-decoration: none; padding: 10px 0; font-size: 0.9rem;">
+                    <i class="fa-solid fa-globe"></i> View Website
+                </a>
+                <button class="btn btn-secondary" onclick="logoutAdmin()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem;">
+                    <i class="fa-solid fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="admin-main">
+            
+            <!-- Dashboard Tab (Overview & Quick Export) -->
+            <section id="tab-dashboard" class="admin-content-section active">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Overview Dashboard</h1>
+                        <p style="color: var(--text-muted); margin-top: 5px;">Configure contents and export JS outputs below.</p>
+                    </div>
+                </div>
+
+                <div class="grid-3" style="margin-bottom: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 20px;">
+                    <div class="admin-card" style="margin-bottom: 0;">
+                        <h3 style="color: var(--primary); margin-bottom: 10px;"><i class="fa-solid fa-users-gear"></i> Team</h3>
+                        <p style="font-size: 2.2rem; font-weight: 700; color: #fff;" id="statTeamCount">0</p>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Coordinators registered</p>
+                    </div>
+                    <div class="admin-card" style="margin-bottom: 0;">
+                        <h3 style="color: var(--secondary); margin-bottom: 10px;"><i class="fa-solid fa-photo-film"></i> Banners</h3>
+                        <p style="font-size: 2.2rem; font-weight: 700; color: #fff;" id="statPosterCount">0</p>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Poster slides configured</p>
+                    </div>
+                    <div class="admin-card" style="margin-bottom: 0;">
+                        <h3 style="color: var(--success); margin-bottom: 10px;"><i class="fa-solid fa-circle-play"></i> Videos</h3>
+                        <p style="font-size: 2.2rem; font-weight: 700; color: #fff;" id="statVideoCount">0</p>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Embedded resources</p>
+                    </div>
+                    <div class="admin-card" style="margin-bottom: 0;">
+                        <h3 style="color: #f59e0b; margin-bottom: 10px;"><i class="fa-solid fa-newspaper"></i> Newsletters</h3>
+                        <p style="font-size: 2.2rem; font-weight: 700; color: #fff;" id="statNewsletterCount">0</p>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Documents linked</p>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h2 style="color: var(--white); margin-bottom: 15px;"><i class="fa-solid fa-save"></i> Save Changes Permanently</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 25px; line-height: 1.6;">
+                        Because this is a static site run locally, changes you make are instantly visible in your browser. To make them permanent for all visitors, click the buttons below to export the data arrays, copy the content, and overwrite the corresponding file in your project folder.
+                    </p>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="openExportModal('team')">
+                            <i class="fa-solid fa-download"></i> Export team-data.js
+                        </button>
+                        <button class="btn btn-primary" onclick="openExportModal('videos')">
+                            <i class="fa-solid fa-download"></i> Export videos-data.js
+                        </button>
+                        <button class="btn btn-primary" onclick="openExportModal('posters')">
+                            <i class="fa-solid fa-download"></i> Export posters-data.js
+                        </button>
+                        <button class="btn btn-primary" onclick="openExportModal('newsletters')">
+                            <i class="fa-solid fa-download"></i> Export newsletter-data.js
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Backup Engine -->
+                <div class="admin-card" style="margin-top: 30px;">
+                    <h2 style="color: var(--white); margin-bottom: 15px;"><i class="fa-solid fa-database"></i> Backup & Restore</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+                        Download a full JSON backup of all your site data, or restore a previously saved backup file.
+                    </p>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                        <button class="btn btn-primary" onclick="downloadBackup()">
+                            <i class="fa-solid fa-file-arrow-down"></i> Download Full Backup (JSON)
+                        </button>
+                        <label class="btn btn-secondary" style="cursor:pointer; margin:0;">
+                            <i class="fa-solid fa-file-arrow-up"></i> Restore from Backup
+                            <input type="file" id="restoreFile" accept=".json" style="display:none;" onchange="restoreBackup(event)">
+                        </label>
+                    </div>
+                    <p id="restoreStatus" style="display:none; margin-top:15px; color:var(--success); font-weight:600;"><i class="fa-solid fa-circle-check"></i> Backup restored successfully! Refresh the page.</p>
+                </div>
+            </section>
+            <section id="tab-settings" class="admin-content-section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Global Settings</h1>
+                        <p style="color: var(--text-muted); margin-top: 5px;">Configure site-wide contact details and admin passcode.</p>
+                    </div>
+                </div>
+                <div class="admin-card">
+                    <h2 style="color: var(--white); margin-bottom: 15px;">Site Contact Information</h2>
+                    <form id="settingsForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="settingsEmail">Contact Email</label>
+                                <input type="email" id="settingsEmail" required placeholder="e.g., support@uhvcell.org">
+                            </div>
+                            <div class="form-group">
+                                <label for="settingsPhone">Contact Phone</label>
+                                <input type="text" id="settingsPhone" required placeholder="e.g., +91 89858 42025">
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="settingsAddress">Address</label>
+                                <input type="text" id="settingsAddress" required placeholder="e.g., Vidyanagar, Nellore District">
+                            </div>
+                            <div class="form-group">
+                                <label for="settingsCorrespondent">Correspondent Name</label>
+                                <input type="text" id="settingsCorrespondent" required placeholder="e.g., SRI N.RAM KUMAR">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label for="settingsPasscode">Admin Passcode (leave blank to keep unchanged)</label>
+                            <input type="password" id="settingsPasscode" placeholder="New Passcode">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                            <button type="button" class="btn btn-secondary" onclick="resetSettings()">
+                                <i class="fa-solid fa-rotate-left"></i> Reset to Defaults
+                            </button>
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+
+            <!-- Team Members Tab -->
+            <section id="tab-team" class="admin-content-section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Manage Team Members</h1>
+                        <p style="color: var(--text-muted); margin-top: 5px;">Add, edit, or remove coordinators for the club.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openMemberModal('add')">
+                        <i class="fa-solid fa-user-plus"></i> Add Member
+                    </button>
+                </div>
+
+                <div class="admin-card">
+                    <input class="table-search" id="searchTeam" placeholder="🔍  Search members by name or role..." oninput="filterTable('adminFacultyTable', this.value); filterTable('adminStudentTable', this.value)">
+                    <h2 style="color: var(--white); margin-bottom: 20px; font-size: 1.3rem;">Faculty Coordinators</h2>
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Photo</th>
+                                    <th>Name</th>
+                                    <th>Role / Badge</th>
+                                    <th>Detail</th>
+                                    <th style="width: 180px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminFacultyTable">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-card" style="margin-top: 40px;">
+                    <h2 style="color: var(--white); margin-bottom: 20px; font-size: 1.3rem;">Student & Technical Coordinators</h2>
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Photo</th>
+                                    <th>Name</th>
+                                    <th>Role / Badge</th>
+                                    <th>Detail</th>
+                                    <th style="width: 180px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminStudentTable">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Video Resources Tab -->
+            <section id="tab-videos" class="admin-content-section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Manage Video Resources</h1>
+                        <p style="color: var(--text-muted); margin-top: 5px;">Manage video player feeds linked to Dailymotion.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openVideoModal('add')">
+                        <i class="fa-solid fa-plus"></i> Add Video
+                    </button>
+                </div>
+
+                <div class="admin-card">
+                    <input class="table-search" id="searchVideos" placeholder="🔍  Search videos by title or category..." oninput="filterTable('adminVideosTable', this.value)">
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Thumb</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th style="width: 180px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminVideosTable">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Posters Tab -->
+            <section id="tab-posters" class="admin-content-section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Manage Banner Posters</h1>
+                        <p style="color: var(--text-muted); margin-top: 5px;">Manage the slider images showing on the homepage.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openPosterModal('add')">
+                        <i class="fa-solid fa-plus"></i> Add Slider Image
+                    </button>
+                </div>
+
+                <div class="admin-card">
+                    <input class="table-search" id="searchPosters" placeholder="🔍  Search banners by title or filename..." oninput="filterTable('adminPostersTable', this.value)">
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Preview</th>
+                                    <th>Image Filename</th>
+                                    <th>Title</th>
+                                    <th>Subtitle</th>
+                                    <th style="width: 160px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminPostersTable">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Newsletters Tab -->
+            <section id="tab-newsletters" class="admin-content-section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Manage Newsletters & Circulars</h1>
+                        <p style="color: var(--text-muted); margin-top: 5px;">Configure PDF/Google Drive document links.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openNewsletterModal('add')">
+                        <i class="fa-solid fa-plus"></i> Add Document
+                    </button>
+                </div>
+
+                <div class="admin-card">
+                    <input class="table-search" id="searchNewsletters" placeholder="🔍  Search newsletters by title..." oninput="filterTable('adminNewslettersTable', this.value)">
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Document Title</th>
+                                    <th>Icon Type</th>
+                                    <th>Google Drive Link</th>
+                                    <th style="width: 120px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminNewslettersTable">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Export Modal Dialog -->
+    <div id="exportModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="modal-header">
+                <h3 id="exportModalTitle">Export Data</h3>
+                <span class="close-admin-modal" onclick="closeModal('exportModal')">&times;</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">
+                Copy the code below, open the corresponding file on your system, select everything, and replace the contents completely.
+            </p>
+            <textarea id="exportTextarea" class="export-code-area" readonly></textarea>
+            <div style="margin-top: 20px; text-align: right;">
+                <button class="btn btn-primary" onclick="copyExportedCode()">
+                    <i class="fa-solid fa-copy"></i> Copy Code
+                </button>
+                <button class="btn btn-secondary" onclick="closeModal('exportModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Member Editor Modal -->
+    <div id="memberModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="modal-header">
+                <h3 id="memberModalTitle">Add Member</h3>
+                <span class="close-admin-modal" onclick="closeModal('memberModal')">&times;</span>
+            </div>
+            <form id="memberForm">
+                <input type="hidden" id="memberIndex">
+                <input type="hidden" id="memberTableType">
+                <div class="form-group">
+                    <label for="memberName">Full Name</label>
+                    <input type="text" id="memberName" required placeholder="e.g., Dr. Jane Doe">
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="memberRole">Role / Title</label>
+                        <input type="text" id="memberRole" required placeholder="e.g., Coordinator">
+                    </div>
+                    <div class="form-group">
+                        <label for="memberType">Classification</label>
+                        <select id="memberType">
+                            <option value="faculty">Faculty Coordinator</option>
+                            <option value="student">Student/Technical/Skill/Content Coordinator</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="memberImage">Photo Filename</label>
+                        <input type="text" id="memberImage" required placeholder="e.g., profile.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label for="memberIcon">Fallback FontAwesome Icon</label>
+                        <input type="text" id="memberIcon" required placeholder="e.g., fa-user">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="memberDetail">Extra Details (Department/Dept. info)</label>
+                    <input type="text" id="memberDetail" placeholder="e.g., Dept. of S&H">
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Save Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Video Editor Modal -->
+    <div id="videoEditModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="modal-header">
+                <h3 id="videoModalTitle">Add Video Resource</h3>
+                <span class="close-admin-modal" onclick="closeModal('videoEditModal')">&times;</span>
+            </div>
+            <form id="videoForm">
+                <input type="hidden" id="videoIndex">
+                <div class="form-group">
+                    <label for="videoTitle">Video Title</label>
+                    <input type="text" id="videoTitle" required placeholder="e.g., UHV Club Inauguration">
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="videoType">Video Category / Tag</label>
+                        <input type="text" id="videoType" required placeholder="e.g., Reflections, Short Film">
+                    </div>
+                    <div class="form-group">
+                        <label for="videoThumbnail">Thumbnail URL</label>
+                        <input type="text" id="videoThumbnail" required placeholder="Dailymotion thumbnail URL">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="videoEmbedUrl">Video Embed Code or Player URL</label>
+                    <textarea id="videoEmbedUrl" required style="width: 100%; height: 80px;" placeholder="Paste raw iframe embed code (from Dailymotion / Internet Archive) or standard link here"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="videoDescription">Brief Description</label>
+                    <textarea id="videoDescription" placeholder="A short description of the video contents"></textarea>
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Save Video</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Poster Editor Modal -->
+    <div id="posterEditModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="modal-header">
+                <h3>Add Slider Banner Image</h3>
+                <span class="close-admin-modal" onclick="closeModal('posterEditModal')">&times;</span>
+            </div>
+            <form id="posterForm">
+                <input type="hidden" id="posterIndex">
+                <div class="form-group">
+                    <label for="posterUrl">Image Filename / URL</label>
+                    <input type="text" id="posterUrl" required placeholder="e.g., poster7.jpg">
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="posterTitle">Slide Title</label>
+                        <input type="text" id="posterTitle" placeholder="e.g., Universal Human Values">
+                    </div>
+                    <div class="form-group">
+                        <label for="posterSubtitle">Subtitle</label>
+                        <input type="text" id="posterSubtitle" placeholder="e.g., NBKRIST Cell">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="posterLink">Button Link (optional)</label>
+                    <input type="text" id="posterLink" placeholder="e.g., about.html or https://...">
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Save Slide</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Newsletter Editor Modal -->
+    <div id="newsletterEditModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="modal-header">
+                <h3 id="newsletterModalTitle">Add Newsletter Document</h3>
+                <span class="close-admin-modal" onclick="closeModal('newsletterEditModal')">&times;</span>
+            </div>
+            <form id="newsletterForm">
+                <input type="hidden" id="newsletterIndex">
+                <div class="form-group">
+                    <label for="newsletterTitle">Document Title</label>
+                    <input type="text" id="newsletterTitle" required placeholder="e.g., Circular 1 (2026)">
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="newsletterIcon">Link Icon Class</label>
+                        <select id="newsletterIcon">
+                            <option value="fa-file-pdf">PDF File Icon</option>
+                            <option value="fa-image">Image File Icon</option>
+                            <option value="fa-link">Generic Web Link</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="newsletterUrl">Google Drive Share Link</label>
+                        <input type="text" id="newsletterUrl" required placeholder="https://drive.google.com/...">
+                    </div>
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Save Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="team-data.js"></script>
+    <script src="videos-data.js"></script>
+    <script src="posters-data.js"></script>
+    <script src="newsletter-data.js"></script>
+
+    <script>
+        // Core Security Logic (Local Admin session)
+        const LOGIN_KEY = 'uhvAdminLoggedIn';
+        const NAME_KEY = 'uhvAdminName';
+
+        document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('adminUsername').value;
+            const pass = document.getElementById('adminPassword').value;
+
+            // Secure local password check (supports custom passcode)
+            const savedPass = localStorage.getItem('uhv_passcode') || '12345';
+            if (user.toLowerCase() === 'admin' && pass === savedPass) {
+                localStorage.setItem(LOGIN_KEY, 'true');
+                localStorage.setItem(NAME_KEY, 'Administrator');
+                document.getElementById('loginError').style.display = 'none';
+                initDashboard();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        });
+
+        function logoutAdmin() {
+            localStorage.removeItem(LOGIN_KEY);
+            localStorage.removeItem(NAME_KEY);
+            window.location.reload();
+        }
+
+        function checkAuth() {
+            if (localStorage.getItem(LOGIN_KEY) === 'true') {
+                initDashboard();
+            } else {
+                document.getElementById('adminLoginOverlay').style.display = 'flex';
+                document.getElementById('adminDashboardLayout').style.display = 'none';
+            }
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.admin-content-section').forEach(sec => sec.classList.remove('active'));
+            
+            // Highlight button
+            const activeBtn = Array.from(document.querySelectorAll('.nav-tab-btn')).find(btn => btn.getAttribute('onclick').includes(tabName));
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            // Show content
+            const activeSection = document.getElementById(`tab-${tabName}`);
+            if (activeSection) activeSection.classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Initialize and Load Data elements inside Dashboard
+        function initDashboard() {
+            document.getElementById('adminLoginOverlay').style.display = 'none';
+            document.getElementById('adminDashboardLayout').style.display = 'grid';
+            
+            renderTeam();
+            renderVideos();
+            renderPosters();
+            renderNewsletters();
+            updateOverviewStats();
+        }
+
+        function updateOverviewStats() {
+            const faculty = JSON.parse(localStorage.getItem('uhv_team_faculty')) || [];
+            const students = JSON.parse(localStorage.getItem('uhv_team_student')) || [];
+            const videos = JSON.parse(localStorage.getItem('uhv_videos')) || [];
+            const posters = JSON.parse(localStorage.getItem('uhv_posters')) || [];
+            const newsletters = JSON.parse(localStorage.getItem('uhv_newsletters')) || [];
+
+            document.getElementById('statTeamCount').innerText = faculty.length + students.length;
+            document.getElementById('statVideoCount').innerText = videos.length;
+            document.getElementById('statPosterCount').innerText = posters.length;
+            document.getElementById('statNewsletterCount').innerText = newsletters.length;
+        }
+
+        // -------------------------
+        // TEAM MEMBER CRUD ACTIONS
+        // -------------------------
+        function renderTeam() {
+            const faculty = JSON.parse(localStorage.getItem('uhv_team_faculty')) || [];
+            const students = JSON.parse(localStorage.getItem('uhv_team_student')) || [];
+
+            const facTbody = document.getElementById('adminFacultyTable');
+            facTbody.innerHTML = '';
+            faculty.forEach((m, idx) => {
+                facTbody.innerHTML += `
+                    <tr>
+                        <td><img src="${m.image || 'logo.jpg'}" class="member-thumbnail"></td>
+                        <td style="font-weight: 600;">${m.name}</td>
+                        <td><span style="color: var(--primary);">${m.role}</span></td>
+                        <td style="color: var(--text-muted);">${m.detail || ''}</td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="btn-icon" onclick="openMemberModal('edit', ${idx}, 'faculty')"><i class="fa-solid fa-edit"></i></button>
+                                <button class="btn-icon" onclick="moveMember(${idx}, 'faculty', -1)"><i class="fa-solid fa-arrow-up"></i></button>
+                                <button class="btn-icon" onclick="moveMember(${idx}, 'faculty', 1)"><i class="fa-solid fa-arrow-down"></i></button>
+                                <button class="btn-icon btn-delete" onclick="deleteMember(${idx}, 'faculty')"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            const studTbody = document.getElementById('adminStudentTable');
+            studTbody.innerHTML = '';
+            students.forEach((m, idx) => {
+                studTbody.innerHTML += `
+                    <tr>
+                        <td><img src="${m.image || 'logo.jpg'}" class="member-thumbnail"></td>
+                        <td style="font-weight: 600;">${m.name}</td>
+                        <td><span style="color: var(--secondary);">${m.role}</span></td>
+                        <td style="color: var(--text-muted);">${m.detail || ''}</td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="btn-icon" onclick="openMemberModal('edit', ${idx}, 'student')"><i class="fa-solid fa-edit"></i></button>
+                                <button class="btn-icon" onclick="moveMember(${idx}, 'student', -1)"><i class="fa-solid fa-arrow-up"></i></button>
+                                <button class="btn-icon" onclick="moveMember(${idx}, 'student', 1)"><i class="fa-solid fa-arrow-down"></i></button>
+                                <button class="btn-icon btn-delete" onclick="deleteMember(${idx}, 'student')"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openMemberModal(action, idx = null, tableType = 'faculty') {
+            document.getElementById('memberForm').reset();
+            document.getElementById('memberModal').style.display = 'flex';
+            
+            if (action === 'add') {
+                document.getElementById('memberModalTitle').innerText = 'Add Team Member';
+                document.getElementById('memberIndex').value = '';
+                document.getElementById('memberTableType').value = tableType;
+            } else {
+                document.getElementById('memberModalTitle').innerText = 'Edit Team Member';
+                document.getElementById('memberIndex').value = idx;
+                document.getElementById('memberTableType').value = tableType;
+
+                const list = JSON.parse(localStorage.getItem(`uhv_team_${tableType}`));
+                const m = list[idx];
+                document.getElementById('memberName').value = m.name;
+                document.getElementById('memberRole').value = m.role;
+                document.getElementById('memberType').value = tableType;
+                document.getElementById('memberImage').value = m.image || '';
+                document.getElementById('memberIcon').value = m.icon || 'fa-user';
+                document.getElementById('memberDetail').value = m.detail || '';
+            }
+        }
+
+        document.getElementById('memberForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const idx = document.getElementById('memberIndex').value;
+            const targetType = document.getElementById('memberType').value;
+            const sourceTableType = document.getElementById('memberTableType').value;
+
+            const member = {
+                name: document.getElementById('memberName').value,
+                role: document.getElementById('memberRole').value,
+                detail: document.getElementById('memberDetail').value,
+                image: document.getElementById('memberImage').value,
+                icon: document.getElementById('memberIcon').value
+            };
+
+            let facList = JSON.parse(localStorage.getItem('uhv_team_faculty')) || [];
+            let studList = JSON.parse(localStorage.getItem('uhv_team_student')) || [];
+
+            if (idx === '') {
+                // ADDING NEW
+                if (targetType === 'faculty') facList.push(member);
+                else studList.push(member);
+            } else {
+                // EDITING EXISTING
+                if (sourceTableType === targetType) {
+                    if (targetType === 'faculty') facList[idx] = member;
+                    else studList[idx] = member;
+                } else {
+                    // Type changed (moved from Faculty to Student or vice-versa)
+                    if (sourceTableType === 'faculty') {
+                        facList.splice(idx, 1);
+                        studList.push(member);
+                    } else {
+                        studList.splice(idx, 1);
+                        facList.push(member);
+                    }
+                }
+            }
+
+            localStorage.setItem('uhv_team_faculty', JSON.stringify(facList));
+            localStorage.setItem('uhv_team_student', JSON.stringify(studList));
+            
+            closeModal('memberModal');
+            renderTeam();
+            updateOverviewStats();
+        });
+
+        function deleteMember(idx, tableType) {
+            if (confirm("Are you sure you want to remove this member?")) {
+                const list = JSON.parse(localStorage.getItem(`uhv_team_${tableType}`)) || [];
+                list.splice(idx, 1);
+                localStorage.setItem(`uhv_team_${tableType}`, JSON.stringify(list));
+                renderTeam();
+                updateOverviewStats();
+            }
+        }
+
+        function moveMember(idx, tableType, direction) {
+            const list = JSON.parse(localStorage.getItem(`uhv_team_${tableType}`)) || [];
+            const targetIdx = idx + direction;
+            if (targetIdx >= 0 && targetIdx < list.length) {
+                const temp = list[idx];
+                list[idx] = list[targetIdx];
+                list[targetIdx] = temp;
+                localStorage.setItem(`uhv_team_${tableType}`, JSON.stringify(list));
+                renderTeam();
+            }
+        }
+
+        // -------------------------
+        // VIDEOS CRUD ACTIONS
+        // -------------------------
+        function renderVideos() {
+            const list = JSON.parse(localStorage.getItem('uhv_videos')) || [];
+            const tbody = document.getElementById('adminVideosTable');
+            tbody.innerHTML = '';
+            
+            list.forEach((v, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><img src="${v.thumbnail}" style="width: 80px; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px;"></td>
+                        <td style="font-weight: 600;">${v.title}</td>
+                        <td><span style="color: var(--primary); font-size: 0.85rem;">${v.type}</span></td>
+                        <td style="color: var(--text-muted); font-size: 0.85rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${v.description}</td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="btn-icon" onclick="openVideoModal('edit', ${idx})"><i class="fa-solid fa-edit"></i></button>
+                                <button class="btn-icon" onclick="moveVideo(${idx}, -1)"><i class="fa-solid fa-arrow-up"></i></button>
+                                <button class="btn-icon" onclick="moveVideo(${idx}, 1)"><i class="fa-solid fa-arrow-down"></i></button>
+                                <button class="btn-icon btn-delete" onclick="deleteVideo(${idx})"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openVideoModal(action, idx = null) {
+            document.getElementById('videoForm').reset();
+            document.getElementById('videoEditModal').style.display = 'flex';
+            
+            if (action === 'add') {
+                document.getElementById('videoModalTitle').innerText = 'Add Video Resource';
+                document.getElementById('videoIndex').value = '';
+            } else {
+                document.getElementById('videoModalTitle').innerText = 'Edit Video Resource';
+                document.getElementById('videoIndex').value = idx;
+                
+                const list = JSON.parse(localStorage.getItem('uhv_videos')) || [];
+                const v = list[idx];
+                document.getElementById('videoTitle').value = v.title;
+                document.getElementById('videoType').value = v.type;
+                document.getElementById('videoThumbnail').value = v.thumbnail;
+                document.getElementById('videoEmbedUrl').value = v.videoUrl;
+                document.getElementById('videoDescription').value = v.description || '';
+            }
+        }
+
+        document.getElementById('videoForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const idx = document.getElementById('videoIndex').value;
+            const video = {
+                title: document.getElementById('videoTitle').value,
+                type: document.getElementById('videoType').value,
+                thumbnail: document.getElementById('videoThumbnail').value,
+                videoUrl: document.getElementById('videoEmbedUrl').value,
+                description: document.getElementById('videoDescription').value
+            };
+
+            let list = JSON.parse(localStorage.getItem('uhv_videos')) || [];
+            if (idx === '') {
+                list.push(video);
+            } else {
+                list[idx] = video;
+            }
+            localStorage.setItem('uhv_videos', JSON.stringify(list));
+            
+            closeModal('videoEditModal');
+            renderVideos();
+            updateOverviewStats();
+        });
+
+        function deleteVideo(idx) {
+            if (confirm("Are you sure you want to remove this video resource?")) {
+                const list = JSON.parse(localStorage.getItem('uhv_videos')) || [];
+                list.splice(idx, 1);
+                localStorage.setItem('uhv_videos', JSON.stringify(list));
+                renderVideos();
+                updateOverviewStats();
+            }
+        }
+
+        function moveVideo(idx, direction) {
+            const list = JSON.parse(localStorage.getItem('uhv_videos')) || [];
+            const targetIdx = idx + direction;
+            if (targetIdx >= 0 && targetIdx < list.length) {
+                const temp = list[idx];
+                list[idx] = list[targetIdx];
+                list[targetIdx] = temp;
+                localStorage.setItem('uhv_videos', JSON.stringify(list));
+                renderVideos();
+            }
+        }
+
+        // -------------------------
+        // POSTERS SLIDER CRUD ACTIONS
+        // -------------------------
+        function renderPosters() {
+            const list = JSON.parse(localStorage.getItem('uhv_posters')) || [];
+            const tbody = document.getElementById('adminPostersTable');
+            tbody.innerHTML = '';
+            
+            list.forEach((p, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><img src="${p.url}" style="height: 50px; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px;"></td>
+                        <td style="font-family: monospace;">${p.url}</td>
+                        <td style="color:var(--text-muted);">${p.title || '—'}</td>
+                        <td style="color:var(--text-muted);">${p.subtitle || '—'}</td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="btn-icon" onclick="openPosterModal('edit', ${idx})"><i class="fa-solid fa-edit"></i></button>
+                                <button class="btn-icon" onclick="movePoster(${idx}, -1)"><i class="fa-solid fa-arrow-up"></i></button>
+                                <button class="btn-icon" onclick="movePoster(${idx}, 1)"><i class="fa-solid fa-arrow-down"></i></button>
+                                <button class="btn-icon btn-delete" onclick="deletePoster(${idx})"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openPosterModal(action = 'add', idx = null) {
+            document.getElementById('posterForm').reset();
+            document.getElementById('posterEditModal').style.display = 'flex';
+            if (action === 'edit' && idx !== null) {
+                const list = JSON.parse(localStorage.getItem('uhv_posters')) || [];
+                const p = list[idx];
+                document.getElementById('posterIndex').value = idx;
+                document.getElementById('posterUrl').value = p.url || '';
+                document.getElementById('posterTitle').value = p.title || '';
+                document.getElementById('posterSubtitle').value = p.subtitle || '';
+                document.getElementById('posterLink').value = p.link || '';
+            } else {
+                document.getElementById('posterIndex').value = '';
+            }
+        }
+
+        document.getElementById('posterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const idx = document.getElementById('posterIndex').value;
+            const poster = {
+                url: document.getElementById('posterUrl').value,
+                title: document.getElementById('posterTitle').value,
+                subtitle: document.getElementById('posterSubtitle').value,
+                link: document.getElementById('posterLink').value
+            };
+
+            let list = JSON.parse(localStorage.getItem('uhv_posters')) || [];
+            if (idx === '') {
+                list.push(poster);
+            } else {
+                list[idx] = poster;
+            }
+            localStorage.setItem('uhv_posters', JSON.stringify(list));
+            
+            closeModal('posterEditModal');
+            renderPosters();
+            updateOverviewStats();
+        });
+
+        function deletePoster(idx) {
+            if (confirm("Are you sure you want to remove this slider poster?")) {
+                const list = JSON.parse(localStorage.getItem('uhv_posters')) || [];
+                list.splice(idx, 1);
+                localStorage.setItem('uhv_posters', JSON.stringify(list));
+                renderPosters();
+                updateOverviewStats();
+            }
+        }
+
+        function movePoster(idx, direction) {
+            const list = JSON.parse(localStorage.getItem('uhv_posters')) || [];
+            const targetIdx = idx + direction;
+            if (targetIdx >= 0 && targetIdx < list.length) {
+                const temp = list[idx];
+                list[idx] = list[targetIdx];
+                list[targetIdx] = temp;
+                localStorage.setItem('uhv_posters', JSON.stringify(list));
+                renderPosters();
+            }
+        }
+
+        // -------------------------
+        // NEWSLETTERS CRUD ACTIONS
+        // -------------------------
+        function renderNewsletters() {
+            const list = JSON.parse(localStorage.getItem('uhv_newsletters')) || [];
+            const tbody = document.getElementById('adminNewslettersTable');
+            tbody.innerHTML = '';
+            
+            list.forEach((nl, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight: 600;">${nl.title}</td>
+                        <td><i class="fa-solid ${nl.icon || 'fa-file-pdf'}" style="margin-right: 5px;"></i> ${nl.icon || 'fa-file-pdf'}</td>
+                        <td style="color: var(--primary); font-size: 0.85rem;"><a href="${nl.url}" target="_blank">${nl.url}</a></td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="btn-icon" onclick="openNewsletterModal('edit', ${idx})"><i class="fa-solid fa-edit"></i></button>
+                                <button class="btn-icon btn-delete" onclick="deleteNewsletter(${idx})"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openNewsletterModal(action, idx = null) {
+            document.getElementById('newsletterForm').reset();
+            document.getElementById('newsletterEditModal').style.display = 'flex';
+            
+            if (action === 'add') {
+                document.getElementById('newsletterModalTitle').innerText = 'Add Newsletter Link';
+                document.getElementById('newsletterIndex').value = '';
+            } else {
+                document.getElementById('newsletterModalTitle').innerText = 'Edit Newsletter Link';
+                document.getElementById('newsletterIndex').value = idx;
+                
+                const list = JSON.parse(localStorage.getItem('uhv_newsletters')) || [];
+                const nl = list[idx];
+                document.getElementById('newsletterTitle').value = nl.title;
+                document.getElementById('newsletterIcon').value = nl.icon || 'fa-file-pdf';
+                document.getElementById('newsletterUrl').value = nl.url;
+            }
+        }
+
+        document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const idx = document.getElementById('newsletterIndex').value;
+            const doc = {
+                title: document.getElementById('newsletterTitle').value,
+                icon: document.getElementById('newsletterIcon').value,
+                url: document.getElementById('newsletterUrl').value
+            };
+
+            let list = JSON.parse(localStorage.getItem('uhv_newsletters')) || [];
+            if (idx === '') {
+                list.push(doc);
+            } else {
+                list[idx] = doc;
+            }
+            localStorage.setItem('uhv_newsletters', JSON.stringify(list));
+            
+            closeModal('newsletterEditModal');
+            renderNewsletters();
+        });
+
+        function deleteNewsletter(idx) {
+            if (confirm("Are you sure you want to remove this document link?")) {
+                const list = JSON.parse(localStorage.getItem('uhv_newsletters')) || [];
+                list.splice(idx, 1);
+                localStorage.setItem('uhv_newsletters', JSON.stringify(list));
+                renderNewsletters();
+            }
+        }
+
+        // -------------------------
+        // TOAST, SEARCH & SETTINGS HELPERS
+        // -------------------------
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const icons = {
+                success: 'fa-circle-check',
+                error: 'fa-circle-xmark',
+                warning: 'fa-triangle-exclamation',
+                info: 'fa-circle-info'
+            };
+
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} toast-icon"></i><span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('toast-exit');
+                toast.addEventListener('animationend', () => toast.remove(), { once: true });
+            }, 3500);
+        }
+
+        function filterTable(tbodyId, query) {
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+            const term = query.trim().toLowerCase();
+            tbody.querySelectorAll('tr').forEach((row) => {
+                row.style.display = !term || row.textContent.toLowerCase().includes(term) ? '' : 'none';
+            });
+        }
+
+        function resetSettings() {
+            if (!confirm('Reset all contact settings to defaults? This cannot be undone.')) return;
+            localStorage.removeItem('uhv_settings');
+            loadSettingsForm();
+            showToast('Settings reset to defaults.', 'success');
+        }
+
+        // -------------------------
+        // CODE EXPORT SYSTEM
+        // -------------------------
+        function openExportModal(type) {
+            const modal = document.getElementById('exportModal');
+            const title = document.getElementById('exportModalTitle');
+            const textarea = document.getElementById('exportTextarea');
+            
+            modal.style.display = 'flex';
+            
+            if (type === 'team') {
+                title.innerText = 'Export team-data.js';
+                const fac = JSON.parse(localStorage.getItem('uhv_team_faculty') || '[]');
+                const stud = JSON.parse(localStorage.getItem('uhv_team_student') || '[]');
+                textarea.value = `// Shared Team Data - Overwrite contents of team-data.js with this
+
+const defaultFacultyCoordinators = ${JSON.stringify(fac, null, 4)};
+
+const defaultStudentCoordinators = ${JSON.stringify(stud, null, 4)};
+
+function loadTeamData() {
+    const localFaculty = localStorage.getItem('uhv_team_faculty');
+    const localStudent = localStorage.getItem('uhv_team_student');
+
+    if (!localFaculty) {
+        localStorage.setItem('uhv_team_faculty', JSON.stringify(defaultFacultyCoordinators));
+    }
+    if (!localStudent) {
+        localStorage.setItem('uhv_team_student', JSON.stringify(defaultStudentCoordinators));
+    }
+
+    return {
+        faculty: localFaculty ? JSON.parse(localFaculty) : defaultFacultyCoordinators,
+        student: localStudent ? JSON.parse(localStudent) : defaultStudentCoordinators
+    };
+}
+
+const teamDataObj = loadTeamData();
+const facultyCoordinators = teamDataObj.faculty;
+const studentCoordinators = teamDataObj.student;
+
+// Combined list for marquee
+const allTeamMembers = [...facultyCoordinators, ...studentCoordinators];
+`;
+            } else if (type === 'videos') {
+                title.innerText = 'Export videos-data.js';
+                const vids = JSON.parse(localStorage.getItem('uhv_videos') || '[]');
+                textarea.value = `const defaultVideoResources = ${JSON.stringify(vids, null, 4)};
+
+function loadVideosData() {
+    const localVideos = localStorage.getItem('uhv_videos');
+    if (!localVideos) {
+        localStorage.setItem('uhv_videos', JSON.stringify(defaultVideoResources));
+    }
+    return localVideos ? JSON.parse(localVideos) : defaultVideoResources;
+}
+
+const videoResources = loadVideosData();
+`;
+            } else if (type === 'posters') {
+                title.innerText = 'Export posters-data.js';
+                const posters = JSON.parse(localStorage.getItem('uhv_posters') || '[]');
+                textarea.value = `/**
+ * Posters Data - Shared between Posters page and Home page slider
+ */
+
+const defaultPosterImages = ${JSON.stringify(posters, null, 4)};
+
+function loadPostersData() {
+    const localPosters = localStorage.getItem('uhv_posters');
+    if (!localPosters) {
+        localStorage.setItem('uhv_posters', JSON.stringify(defaultPosterImages));
+    }
+    return localPosters ? JSON.parse(localPosters) : defaultPosterImages;
+}
+
+const posterImages = loadPostersData();
+`;
+            } else if (type === 'newsletters') {
+                title.innerText = 'Export newsletter-data.js';
+                const newsletters = JSON.parse(localStorage.getItem('uhv_newsletters') || '[]');
+                textarea.value = `// Newsletters Shared Data - Overwrite newsletter-data.js
+
+const defaultNewsletters = ${JSON.stringify(newsletters, null, 4)};
+
+function loadNewslettersData() {
+    const localNewsletters = localStorage.getItem('uhv_newsletters');
+    if (!localNewsletters) {
+        localStorage.setItem('uhv_newsletters', JSON.stringify(defaultNewsletters));
+    }
+    return localNewsletters ? JSON.parse(localNewsletters) : defaultNewsletters;
+}
+
+const newsletterList = loadNewslettersData();
+`;
+            }
+        }
+
+        function copyExportedCode() {
+            const textarea = document.getElementById('exportTextarea');
+            textarea.select();
+            document.execCommand('copy');
+            showToast('Code copied! Paste it into the correct JS file to save permanently.', 'success');
+        }
+
+        // -------------------------
+        // BACKUP & RESTORE ENGINE
+        // -------------------------
+        function downloadBackup() {
+            const backup = {
+                uhv_team_faculty: JSON.parse(localStorage.getItem('uhv_team_faculty') || '[]'),
+                uhv_team_student: JSON.parse(localStorage.getItem('uhv_team_student') || '[]'),
+                uhv_videos: JSON.parse(localStorage.getItem('uhv_videos') || '[]'),
+                uhv_posters: JSON.parse(localStorage.getItem('uhv_posters') || '[]'),
+                uhv_newsletters: JSON.parse(localStorage.getItem('uhv_newsletters') || '[]'),
+                uhv_settings: JSON.parse(localStorage.getItem('uhv_settings') || '{}'),
+                uhv_passcode: localStorage.getItem('uhv_passcode') || '12345'
+            };
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `uhvcell-backup-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function restoreBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.uhv_team_faculty) localStorage.setItem('uhv_team_faculty', JSON.stringify(data.uhv_team_faculty));
+                    if (data.uhv_team_student) localStorage.setItem('uhv_team_student', JSON.stringify(data.uhv_team_student));
+                    if (data.uhv_videos) localStorage.setItem('uhv_videos', JSON.stringify(data.uhv_videos));
+                    if (data.uhv_posters) localStorage.setItem('uhv_posters', JSON.stringify(data.uhv_posters));
+                    if (data.uhv_newsletters) localStorage.setItem('uhv_newsletters', JSON.stringify(data.uhv_newsletters));
+                    if (data.uhv_settings) localStorage.setItem('uhv_settings', JSON.stringify(data.uhv_settings));
+                    if (data.uhv_passcode) localStorage.setItem('uhv_passcode', data.uhv_passcode);
+                    document.getElementById('restoreStatus').style.display = 'block';
+                    showToast('Backup restored successfully! Refresh the page.', 'success');
+                } catch (err) {
+                    showToast('Invalid backup file. Please select a valid UHV CELL backup JSON.', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // -------------------------
+        // GLOBAL SETTINGS LOGIC
+        // -------------------------
+        function loadSettingsForm() {
+            const defaults = { email: 'uhvcell@nbkrist.org', phone: '+91 89858 42025', address: 'Vidyanagar, Nellore District', correspondent: 'SRI N.RAM KUMAR' };
+            const saved = JSON.parse(localStorage.getItem('uhv_settings') || '{}');
+            document.getElementById('settingsEmail').value = saved.email || defaults.email;
+            document.getElementById('settingsPhone').value = saved.phone || defaults.phone;
+            document.getElementById('settingsAddress').value = saved.address || defaults.address;
+            document.getElementById('settingsCorrespondent').value = saved.correspondent || defaults.correspondent;
+        }
+
+        document.getElementById('settingsForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const settings = {
+                email: document.getElementById('settingsEmail').value,
+                phone: document.getElementById('settingsPhone').value,
+                address: document.getElementById('settingsAddress').value,
+                correspondent: document.getElementById('settingsCorrespondent').value
+            };
+            localStorage.setItem('uhv_settings', JSON.stringify(settings));
+            const newPass = document.getElementById('settingsPasscode').value.trim();
+            if (newPass) localStorage.setItem('uhv_passcode', newPass);
+            document.getElementById('settingsPasscode').value = '';
+            showToast('Settings saved! Contact details and passcode updated.', 'success');
+        });
+
+        // Run checking
+        checkAuth();
+        loadSettingsForm();
+    </script>
+</body>
+
+</html>

@@ -182,28 +182,76 @@
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
 
-            const match = video.videoUrl.match(/video=([^&]+)/);
-            const videoId = match ? match[1] : null;
-            if (!videoId) return;
-
             playerContainer.innerHTML = '';
             window.dmPlayer = null;
 
-            try {
-                await loadDailymotionSDK();
-                const player = await dailymotion.createPlayer('dailymotion-player', {
-                    video: videoId,
-                    player: 'x8p5u',
-                    params: { autoplay: true, mute: false, controls: true }
-                });
-                window.dmPlayer = player;
-                if (dailymotion?.events?.PLAYER_PLAY) {
-                    window.dmPlayer.on(dailymotion.events.PLAYER_PLAY, () => {
-                        window.dmPlayer.setFullscreen(true);
-                    });
+            // Normalize and parse input (it can be an iframe code or standard link)
+            let embedUrl = video.videoUrl.trim();
+            const iframeMatch = embedUrl.match(/src=["']([^"']+)["']/i);
+            if (iframeMatch) {
+                embedUrl = iframeMatch[1];
+            }
+
+            // Clean Dailymotion links to directly embed
+            if (embedUrl.includes('dailymotion.com/video/')) {
+                const parts = embedUrl.split('/video/');
+                const id = parts[parts.length - 1].split('?')[0];
+                embedUrl = `https://geo.dailymotion.com/player/x8p5u.html?video=${id}&autoplay=1`;
+            } else if (embedUrl.includes('dailymotion.com') && embedUrl.includes('video=')) {
+                const match = embedUrl.match(/video=([^&]+)/);
+                if (match) {
+                    embedUrl = `https://geo.dailymotion.com/player/x8p5u.html?video=${match[1]}&autoplay=1`;
                 }
-            } catch (err) {
-                console.error('Video player error:', err);
+            }
+
+            // Auto-append autoplay flags if supported
+            if (embedUrl.includes('archive.org/embed/') && !embedUrl.includes('autoplay=1')) {
+                embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+            }
+
+            // Create wrapper with a transparent security shield to prevent right clicks and external link intercepts
+            playerContainer.style.position = 'relative';
+            playerContainer.style.overflow = 'hidden';
+            playerContainer.style.background = '#000';
+
+            playerContainer.innerHTML = `
+                <div class="secure-player-overlay" style="position: absolute; inset: 0; pointer-events: none; z-index: 10; border: 1px solid rgba(40, 247, 255, 0.2);"></div>
+                
+                <!-- Transparent Right Click Blockers -->
+                <div class="secure-player-shield" style="position: absolute; inset: 0; z-index: 5; background: transparent;"></div>
+                
+                <iframe 
+                    src="${embedUrl}" 
+                    style="width: 100%; height: 100%; border: none; position: absolute; left: 0; top: 0; z-index: 1;" 
+                    allow="autoplay; fullscreen; picture-in-picture" 
+                    allowfullscreen
+                    sandbox="allow-scripts allow-same-origin allow-presentation">
+                </iframe>
+            `;
+
+            // Disable Context Menu (Right Click to Save Video)
+            const shield = playerContainer.querySelector('.secure-player-shield');
+            if (shield) {
+                shield.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                });
+
+                // Let clicks pass through for playback controls but intercept branding area coordinates (top right/bottom right)
+                // to prevent external page redirects
+                shield.addEventListener('click', (e) => {
+                    const rect = shield.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Logo redirect hotspots (top-right corner & bottom-right corner)
+                    const isHotspot = (x > rect.width - 90 && y < 50) || (x > rect.width - 90 && y > rect.height - 55) || (x < 90 && y < 50);
+                    if (isHotspot) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                });
             }
         };
 
@@ -213,7 +261,13 @@
         const hideModal = () => {
             if (!modal) return;
             modal.style.display = 'none';
-            if (window.dmPlayer) window.dmPlayer.pause();
+            if (window.dmPlayer) {
+                try { window.dmPlayer.pause(); } catch (e) { /* ignore */ }
+                window.dmPlayer = null;
+            }
+            // Clear player container to stop any active video and free resources
+            const playerContainer = document.getElementById('dailymotion-player');
+            if (playerContainer) playerContainer.innerHTML = '';
             document.body.style.overflow = '';
         };
 
@@ -230,7 +284,58 @@
         });
     }
 
+    function initSettings() {
+        const defaultSettings = {
+            email: "uhvcell@nbkrist.org",
+            phone: "+91 89858 42025",
+            address: "Vidyanagar, Nellore District",
+            correspondent: "SRI N.RAM KUMAR"
+        };
+
+        const localSettings = localStorage.getItem('uhv_settings');
+        const settings = localSettings ? JSON.parse(localSettings) : defaultSettings;
+
+        // Apply Correspondent Name
+        document.querySelectorAll('.correspondent-name').forEach(el => {
+            el.textContent = settings.correspondent || defaultSettings.correspondent;
+        });
+
+        // Apply Email links and text
+        document.querySelectorAll('a[href^="mailto:"]').forEach(el => {
+            el.href = `mailto:${settings.email || defaultSettings.email}`;
+            el.textContent = settings.email || defaultSettings.email;
+        });
+        // General text emails
+        document.querySelectorAll('.footer-col p').forEach(el => {
+            if (el.textContent.includes('@nbkrist.org') || el.textContent.includes(defaultSettings.email)) {
+                el.textContent = settings.email || defaultSettings.email;
+            }
+        });
+
+        // Apply Phone numbers (footer + contact info section)
+        document.querySelectorAll('.footer-col p').forEach(el => {
+            if (el.textContent.includes('+91') || el.textContent.includes('89858') || el.textContent.includes('8985842025') || el.textContent.includes(defaultSettings.phone)) {
+                el.textContent = settings.phone || defaultSettings.phone;
+            }
+        });
+        document.querySelectorAll('.info-content p').forEach(el => {
+            if (el.querySelector('a')) return;
+            const text = el.textContent;
+            if (text.includes('+91') || text.includes('89858') || text.includes('8985842025')) {
+                el.textContent = settings.phone || defaultSettings.phone;
+            }
+        });
+
+        // Apply Address (footer only — contact page keeps its detailed address)
+        document.querySelectorAll('.footer-col p').forEach(el => {
+            if (el.textContent.includes('Vidyanagar') || el.textContent.includes(defaultSettings.address)) {
+                el.textContent = settings.address || defaultSettings.address;
+            }
+        });
+    }
+
     function init() {
+        initSettings();
         initAppMode();
         updateHeaderOffset();
         initMobileMenu();

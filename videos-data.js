@@ -1,4 +1,4 @@
-const videoResources = [
+const defaultVideoResources = [
     {
         title: "The Deadline Disaster",
         description: "A short film on managing time and values.",
@@ -21,3 +21,13 @@ const videoResources = [
         type: "Educational"
     }
 ];
+
+function loadVideosData() {
+    const localVideos = localStorage.getItem('uhv_videos');
+    if (!localVideos) {
+        localStorage.setItem('uhv_videos', JSON.stringify(defaultVideoResources));
+    }
+    return localVideos ? JSON.parse(localVideos) : defaultVideoResources;
+}
+
+const videoResources = loadVideosData();

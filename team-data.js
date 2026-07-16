@@ -1,6 +1,7 @@
 // Shared Team Data - Edit this file to update both Team Page and Home Page Marquee
 
-const facultyCoordinators = [
+// Default Static Data (used as fallback when LocalStorage is empty)
+const defaultFacultyCoordinators = [
     {
         name: "Dr. V. Vijay Kumar Reddy",
         role: "Chairperson",
@@ -31,7 +32,7 @@ const facultyCoordinators = [
     },
 ];
 
-const studentCoordinators = [
+const defaultStudentCoordinators = [
     // Student Row
     {
         name: "T. Varunemdhar Reddy",
@@ -149,6 +150,28 @@ const studentCoordinators = [
         image: "varalakshmi.jpg"
     },
 ];
+
+// Initialize and Sync with LocalStorage
+function loadTeamData() {
+    const localFaculty = localStorage.getItem('uhv_team_faculty');
+    const localStudent = localStorage.getItem('uhv_team_student');
+    
+    if (!localFaculty) {
+        localStorage.setItem('uhv_team_faculty', JSON.stringify(defaultFacultyCoordinators));
+    }
+    if (!localStudent) {
+        localStorage.setItem('uhv_team_student', JSON.stringify(defaultStudentCoordinators));
+    }
+
+    return {
+        faculty: localFaculty ? JSON.parse(localFaculty) : defaultFacultyCoordinators,
+        student: localStudent ? JSON.parse(localStudent) : defaultStudentCoordinators
+    };
+}
+
+const teamDataObj = loadTeamData();
+const facultyCoordinators = teamDataObj.faculty;
+const studentCoordinators = teamDataObj.student;
 
 // Combined list for marquee
 const allTeamMembers = [...facultyCoordinators, ...studentCoordinators];

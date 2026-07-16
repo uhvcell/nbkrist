@@ -1,0 +1,54 @@
+// Newsletters Shared Data - Loads from localStorage or defaults
+
+const defaultNewsletters = [
+    {
+        title: "NewsLetter 25-06-2026",
+        url: "https://drive.google.com/file/d/1iwyUQqEomrcwWyAWEwtAeVJyIwDHBLTr/view?usp=sharing",
+        icon: "fa-file-pdf"
+    },
+    {
+        title: "NewsLetter 05-03-2026",
+        url: "https://drive.google.com/drive/u/0/folders/18hzkjTs9E0nE7b84Tg00pzM-dT4jR24o",
+        icon: "fa-file-pdf"
+    },
+    {
+        title: "Newsletter 27-01-2026",
+        url: "https://drive.google.com/file/d/1t_XwDy8uwtcJ3RuxgYGEVV9wWWO7iiTK/view?usp=drive_link",
+        icon: "fa-file-pdf"
+    },
+    {
+        title: "Newsletter 05-01-2026",
+        url: "https://drive.google.com/file/d/1ASByzLhNGlnO1fmLgUyzR_LgSI-bNi3A/view?usp=drive_link",
+        icon: "fa-file-pdf"
+    },
+    {
+        title: "Newsletter 18-12-2025",
+        url: "https://drive.google.com/file/d/1RCHnC-N0one779IYDHsik0D0fFQaIq5u/view?usp=sharing",
+        icon: "fa-file-pdf"
+    },
+    {
+        title: "Newsletter 14-08-2025",
+        url: "https://drive.google.com/file/d/1TJLbxKXQA64gZRF3_Nj30vW90kVAm0OP/view?usp=sharing",
+        icon: "fa-image"
+    },
+    {
+        title: "Order 1(17-07-25)",
+        url: "https://drive.google.com/file/d/1P-DcgArrLrzSQe9DOo3O_rus41k42Rw2/view?usp=drive_link",
+        icon: "fa-file-pdf"
+    },
+    {
+        title: "circular 1(07-12-25)",
+        url: "https://drive.google.com/file/d/1MqVv2zeNpC3-3XJ2iWIKTt571LVqaggr/view?usp=drive_link",
+        icon: "fa-file-pdf"
+    }
+];
+
+function loadNewslettersData() {
+    const localNewsletters = localStorage.getItem('uhv_newsletters');
+    if (!localNewsletters) {
+        localStorage.setItem('uhv_newsletters', JSON.stringify(defaultNewsletters));
+    }
+    return localNewsletters ? JSON.parse(localNewsletters) : defaultNewsletters;
+}
+
+const newsletterList = loadNewslettersData();
