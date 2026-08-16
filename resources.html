@@ -3,19 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#060612">
+    <meta name="color-scheme" content="dark">
     <title>Resources | UHV CELL NBKRIST</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-    <link rel="stylesheet" href="admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
         .resource-card {
             background: var(--bg-surface);
@@ -79,7 +80,7 @@
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="activities.html">Activities</a></li>
                 <li><a href="resources.html" class="active">Resources</a></li>
-                <li><a href="team.html">Our Team</a></li>
+                <li><a href="team-structure.html">Our Team</a></li>
                 <li><a href="newsletter.html">Newsletter</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li class="download-item"><a href="#" class="btn-download-app"><i class="fa-solid fa-download"></i>
@@ -87,50 +88,22 @@
             </ul>
         </div>
     </header>
-<div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
-        <h1 style="font-size: 3rem;">Resources</h1>
-        <p>Books, Presentations, and Study Materials</p>
+    <div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
+        <h1 style="font-size: 3rem;" data-cms-bind="pageHeader.title">Resources</h1>
+        <p data-cms-bind="pageHeader.subtitle">Books, Presentations, and Study Materials</p>
     </div>
 
     <section class="section" style="padding: 80px 0;">
         <div class="container">
-            <div class="grid-3" style="margin-top: 30px;">
+            <div class="grid-3" style="margin-top: 30px;" data-cms-list="resources">
 
-                <!-- Resource 1 -->
-                <div class="resource-card fade-in">
-                    <div class="resource-icon"><i class="fa-solid fa-book-open"></i></div>
-                    <h3>UHV Foundation Course</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 15px;">Official textbook and syllabus for
-                        Universal Human Values II.</p>
-                    <a href="uhv-foundation-course.html" class="download-btn">View Course Details <i
+                <!-- Resource Item Template -->
+                <div class="resource-card fade-in cms-list-item">
+                    <div class="resource-icon"><i class="fa-solid {{icon}}"></i></div>
+                    <h3>{{title}}</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 15px;">{{description}}</p>
+                    <a href="{{link}}" class="download-btn">{{linkText}} <i
                             class="fa-solid fa-arrow-right"></i></a>
-                </div>
-
-                <!-- Resource 2 -->
-                <div class="resource-card fade-in" style="animation-delay: 0.2s;">
-                    <div class="resource-icon"><i class="fa-solid fa-file-powerpoint"></i></div>
-                    <h3>Events</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 15px;">Data covering all events of the UHV
-                        curriculum.</p>
-                    <a href="events.html" class="download-btn">View Events <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-
-                <!-- Resource 3 -->
-                <div class="resource-card fade-in" style="animation-delay: 0.4s;">
-                    <div class="resource-icon"><i class="fa-solid fa-video"></i></div>
-                    <h3>Videos</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 15px;">Recorded videos and short films on human
-                        values.</p>
-                    <a href="videos.html" class="download-btn">Watch Videos <i class="fa-solid fa-play"></i></a>
-                </div>
-
-                <!-- Resource 4 -->
-                <div class="resource-card fade-in" style="animation-delay: 0.6s;">
-                    <div class="resource-icon"><i class="fa-solid fa-image"></i></div>
-                    <h3>Posters</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 15px;">Awareness materials, banners and creative
-                        visuals on UHV.</p>
-                    <a href="posters.html" class="download-btn">View Posters <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
 
             </div>
@@ -164,7 +137,7 @@
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="activities.html">Activities</a></li>
                         <li><a href="resources.html">Resources</a></li>
-                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="team-structure.html">Our Team</a></li>
                         <li><a href="newsletter.html">Newsletter</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -179,10 +152,9 @@
             <div class="copyright">&copy; <span id="current-year">2026</span> UHV CELL NBKRIST.</div>
         </div>
     </footer>
+    <script src="site-settings.js" defer></script>
+    <script src="page-content.js" defer></script>
     <script src="app-utils.js" defer></script>
-    <script src="admin.js" defer></script>
 </body>
 
 </html>
-
-

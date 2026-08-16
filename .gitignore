@@ -2,3 +2,10 @@
 .env
 node_modules/
 .vscode/
+cms/node_modules/
+cms/data/
+cms/preview/
+cms/backups/
+cms/.env
+cms/cookies.txt
+site/

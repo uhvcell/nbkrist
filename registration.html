@@ -3,18 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#060612">
+    <meta name="color-scheme" content="dark">
     <title>Registration | UHV CELL NBKRIST</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 
 <body>
@@ -41,7 +43,7 @@
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="activities.html">Activities</a></li>
                 <li><a href="resources.html">Resources</a></li>
-                <li><a href="team.html">Our Team</a></li>
+                <li><a href="team-structure.html">Our Team</a></li>
                 <li><a href="newsletter.html">Newsletter</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li class="download-item"><a href="#" class="btn-download-app"><i class="fa-solid fa-download"></i>
@@ -49,9 +51,9 @@
             </ul>
         </div>
     </header>
-<div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
-        <h1 style="font-size: 3rem;">Membership Registration</h1>
-        <p>Join the UHV Cell at NBKRIST and be part of a transformative journey.</p>
+    <div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
+        <h1 style="font-size: 3rem;" data-cms-bind="pageHeader.title">Membership Registration</h1>
+        <p data-cms-bind="pageHeader.subtitle">Join the UHV Cell at NBKRIST and be part of a transformative journey.</p>
     </div>
 
     <section class="section" style="padding: 80px 0; min-height: 60vh; display: flex; align-items: center;">
@@ -61,10 +63,10 @@
                 <div class="card fade-in"
                     style="text-align: center; padding: 40px; border: 1px solid rgba(255,255,255,0.1);">
                     <div class="card-icon" style="margin-bottom: 20px;"><i class="fa-solid fa-user-graduate"></i></div>
-                    <h2 style="margin-bottom: 20px; color: var(--primary);">Student Registration</h2>
-                    <p style="margin-bottom: 30px; color: #94a3b8;">Click the button below to register as a student
+                    <h2 style="margin-bottom: 20px; color: var(--primary);" data-cms-bind="student.title">Student Registration</h2>
+                    <p style="margin-bottom: 30px; color: #94a3b8;" data-cms-bind="student.description">Click the button below to register as a student
                         member of the UHV Cell.</p>
-                    <a href="https://forms.gle/96f8V82zZE7HhkUv5" target="_blank" class="btn btn-primary"
+                    <a href="https://forms.gle/96f8V82zZE7HhkUv5" data-cms-href="student.buttonUrl" data-cms-bind="student.buttonText" target="_blank" class="btn btn-primary"
                         style="width: 100%;">Register as Student</a>
                 </div>
 
@@ -73,10 +75,10 @@
                     style="text-align: center; padding: 40px; border: 1px solid rgba(255,255,255,0.1); animation-delay: 0.2s;">
                     <div class="card-icon" style="margin-bottom: 20px;"><i class="fa-solid fa-chalkboard-user"></i>
                     </div>
-                    <h2 style="margin-bottom: 20px; color: var(--secondary);">Faculty Registration</h2>
-                    <p style="margin-bottom: 30px; color: #94a3b8;">Click the button below to register as a faculty
+                    <h2 style="margin-bottom: 20px; color: var(--secondary);" data-cms-bind="faculty.title">Faculty Registration</h2>
+                    <p style="margin-bottom: 30px; color: #94a3b8;" data-cms-bind="faculty.description">Click the button below to register as a faculty
                         member or coordinator.</p>
-                    <a href="https://forms.gle/dYDccM3ZyxarzZs1A" target="_blank" class="btn btn-primary"
+                    <a href="https://forms.gle/dYDccM3ZyxarzZs1A" data-cms-href="faculty.buttonUrl" data-cms-bind="faculty.buttonText" target="_blank" class="btn btn-primary"
                         style="width: 100%;">Register as Faculty</a>
                 </div>
             </div>
@@ -110,7 +112,7 @@
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="activities.html">Activities</a></li>
                         <li><a href="resources.html">Resources</a></li>
-                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="team-structure.html">Our Team</a></li>
                         <li><a href="newsletter.html">Newsletter</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -125,10 +127,9 @@
             <div class="copyright">&copy; <span id="current-year">2026</span> UHV CELL NBKRIST.</div>
         </div>
     </footer>
+    <script src="site-settings.js" defer></script>
+    <script src="page-content.js" defer></script>
     <script src="app-utils.js" defer></script>
-    <script src="admin.js" defer></script>
 </body>
 
 </html>
-
-

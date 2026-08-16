@@ -3,19 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posters | UHV CELL NBKRIST</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#060612">
+    <meta name="color-scheme" content="dark">
+    <title>Posters & Banners | UHV CELL NBKRIST</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-    <link rel="stylesheet" href="admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
         .posters-grid {
             display: grid;
@@ -123,7 +124,7 @@
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="activities.html">Activities</a></li>
                 <li><a href="resources.html" class="active">Resources</a></li>
-                <li><a href="team.html">Our Team</a></li>
+                <li><a href="team-structure.html">Our Team</a></li>
                 <li><a href="newsletter.html">Newsletter</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li class="download-item"><a href="#" class="btn-download-app"><i class="fa-solid fa-download"></i>
@@ -131,7 +132,7 @@
             </ul>
         </div>
     </header>
-<div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
+    <div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
         <h1 style="font-size: 3rem;">Posters</h1>
         <p>Awareness Materials and Creative Visuals</p>
     </div>
@@ -174,10 +175,9 @@
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="activities.html">Activities</a></li>
                         <li><a href="resources.html">Resources</a></li>
-                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="team-structure.html">Our Team</a></li>
                         <li><a href="newsletter.html">Newsletter</a></li>
                         <li><a href="contact.html">Contact</a></li>
-                        <li><a href="admin-panel.html" style="opacity: 0.5;"><i class="fa-solid fa-lock" style="font-size:0.75rem;"></i> Portal</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -199,7 +199,7 @@
             if (typeof posterImages !== 'undefined') {
                 postersGrid.innerHTML = posterImages.map(poster => `
                     <div class="poster-item fade-in">
-                        <a href="${poster.url}" target="_blank" class="download-poster" title="Download Poster">
+                        <a href="${poster.url}" target="_blank" rel="noopener noreferrer" class="download-poster" title="Download Poster">
                             <i class="fa-solid fa-download"></i>
                         </a>
                         <div class="poster-img-wrapper" style="border-radius: 12px; overflow: hidden; max-height: 450px;">
@@ -212,9 +212,9 @@
 
         window.addEventListener('DOMContentLoaded', loadPosters);
     </script>
+    <script src="site-settings.js" defer></script>
+    <script src="page-content.js" defer></script>
     <script src="app-utils.js" defer></script>
-    <script src="admin.js" defer></script>
 </body>
 
 </html>
-

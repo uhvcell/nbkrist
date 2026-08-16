@@ -3,23 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#060612">
+    <meta name="color-scheme" content="dark">
     <title>Home | UHV CELL NBKRIST</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style"
-        onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    </noscript>
-    <link rel="stylesheet" href="admin-style.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 
 <body>
@@ -46,7 +43,7 @@
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="activities.html">Activities</a></li>
                 <li><a href="resources.html">Resources</a></li>
-                <li><a href="team.html">Our Team</a></li>
+                <li><a href="team-structure.html">Our Team</a></li>
                 <li><a href="newsletter.html">Newsletter</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li class="download-item"><a href="#" class="btn-download-app"><i class="fa-solid fa-download"></i>
@@ -71,13 +68,13 @@
         <div class="hero-bg"></div>
         <div class="container">
             <div class="hero-content fade-in">
-                <div class="hero-badge">NBKRIST UHV Cell</div>
-                <h1>Empowering Minds with <br><span>Universal Human Values</span></h1>
-                <p>Join us in a journey of self-exploration and holistic development. We strive to nurture responsible
+                <div class="hero-badge" data-cms-bind="hero.badge">NBKRIST UHV Cell</div>
+                <h1><span data-cms-bind="hero.heading">Empowering Minds with</span> <br><span data-cms-bind="hero.headingHighlight">Universal Human Values</span></h1>
+                <p data-cms-bind="hero.description">Join us in a journey of self-exploration and holistic development. We strive to nurture responsible
                     and ethical individuals for a harmonious society.</p>
                 <div class="btn-group">
-                    <a href="team-structure.html" class="btn btn-primary">Discover More</a>
-                    <a href="registration.html" class="btn btn-secondary">Join Us</a>
+                    <a href="team-structure.html" class="btn btn-primary" data-cms-bind="hero.primaryButton.text" data-cms-href="hero.primaryButton.link">Discover More</a>
+                    <a href="registration.html" class="btn btn-secondary" data-cms-bind="hero.secondaryButton.text" data-cms-href="hero.secondaryButton.link">Join Us</a>
                 </div>
             </div>
         </div>
@@ -87,8 +84,8 @@
     <section class="section page-section page-section--tint">
         <div class="container">
             <div class="header-glow" style="text-align: center; margin-bottom: 50px;">
-                <h2 class="section-title">What's New?</h2>
-                <p class="section-subtitle">Latest activities and event posters</p>
+                <h2 class="section-title" data-cms-bind="whatsNew.title">What's New?</h2>
+                <p class="section-subtitle" data-cms-bind="whatsNew.subtitle">Latest activities and event posters</p>
             </div>
             <div id="latestPostersGrid" class="grid-3" style="margin-top: 30px;">
                 <!-- Dynamically populated -->
@@ -289,10 +286,9 @@
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="activities.html">Activities</a></li>
                         <li><a href="resources.html">Resources</a></li>
-                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="team-structure.html">Our Team</a></li>
                         <li><a href="newsletter.html">Newsletter</a></li>
                         <li><a href="contact.html">Contact</a></li>
-                        <li><a href="admin-panel.html" style="opacity: 0.5;"><i class="fa-solid fa-lock" style="font-size:0.75rem;"></i> Portal</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -309,8 +305,9 @@
     <script src="team-data.js" defer></script>
     <script src="posters-data.js" defer></script>
     <script src="videos-data.js" defer></script>
+    <script src="site-settings.js" defer></script>
+    <script src="page-content.js" defer></script>
     <script src="app-utils.js" defer></script>
-    <script src="admin.js" defer></script>
     <script defer>
         function initTeamMarquee() {
             if (typeof allTeamMembers === 'undefined') return;
@@ -318,10 +315,10 @@
             const display = document.getElementById('activeMemberDisplay');
             if (!track || !display) return;
 
-            const allMembers = [...allTeamMembers, ...allTeamMembers, ...allTeamMembers];
-            const fragment = document.createDocumentFragment();
+            const allMembers = allTeamMembers;
 
-            allMembers.forEach((member) => {
+            // Build one set of member items
+            function createMemberItem(member) {
                 const item = document.createElement('div');
                 item.className = 'marquee-item';
                 if (member.image) {
@@ -333,12 +330,28 @@
                     img.decoding = 'async';
                     item.appendChild(img);
                 } else {
-                    item.innerHTML = `<div class="marquee-placeholder"><i class="fa-solid ${member.icon}"></i></div>`;
+                    item.innerHTML = `<div class="marquee-placeholder"><i class="fa-solid ${member.icon || 'fa-user'}"></i></div>`;
                 }
                 item.addEventListener('click', () => showMemberDetails(member));
-                fragment.appendChild(item);
-            });
+                return item;
+            }
+
+            // Duplicate items so the track is wide enough for seamless looping
+            track.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+            for (let copy = 0; copy < 3; copy++) {
+                allMembers.forEach(member => fragment.appendChild(createMemberItem(member)));
+            }
             track.appendChild(fragment);
+
+            // Calculate animation duration based on item count (slower = smoother)
+            const totalItems = allMembers.length;
+            const scrollDuration = Math.max(totalItems * 2.5, 25); // at least 25s
+            track.style.animation = `marqueeScroll ${scrollDuration}s linear infinite`;
+
+            if (allMembers.length > 0) {
+                showMemberDetails(allMembers[0]);
+            }
 
             function showMemberDetails(member) {
                 display.style.opacity = '0';
@@ -358,6 +371,7 @@
                 }, 300);
             }
 
+            // Pause on hover, resume on leave
             const marqueeContainer = document.querySelector('.team-marquee-container');
             if (marqueeContainer) {
                 marqueeContainer.addEventListener('mouseenter', () => {
@@ -369,6 +383,7 @@
             }
         }
 
+        /* ===== Poster Slider with Auto-Advance ===== */
         const sliderTrack = document.getElementById('sliderTrack');
         const sliderDots = document.getElementById('sliderDots');
         let currentSlide = 0;
@@ -403,11 +418,11 @@
         }
 
         function startSlideShow() {
+            clearInterval(slideInterval);
+            if (!posterImages?.length || posterImages.length <= 1) return;
             slideInterval = setInterval(() => {
-                currentSlide = (currentSlide + 1) % posterImages.length;
-                goToSlide(currentSlide);
-            }, 5000);
-            if (window.UHV?.registerInterval) UHV.registerInterval(slideInterval);
+                moveSlide(1);
+            }, 4000); // Auto-advance every 4 seconds
         }
 
         function initSlider() {
@@ -437,6 +452,30 @@
 
             document.getElementById('prevBtn').onclick = () => moveSlide(-1);
             document.getElementById('nextBtn').onclick = () => moveSlide(1);
+
+            // Pause auto-slide on hover
+            const container = document.getElementById('posterSlider');
+            if (container) {
+                container.addEventListener('mouseenter', () => clearInterval(slideInterval));
+                container.addEventListener('mouseleave', () => startSlideShow());
+
+                // Native Mobile Touch Swipe
+                let touchStartX = 0;
+                container.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                    clearInterval(slideInterval);
+                }, { passive: true });
+
+                container.addEventListener('touchend', (e) => {
+                    const diff = touchStartX - e.changedTouches[0].screenX;
+                    if (Math.abs(diff) > 45) {
+                        if (diff > 0) moveSlide(1);
+                        else moveSlide(-1);
+                    }
+                    startSlideShow();
+                }, { passive: true });
+            }
+
             startSlideShow();
         }
 

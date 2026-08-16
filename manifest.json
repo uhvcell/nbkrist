@@ -1,0 +1,25 @@
+{
+  "name": "UHV CELL - NBKRIST",
+  "short_name": "UHV CELL",
+  "description": "Universal Human Values Cell at NBKR Institute of Science & Technology",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#060612",
+  "theme_color": "#060612",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "community", "values"]
+}
