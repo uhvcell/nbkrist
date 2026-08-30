@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#060612">
     <meta name="color-scheme" content="dark">
@@ -14,6 +15,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#060612">
     <meta name="color-scheme" content="dark">
@@ -38,14 +40,14 @@
         <div class="container navbar">
             <a href="index.html" class="logo">
                 <div class="logo-left-group">
-                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                    <img src="logo.jpg" alt="Logo" class="logo-main-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <div class="logo-text">
                         <span>UHV CELL NBKRIST</span>
                         <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
                     </div>
                 </div>
                 <div class="second-logo-wrapper">
-                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                    <img src="second_logo.png" alt="Logo" class="logo-second-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <span class="correspondent-name">SRI N.RAM KUMAR</span>
                     <span class="logo-caption">Correspondent</span>
                 </div>
@@ -108,26 +110,32 @@
             display: none;
             position: fixed;
             z-index: 1000;
-            left: 0;
-            top: 0;
+            inset: 0; /* Modern shorthand for top/left/right/bottom: 0 */
             width: 100%;
             height: 100%;
+            height: 100dvh; /* Dynamic viewport height for mobile browsers */
             background-color: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(10px);
             align-items: center;
             justify-content: center;
+            padding: 15px; /* Prevent touching edges on mobile */
+            overflow-y: auto; /* Allow scrolling if content is too tall */
         }
 
         .video-modal-content {
-            width: 90%;
+            width: 100%;
             max-width: 1000px;
+            max-height: calc(100dvh - 30px);
             position: relative;
             background: var(--bg-surface);
             border-radius: 16px;
-            overflow: hidden;
+            overflow: hidden; /* Hide overflow from border-radius */
+            display: flex;
+            flex-direction: column;
             border: 1px solid var(--primary-dim);
             box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
             animation: modalFadeIn 0.3s ease;
+            margin: auto; /* Center in scrollable flex container */
         }
 
         @keyframes modalFadeIn {
@@ -177,24 +185,44 @@
 
         .video-container {
             position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
+            width: 100%;
+            aspect-ratio: 16 / 9; /* Modern aspect ratio property */
             background: #000;
-            overflow: hidden;
+            flex-shrink: 0;
+            max-height: calc(100dvh - 120px); /* Leave room for title on mobile */
         }
 
         .video-info {
-            padding: 25px;
+            padding: clamp(15px, 3vw, 25px);
+            overflow-y: auto; /* Scroll info if modal is constrained */
         }
 
         .video-info h3 {
             color: var(--primary);
             margin-bottom: 10px;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
         }
 
         .video-info p {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            line-height: 1.5;
+        }
+        
+        /* Mobile Specific Overrides */
+        @media (max-width: 768px) {
+            .close-modal {
+                top: 10px;
+                right: 15px;
+                background: rgba(0,0,0,0.5);
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+            }
         }
     </style>
 
@@ -210,7 +238,7 @@
 
             card.innerHTML = `
                 <div style="aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                    <img src="${video.thumbnail}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: all 0.5s ease;" class="card-thumb" loading="lazy" decoding="async">
+                    <img src="${video.thumbnail}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: all 0.5s ease;" class="card-thumb" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <div style="position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6));"></div>
                     <div class="play-trigger" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(0, 243, 255, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); border: 2px solid var(--primary); z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: pulsePlay 2s infinite ease-in-out;">
                         <i class="fa-solid fa-play" style="font-size: 2.5rem; color: var(--primary); margin-left: 8px; filter: drop-shadow(0 0 15px var(--primary));"></i>
@@ -260,14 +288,14 @@
                 <div class="footer-col">
                     <div class="logo" style="margin-bottom: 20px;">
                         <div class="logo-left-group">
-                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                            <img src="logo.jpg" alt="Logo" class="logo-main-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                             <div class="logo-text">
                                 <span>UHV CELL NBKRIST</span>
                                 <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
                             </div>
                         </div>
                         <div class="second-logo-wrapper">
-                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                            <img src="second_logo.png" alt="Logo" class="logo-second-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                             <span class="correspondent-name">SRI N.RAM KUMAR</span>
                             <span class="logo-caption">Correspondent</span>
                         </div>
@@ -302,3 +330,4 @@
 </body>
 
 </html>
+

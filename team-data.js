@@ -230,7 +230,7 @@ const defaultStudentCoordinators = [
         "role": "Co-Coordinator",
         "department": "Marketing Team",
         "detail": "Marketing & Content Wing",
-        "image": "abhijith,jpg",
+        "image": "abhijith.jpg",
         "icon": "fa-user",
         "special": false,
         "isLead": false
@@ -240,7 +240,7 @@ const defaultStudentCoordinators = [
         "role": "Co-Coordinator",
         "department": "Design Team",
         "detail": "Design & Skill Wing",
-        "image": "brahmani.jpg",
+        "image": "bramhani.jpg",
         "icon": "fa-user",
         "special": false,
         "isLead": false

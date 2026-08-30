@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#060612">
     <meta name="color-scheme" content="dark">
@@ -991,14 +992,14 @@
         <div class="container navbar">
             <a href="index.html" class="logo">
                 <div class="logo-left-group">
-                    <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                    <img src="logo.jpg" alt="Logo" class="logo-main-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <div class="logo-text">
                         <span>UHV CELL NBKRIST</span>
                         <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
                     </div>
                 </div>
                 <div class="second-logo-wrapper">
-                    <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                    <img src="second_logo.png" alt="Logo" class="logo-second-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <span class="correspondent-name">SRI N.RAM KUMAR</span>
                     <span class="logo-caption">Correspondent</span>
                 </div>
@@ -1043,7 +1044,7 @@
                     <div class="org-header-grid">
                         <!-- Left Logo & Tagline -->
                         <div class="org-header-left">
-                            <img src="logo.jpg" alt="UHV Cell Logo" class="org-badge-logo">
+                            <img src="logo.jpg" alt="UHV Cell Logo" class="org-badge-logo" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                             <div class="org-tagline-left">
                                 Service to Society<br>
                                 Commitment for Change
@@ -1433,14 +1434,14 @@
                 <div class="footer-col">
                     <div class="logo" style="margin-bottom: 20px;">
                         <div class="logo-left-group">
-                            <img src="logo.jpg" alt="Logo" class="logo-main-img">
+                            <img src="logo.jpg" alt="Logo" class="logo-main-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                             <div class="logo-text">
                                 <span>UHV CELL NBKRIST</span>
                                 <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
                             </div>
                         </div>
                         <div class="second-logo-wrapper">
-                            <img src="second_logo.png" alt="Logo" class="logo-second-img">
+                            <img src="second_logo.png" alt="Logo" class="logo-second-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                             <span class="correspondent-name">SRI N.RAM KUMAR</span>
                             <span class="logo-caption">Correspondent</span>
                         </div>
@@ -1537,7 +1538,7 @@
                 if (member) {
                     const img = resolveImg(member.image);
                     if (img) {
-                        slot.innerHTML = `<img src="${img}" alt="${member.name || ''}" class="node-avatar-img" onerror="this.style.display='none'">`;
+                        slot.innerHTML = `<img src="${img}" alt="${member.name || ''}" class="node-avatar-img" onerror="this.style.display='none'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">`;
                     }
                     if (nameEl && member.name) {
                         nameEl.textContent = member.name;
@@ -1567,7 +1568,7 @@
                 const featured = teamMembers.find(m => m.isLead && m.image) || teamMembers.find(m => m.image);
                 if (featured && slot) {
                     const img = resolveImg(featured.image);
-                    if (img) slot.innerHTML = `<img src="${img}" alt="${featured.name || ''}" class="team-avatar-img" onerror="this.style.display='none'">`;
+                    if (img) slot.innerHTML = `<img src="${img}" alt="${featured.name || ''}" class="team-avatar-img" onerror="this.style.display='none'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">`;
                 }
 
                 if (listEl) {
@@ -1577,7 +1578,7 @@
                             return `
                             <div class="team-member-chip" title="${m.name || ''} — ${m.role || ''}">
                                 ${img
-                                    ? `<img src="${img}" alt="${m.name || ''}" class="team-member-chip-img" onerror="this.style.display='none'">`
+                                    ? `<img src="${img}" alt="${m.name || ''}" class="team-member-chip-img" onerror="this.style.display='none'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">`
                                     : `<i class="fa-solid ${m.icon || 'fa-user'}" style="font-size:0.8rem;color:var(--primary);min-width:24px;text-align:center;"></i>`
                                 }
                                 <div class="team-member-chip-info">
@@ -1604,7 +1605,7 @@
                     return `
                         <div class="member-card-box" data-category="${category}">
                             ${img
-                                ? `<img src="${img}" alt="${m.name || ''}" class="member-card-photo" onerror="this.outerHTML='<div class=\\'member-card-placeholder\\'><i class=\\'fa-solid ${iconClass}\\'></i></div>'">`
+                                ? `<img src="${img}" alt="${m.name || ''}" class="member-card-photo" onerror="this.outerHTML='<div class=\\'member-card-placeholder\\' loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade"><i class=\\'fa-solid ${iconClass}\\'></i></div>'">`
                                 : `<div class="member-card-placeholder"><i class="fa-solid ${iconClass}"></i></div>`
                             }
                             <h3 class="member-card-name">${m.name || ''}${m.special ? ' <span style="color:var(--primary);font-size:0.8em;">★</span>' : ''}</h3>
@@ -1634,3 +1635,4 @@
 </body>
 
 </html>
+

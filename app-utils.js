@@ -12,6 +12,20 @@
         document.documentElement.style.setProperty('--header-offset', `${header.offsetHeight}px`);
     }
 
+    // Performance utilities
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        }
+    }
+
     function initMobileMenu() {
         const menuToggle = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
@@ -673,13 +687,13 @@
         const shareBtn = container.querySelector('#btn-share-page');
 
         if (backToTopBtn) {
-            window.addEventListener('scroll', () => {
+            window.addEventListener('scroll', throttle(() => {
                 if (window.scrollY > 300) {
                     backToTopBtn.classList.add('visible');
                 } else {
                     backToTopBtn.classList.remove('visible');
                 }
-            }, { passive: true });
+            }, 100), { passive: true });
 
             backToTopBtn.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });

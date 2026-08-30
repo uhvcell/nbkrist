@@ -256,3 +256,13 @@
   font-size: 0.9rem;
   margin: 0;
 }
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .uhv-controls { padding: 10px; gap: 8px; flex-wrap: wrap; }
+  .uhv-time-display { font-size: 0.75rem; flex: 1; text-align: center; }
+  .uhv-volume-container { display: none; /* Hide volume slider on mobile */ }
+  .uhv-ctrl-btn { width: 32px; height: 32px; font-size: 1rem; }
+  .uhv-play-overlay { width: 60px; height: 60px; }
+  .uhv-play-overlay i { font-size: 1.5rem; }
+}
