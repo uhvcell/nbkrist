@@ -1,0 +1,9 @@
+{
+  "name": "uhv-cell-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd cms && npm run dev",
+    "start": "cd cms && npm start"
+  }
+}

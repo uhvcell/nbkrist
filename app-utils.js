@@ -58,6 +58,18 @@
             if (e.key === 'Escape') closeMenu();
         });
 
+        // Swipe-to-close gesture
+        let touchStartX = 0;
+        navLinks.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        navLinks.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX - touchStartX > 50) {
+                closeMenu();
+            }
+        }, { passive: true });
+
         let resizeRaf = 0;
         window.addEventListener('resize', () => {
             cancelAnimationFrame(resizeRaf);
@@ -165,6 +177,9 @@
 
                 modal.querySelector('.close-modal').addEventListener('click', () => {
                     modal.style.display = 'none';
+                    if (window.currentVideoPlayer && window.currentVideoPlayer.video) {
+                        window.currentVideoPlayer.video.pause();
+                    }
                     playerContainer.innerHTML = '';
                     document.body.style.overflow = '';
                 });
@@ -172,6 +187,9 @@
                 window.addEventListener('click', (e) => {
                     if (e.target === modal) {
                         modal.style.display = 'none';
+                        if (window.currentVideoPlayer && window.currentVideoPlayer.video) {
+                            window.currentVideoPlayer.video.pause();
+                        }
                         playerContainer.innerHTML = '';
                         document.body.style.overflow = '';
                     }
@@ -188,81 +206,31 @@
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
 
-            playerContainer.innerHTML = '<div style="color: white; padding: 20px; text-align: center;">Loading video...</div>';
-
-            let embedUrl = video.videoUrl.trim();
-            const iframeMatch = embedUrl.match(/src=["']([^"']+)["']/i);
-            if (iframeMatch) {
-                embedUrl = iframeMatch[1];
-            }
-
-            let videoSrc = embedUrl;
-            let isDirectVideo = embedUrl.endsWith('.mp4');
-
-            // Parse Internet Archive Links
-            if (embedUrl.includes('archive.org/details/')) {
-                const id = embedUrl.split('/details/')[1].split('/')[0].split('?')[0];
-                try {
-                    const res = await fetch(`https://archive.org/metadata/${id}`);
-                    const data = await res.json();
-                    const mp4File = data.files.find(f => f.name.endsWith('.mp4'));
-                    if (mp4File) {
-                        videoSrc = `https://archive.org/download/${id}/${mp4File.name}`;
-                        isDirectVideo = true;
-                    } else {
-                        videoSrc = `https://archive.org/embed/${id}`;
-                        isDirectVideo = false;
+            // Use the advanced UHVVideoPlayer component
+            playerContainer.innerHTML = ''; // Clear loading state
+            
+            try {
+                // Determine if we need to polyfill missing fields for legacy videos
+                const normalizedVideo = { ...video };
+                if (!normalizedVideo.sources && normalizedVideo.videoUrl) {
+                    if (normalizedVideo.videoUrl.includes('archive.org/details/')) {
+                        // For legacy archive.org/details links that haven't been migrated in the CMS yet, 
+                        // we'll pass the embed URL so the player can fallback to iframe.
+                        const id = normalizedVideo.videoUrl.split('/details/')[1].split('/')[0].split('?')[0];
+                        normalizedVideo.videoUrl = `https://archive.org/embed/${id}`;
                     }
-                } catch(e) {
-                    videoSrc = `https://archive.org/embed/${id}`;
-                    isDirectVideo = false;
                 }
-            } else if (embedUrl.includes('archive.org/embed/')) {
-                 isDirectVideo = false;
-            } else if (embedUrl.includes('archive.org/download/') && embedUrl.endsWith('.mp4')) {
-                isDirectVideo = true;
-            }
 
-            playerContainer.style.position = 'relative';
-            playerContainer.style.overflow = 'hidden';
-            playerContainer.style.background = '#000';
-            playerContainer.style.width = '100%';
-            playerContainer.style.height = '100%';
-
-            if (isDirectVideo) {
-                playerContainer.innerHTML = `
-                    <div class="custom-video-wrapper">
-                        <video 
-                            id="custom-html5-video"
-                            src="${videoSrc}" 
-                            autoplay
-                            controlsList="nodownload"
-                            disablePictureInPicture
-                            playsinline
-                            style="width: 100%; height: 100%; object-fit: contain; background: #000;"
-                        ></video>
-                        <div class="custom-video-controls">
-                            <button class="ctrl-btn play-pause-btn"><i class="fa-solid fa-pause"></i></button>
-                            <div class="progress-container">
-                                <div class="progress-bar"><div class="progress-filled"></div></div>
-                            </div>
-                            <div class="time-display"><span class="current-time">0:00</span> / <span class="duration">0:00</span></div>
-                            <button class="ctrl-btn mute-btn"><i class="fa-solid fa-volume-high"></i></button>
-                            <input type="range" class="volume-slider" min="0" max="1" step="0.05" value="1">
-                            <button class="ctrl-btn fullscreen-btn"><i class="fa-solid fa-expand"></i></button>
-                        </div>
-                    </div>
-                `;
-                initCustomPlayerLogic(playerContainer);
-            } else {
-                 playerContainer.innerHTML = `
-                    <iframe 
-                        src="${videoSrc}${videoSrc.includes('?') ? '&' : '?'}autoplay=1" 
-                        style="width: 100%; height: 100%; border: none; position: absolute; left: 0; top: 0; z-index: 1;" 
-                        allow="autoplay; fullscreen; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                `;
+                // Create the player instance
+                window.currentVideoPlayer = new UHVVideoPlayer(playerContainer, normalizedVideo);
+                
+                // Auto-play the player if possible
+                if (window.currentVideoPlayer.video) {
+                    window.currentVideoPlayer.video.play().catch(e => console.log('Autoplay prevented:', e));
+                }
+            } catch (err) {
+                console.error("Video Player Error:", err);
+                playerContainer.innerHTML = '<div style="color:#ff4d4d; padding:20px; text-align:center;">Failed to initialize video player.</div>';
             }
         };
 

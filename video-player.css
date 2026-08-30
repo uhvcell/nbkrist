@@ -1,0 +1,258 @@
+/* Advanced Video Player CSS */
+:root {
+  --player-primary: var(--primary, #00f3ff);
+  --player-bg: #000;
+  --player-control-bg: rgba(0, 0, 0, 0.7);
+}
+
+.uhv-video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--player-bg);
+  overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.uhv-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  outline: none;
+}
+
+/* Hide native controls fully (fallback for browsers that ignore controlsList) */
+.uhv-video-element::-webkit-media-controls {
+  display: none !important;
+}
+
+/* Custom Controls Container */
+.uhv-video-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 20px 15px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85) 40%, #000);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.uhv-video-wrapper.idle .uhv-video-controls {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Progress Bar */
+.uhv-progress-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  transition: height 0.2s ease;
+}
+
+.uhv-progress-container:hover {
+  height: 8px;
+}
+
+.uhv-progress-loaded {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.uhv-progress-current {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--player-primary);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.uhv-progress-current::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%) scale(0);
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  pointer-events: none;
+}
+
+.uhv-progress-container:hover .uhv-progress-current::after {
+  transform: translate(50%, -50%) scale(1);
+}
+
+/* Control Buttons Row */
+.uhv-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.uhv-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.uhv-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.uhv-btn:hover {
+  color: var(--player-primary);
+  background: rgba(255,255,255,0.1);
+}
+
+.uhv-time-display {
+  color: #fff;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+/* Volume Slider */
+.uhv-volume-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.uhv-volume-slider {
+  width: 0;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: width 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+}
+.uhv-volume-container:hover .uhv-volume-slider,
+.uhv-volume-slider:focus-within {
+  width: 80px;
+  transform: scaleX(1);
+}
+.uhv-volume-input {
+  width: 100%;
+  accent-color: var(--player-primary);
+  cursor: pointer;
+}
+
+/* Centered Big Play Button */
+.uhv-big-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+.uhv-big-play:hover {
+  background: var(--player-primary);
+  border-color: var(--player-primary);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Loading Overlay */
+.uhv-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.uhv-loading-overlay.active {
+  opacity: 1;
+}
+.uhv-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255,255,255,0.2);
+  border-top-color: var(--player-primary);
+  border-radius: 50%;
+  animation: uhvSpin 1s linear infinite;
+}
+@keyframes uhvSpin {
+  100% { transform: rotate(360deg); }
+}
+
+/* Error Overlay */
+.uhv-error-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  text-align: center;
+  padding: 20px;
+}
+.uhv-error-overlay.active {
+  display: flex;
+}
+.uhv-error-overlay i {
+  font-size: 3rem;
+  color: #ff4d4d;
+  margin-bottom: 15px;
+}
+.uhv-error-overlay h3 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+}
+.uhv-error-overlay p {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin: 0;
+}

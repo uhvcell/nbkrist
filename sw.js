@@ -2,7 +2,7 @@
  * UHV CELL Modern Service Worker
  * Stale-while-revalidate for fast load & offline support
  */
-const CACHE_NAME = 'uhv-cache-v2';
+const CACHE_NAME = 'uhv-cache-v3';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -45,6 +45,25 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     // Only handle GET requests and skip CMS API/upload paths
     if (event.request.method !== 'GET' || event.request.url.includes('/api/')) {
+        return;
+    }
+
+    const isDataFile = event.request.url.includes('-data.js') || 
+                       event.request.url.includes('site-settings.js') || 
+                       event.request.url.includes('page-content.js');
+
+    if (isDataFile) {
+        event.respondWith(
+            fetch(event.request)
+                .then((networkResponse) => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        const responseClone = networkResponse.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+                    }
+                    return networkResponse;
+                })
+                .catch(() => caches.match(event.request))
+        );
         return;
     }
 

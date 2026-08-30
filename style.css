@@ -194,7 +194,6 @@ button {
 .table-wrap {
     width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 @media (max-width: 1400px) {
@@ -354,8 +353,8 @@ button {
         var(--primary) 160px
     );
     background-size: 160px 100%;
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
     will-change: background-position;
@@ -472,8 +471,8 @@ h4 {
     margin-bottom: 1rem;
     background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--primary));
     background-size: 220% 100%;
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 35px rgba(40, 247, 255, 0.24);
     animation: titleFlow 7s linear infinite;
@@ -507,6 +506,7 @@ header {
     height: auto;
     padding: 18px 0;
     background: linear-gradient(180deg, rgba(10, 14, 38, 0.95), rgba(10, 10, 26, 0.86));
+    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
@@ -583,8 +583,8 @@ header .container.navbar {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     z-index: 1400;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -597,6 +597,7 @@ header .container.navbar {
 
 body.menu-open {
     overflow: hidden;
+    overscroll-behavior-y: none;
 }
 
 /* Mobile Nav Drawer (< 1200px) */
@@ -613,8 +614,8 @@ body.menu-open {
         height: 100vh;
         height: 100dvh;
         background: rgba(12, 16, 48, 0.96);
-        backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
         border-left: 1px solid rgba(0, 243, 255, 0.25);
         box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
         padding: 100px 30px 40px;
@@ -626,7 +627,6 @@ body.menu-open {
         transform: translate3d(100%, 0, 0);
         transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
         touch-action: pan-y;
         will-change: transform;
     }
@@ -730,6 +730,7 @@ body.menu-open {
     font-weight: 700;
     margin-bottom: 35px;
     box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     text-transform: uppercase;
     letter-spacing: 1.5px;
@@ -817,6 +818,7 @@ body.menu-open {
     transition: all 0.4s ease;
     position: relative;
     z-index: 1;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 
@@ -1069,6 +1071,7 @@ footer .logo-text .subtitle {
         height: 100vh;
         height: 100dvh;
         background: rgba(5, 5, 16, 0.99);
+        -webkit-backdrop-filter: blur(25px);
         backdrop-filter: blur(25px);
         flex-direction: column;
         padding: calc(var(--header-offset, 130px) + 24px) 20px 40px;
@@ -1116,7 +1119,7 @@ footer .logo-text .subtitle {
 
 @media (max-width: 1200px) {
     .hero {
-        min-height: auto;
+        min-height: 0;
         padding: 60px 0;
         text-align: center;
     }
@@ -1179,7 +1182,7 @@ footer .logo-text .subtitle {
     }
 
     .active-member-display {
-        min-height: auto;
+        min-height: 0;
         padding: 30px 10px;
     }
 
@@ -1260,8 +1263,8 @@ footer .logo-text .subtitle {
     position: relative;
     overflow: hidden;
     padding-bottom: 12px;
-    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
 }
 
 .team-marquee-container::-webkit-scrollbar {
@@ -1343,6 +1346,7 @@ footer .logo-text .subtitle {
     padding-bottom: 20px;
     transition: transform 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     position: relative;
     display: flex;
@@ -1454,8 +1458,8 @@ footer .logo-text .subtitle {
     /* Slightly larger name */
     margin-bottom: 8px;
     background: linear-gradient(to right, #fff, var(--primary));
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -1639,6 +1643,7 @@ footer .logo-text .subtitle {
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     background: linear-gradient(to right, #fff, var(--primary));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -1686,6 +1691,17 @@ footer .logo-text .subtitle {
     background: rgba(255, 255, 255, 0.3);
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
+}
+
+.slider-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
 }
 
 .slider-dot.active {
@@ -1722,6 +1738,7 @@ footer .logo-text .subtitle {
     cursor: pointer;
     transition: all 0.3s ease;
     pointer-events: auto;
+    -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
 }
 
@@ -1833,8 +1850,8 @@ footer .logo-text .subtitle {
     .team-marquee-track {
         gap: 20px;
         will-change: transform;
-        transform: translate3d(0, 0, 0);
         -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
     }
 
     .marquee-item {
@@ -1859,7 +1876,6 @@ footer .logo-text .subtitle {
 
     /* Fast momentum scrolling */
     html, body {
-        -webkit-overflow-scrolling: touch;
         touch-action: pan-y;
         overscroll-behavior-y: none;
     }
@@ -2012,6 +2028,7 @@ footer .logo-text .subtitle {
     height: 35px;
     border-radius: 50%;
     background: rgba(255,255,255,0.1);
+    -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
 }
 
@@ -2167,6 +2184,7 @@ html {
     height: 46px;
     border-radius: 50%;
     background: rgba(20, 23, 51, 0.85);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(40, 247, 255, 0.35);
     color: var(--primary);
@@ -2202,6 +2220,7 @@ html {
     left: 50%;
     transform: translateX(-50%) translateY(20px);
     background: rgba(20, 24, 56, 0.95);
+    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     border: 1px solid var(--primary);
     color: #ffffff;

@@ -1479,163 +1479,153 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             if (typeof allTeamMembers === 'undefined' && typeof facultyCoordinators === 'undefined') return;
-            const members = typeof allTeamMembers !== 'undefined' ? allTeamMembers : [...(facultyCoordinators || []), ...(studentCoordinators || [])];
+            const members = typeof allTeamMembers !== 'undefined'
+                ? allTeamMembers
+                : [...(facultyCoordinators || []), ...(studentCoordinators || [])];
 
-            // Helper to get category/department of a member
+            // --- Department Resolver ---
+            // Uses the exact 'department' field saved by the admin panel.
+            // Falls back to role-based detection only if department is missing.
             function getMemberDepartment(m) {
                 if (m.department) return m.department;
                 const r = (m.role || '').toLowerCase();
-                const d = (m.detail || '').toLowerCase();
-
                 if (r.includes('chairperson') || r.includes('director') || r.includes('administrator')) return 'Administrator';
                 if (r.includes('convener') || r.includes('principal') || r.includes('general secretary')) return 'General Secretary';
-                if (r.includes('uhv coordinator') || r.includes('uhv co-coordinator') || r.includes('joint secretary')) return 'Joint Secretary';
+                if (r.includes('uhv coordinator') || r.includes('joint secretary')) return 'Joint Secretary';
                 if (r === 'student coordinator' || r.includes('president')) return 'President';
-                if (r === 'student co-coordinator' || r.includes('vice president')) return 'Volunteers Team';
+                if (r.includes('vice president')) return 'Vice President';
                 if (r.includes('technical')) return 'Technical Team';
                 if (r.includes('skill') || r.includes('design')) return 'Design Team';
                 if (r.includes('content') || r.includes('marketing') || r.includes('pr')) return 'Marketing Team';
                 if (r.includes('innovation')) return 'Innovation Team';
-                if (r.includes('volunteer')) return 'Volunteers Team';
                 return 'Volunteers Team';
             }
 
             function getMemberFilterCategory(m) {
-                const dept = getMemberDepartment(m).toLowerCase();
-                if (dept.includes('administrator') || dept.includes('general secretary') || dept.includes('joint secretary')) return 'ab';
-                if (dept.includes('president') || dept.includes('vice president')) return 'sb';
-                if (dept.includes('volunteer')) return 'volunteers';
-                if (dept.includes('technical')) return 'technical';
-                if (dept.includes('marketing') || dept.includes('content')) return 'marketing';
-                if (dept.includes('design') || dept.includes('skill')) return 'design';
-                if (dept.includes('innovation')) return 'innovation';
-                return 'volunteers';
+                const dept = getMemberDepartment(m);
+                if (['Administrator', 'General Secretary', 'Joint Secretary'].includes(dept)) return 'ab';
+                if (['President', 'Vice President'].includes(dept)) return 'sb';
+                if (dept === 'Technical Team')  return 'technical';
+                if (dept === 'Marketing Team')  return 'marketing';
+                if (dept === 'Design Team')     return 'design';
+                if (dept === 'Innovation Team') return 'innovation';
+                return 'volunteers'; // Volunteers Team + fallback
             }
 
-            // 1. Bind Leader Slots
-            function applyLeaderToSlot(slotId, nameId, targetDeptKeywords) {
-                const slot = document.getElementById(slotId);
+            // Safely resolve image URL
+            function resolveImg(src) {
+                if (!src) return null;
+                return src;
+            }
+
+            // --- 1. Bind Leader Photo Slots in Org Chart ---
+            // Each slot maps to exactly one department value from the admin panel.
+            const leaderSlotMap = [
+                { slotId: 'slot-administrator',     nameId: 'name-administrator',     dept: 'Administrator' },
+                { slotId: 'slot-general-secretary', nameId: 'name-general-secretary', dept: 'General Secretary' },
+                { slotId: 'slot-joint-secretary',   nameId: 'name-joint-secretary',   dept: 'Joint Secretary' },
+                { slotId: 'slot-president',         nameId: 'name-president',         dept: 'President' },
+                { slotId: 'slot-vice-president',    nameId: 'name-vice-president',    dept: 'Vice President' }
+            ];
+
+            leaderSlotMap.forEach(({ slotId, nameId, dept }) => {
+                const slot   = document.getElementById(slotId);
                 const nameEl = document.getElementById(nameId);
                 if (!slot) return;
 
-                const member = members.find(m => {
-                    const dept = getMemberDepartment(m).toLowerCase();
-                    const r = (m.role || '').toLowerCase();
-                    return targetDeptKeywords.some(kw => dept.includes(kw) || r.includes(kw));
-                });
-
+                const member = members.find(m => getMemberDepartment(m) === dept);
                 if (member) {
-                    if (member.image) {
-                        slot.innerHTML = `<img src="${member.image}" alt="${member.name || ''}" class="node-avatar-img team-avatar-img" onerror="this.style.display='none'">`;
+                    const img = resolveImg(member.image);
+                    if (img) {
+                        slot.innerHTML = `<img src="${img}" alt="${member.name || ''}" class="node-avatar-img" onerror="this.style.display='none'">`;
                     }
                     if (nameEl && member.name) {
                         nameEl.textContent = member.name;
                         nameEl.style.display = 'block';
                     }
                 }
-            }
+            });
 
-            applyLeaderToSlot('slot-administrator', 'name-administrator', ['administrator', 'chairperson']);
-            applyLeaderToSlot('slot-general-secretary', 'name-general-secretary', ['general secretary', 'convener']);
-            applyLeaderToSlot('slot-joint-secretary', 'name-joint-secretary', ['joint secretary', 'uhv coordinator']);
-            applyLeaderToSlot('slot-president', 'name-president', ['president', 'student coordinator']);
-            applyLeaderToSlot('slot-vice-president', 'name-vice-president', ['vice president']);
-
-            // 2. Populate In-Card Member Chips for 5 Teams
+            // --- 2. Populate Team Cards (5 Department Wings) ---
             const teamConfigs = [
-                { id: 'volunteers', keywords: ['president', 'volunteer', 'student coordinator', 'student co-coordinator'], slotId: 'slot-team-volunteers' },
-                { id: 'technical', keywords: ['technical'], slotId: 'slot-team-technical' },
-                { id: 'marketing', keywords: ['marketing', 'content'], slotId: 'slot-team-marketing' },
-                { id: 'design', keywords: ['design', 'skill'], slotId: 'slot-team-design' },
-                { id: 'innovation', keywords: ['innovation'], slotId: 'slot-team-innovation' }
+                { id: 'volunteers', depts: ['Volunteers Team', 'President'], slotId: 'slot-team-volunteers' },
+                { id: 'technical',  depts: ['Technical Team'],               slotId: 'slot-team-technical' },
+                { id: 'marketing',  depts: ['Marketing Team'],               slotId: 'slot-team-marketing' },
+                { id: 'design',     depts: ['Design Team'],                  slotId: 'slot-team-design' },
+                { id: 'innovation', depts: ['Innovation Team'],              slotId: 'slot-team-innovation' }
             ];
 
             teamConfigs.forEach(cfg => {
-                let teamMembers = members.filter(m => {
-                    const dept = getMemberDepartment(m).toLowerCase();
-                    const r = (m.role || '').toLowerCase();
-                    return cfg.keywords.some(kw => dept.includes(kw) || r.includes(kw));
-                });
-
-                // For Volunteers Team, ensure President is pinned as Coordinator
-                if (cfg.id === 'volunteers') {
-                    const presidentMember = members.find(m => {
-                        const dept = getMemberDepartment(m).toLowerCase();
-                        const r = (m.role || '').toLowerCase();
-                        return dept.includes('president') || r.includes('president') || r.includes('student coordinator');
-                    });
-                    if (presidentMember && !teamMembers.includes(presidentMember)) {
-                        teamMembers.unshift(presidentMember);
-                    }
-                }
-
-                const listEl = document.getElementById(`list-${cfg.id}`);
+                const teamMembers = members.filter(m => cfg.depts.includes(getMemberDepartment(m)));
+                const listEl  = document.getElementById(`list-${cfg.id}`);
                 const countEl = document.getElementById(`count-${cfg.id}`);
-                const containerEl = document.getElementById(`members-container-${cfg.id}`);
+                const slot    = document.getElementById(cfg.slotId);
 
                 if (countEl) countEl.textContent = teamMembers.length;
 
-                // Set team leader avatar if available (President is leader for volunteers)
-                if (teamMembers.length > 0 && teamMembers[0].image) {
-                    const slot = document.getElementById(cfg.slotId);
-                    if (slot) {
-                        slot.innerHTML = `<img src="${teamMembers[0].image}" alt="${teamMembers[0].name || ''}" class="team-avatar-img" onerror="this.style.display='none'">`;
-                    }
+                // Show wing lead (or first member with photo) as the team card avatar
+                const featured = teamMembers.find(m => m.isLead && m.image) || teamMembers.find(m => m.image);
+                if (featured && slot) {
+                    const img = resolveImg(featured.image);
+                    if (img) slot.innerHTML = `<img src="${img}" alt="${featured.name || ''}" class="team-avatar-img" onerror="this.style.display='none'">`;
                 }
 
                 if (listEl) {
-                    if (teamMembers.length > 0) {
-                        listEl.innerHTML = teamMembers.map(m => `
-                            <div class="team-member-chip" title="${m.name} - ${m.role}">
-                                ${m.image ? `<img src="${m.image}" alt="${m.name}" class="team-member-chip-img" onerror="this.style.display='none'">` : `<i class="fa-solid ${m.icon || 'fa-user'}" style="font-size: 0.8rem; color: var(--primary);"></i>`}
+                    listEl.innerHTML = teamMembers.length > 0
+                        ? teamMembers.map(m => {
+                            const img = resolveImg(m.image);
+                            return `
+                            <div class="team-member-chip" title="${m.name || ''} — ${m.role || ''}">
+                                ${img
+                                    ? `<img src="${img}" alt="${m.name || ''}" class="team-member-chip-img" onerror="this.style.display='none'">`
+                                    : `<i class="fa-solid ${m.icon || 'fa-user'}" style="font-size:0.8rem;color:var(--primary);min-width:24px;text-align:center;"></i>`
+                                }
                                 <div class="team-member-chip-info">
-                                    <span class="team-member-chip-name">${m.name}</span>
+                                    <span class="team-member-chip-name">${m.name || ''}${m.isLead ? ' ⭐' : ''}</span>
                                     <span class="team-member-chip-role">${m.role || ''}</span>
                                 </div>
-                            </div>
-                        `).join('');
-                    } else {
-                        listEl.innerHTML = `<span style="font-size: 0.72rem; color: var(--text-muted); font-style: italic;">No members added yet</span>`;
-                    }
+                            </div>`;
+                        }).join('')
+                        : `<span style="font-size:0.72rem;color:var(--text-muted);font-style:italic;">No members added yet</span>`;
                 }
             });
 
-            // 3. Populate Full Directory Roster
-            const totalMemberCountEl = document.getElementById('totalMemberCount');
-            if (totalMemberCountEl) totalMemberCountEl.textContent = members.length;
+            // --- 3. Full Team Directory Grid ---
+            const totalEl = document.getElementById('totalMemberCount');
+            if (totalEl) totalEl.textContent = members.length;
 
             const directoryGrid = document.getElementById('directoryGrid');
             if (directoryGrid) {
-                directoryGrid.innerHTML = members.map((m, idx) => {
-                    const dept = getMemberDepartment(m);
+                directoryGrid.innerHTML = members.map(m => {
+                    const dept     = getMemberDepartment(m);
                     const category = getMemberFilterCategory(m);
+                    const img      = resolveImg(m.image);
+                    const iconClass = m.icon || 'fa-user';
                     return `
                         <div class="member-card-box" data-category="${category}">
-                            ${m.image ? `<img src="${m.image}" alt="${m.name}" class="member-card-photo" onerror="this.outerHTML='<div class=\\'member-card-placeholder\\'><i class=\\'fa-solid ${m.icon || 'fa-user'}\\'></i></div>'">` : `<div class="member-card-placeholder"><i class="fa-solid ${m.icon || 'fa-user'}"></i></div>`}
-                            <h3 class="member-card-name">${m.name}</h3>
+                            ${img
+                                ? `<img src="${img}" alt="${m.name || ''}" class="member-card-photo" onerror="this.outerHTML='<div class=\\'member-card-placeholder\\'><i class=\\'fa-solid ${iconClass}\\'></i></div>'">`
+                                : `<div class="member-card-placeholder"><i class="fa-solid ${iconClass}"></i></div>`
+                            }
+                            <h3 class="member-card-name">${m.name || ''}${m.special ? ' <span style="color:var(--primary);font-size:0.8em;">★</span>' : ''}</h3>
                             <div class="member-card-role">${m.role || ''}</div>
                             <div class="member-card-dept">${dept}</div>
                             ${m.detail ? `<p class="member-card-detail">${m.detail}</p>` : ''}
-                        </div>
-                    `;
+                        </div>`;
                 }).join('');
             }
 
-            // 4. Directory Filter Interaction
+            // --- 4. Directory Filter Buttons ---
             const filterBtns = document.querySelectorAll('.filter-btn');
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', function () {
                     filterBtns.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     const filter = this.getAttribute('data-filter');
-
-                    const cards = document.querySelectorAll('.member-card-box');
-                    cards.forEach(card => {
-                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                            card.style.display = 'flex';
-                        } else {
-                            card.style.display = 'none';
-                        }
+                    document.querySelectorAll('.member-card-box').forEach(card => {
+                        card.style.display =
+                            (filter === 'all' || card.getAttribute('data-category') === filter)
+                                ? 'flex' : 'none';
                     });
                 });
             });
