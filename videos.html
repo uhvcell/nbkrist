@@ -7,19 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#060612">
     <meta name="color-scheme" content="dark">
-    <title>Videos & Media | UHV CELL NBKRIST</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="shortcut icon" href="favicon.png">
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#060612">
-    <meta name="color-scheme" content="dark">
-    <title>Videos & Media | UHV CELL NBKRIST</title>
+    <title>Videos &amp; Media | UHV CELL NBKRIST</title>
+    <meta name="description" content="Watch recorded sessions, expert talks, and short films on Universal Human Values from UHV CELL NBKRIST.">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
@@ -31,7 +20,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="video-player.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-    
 </head>
 
 <body>
@@ -66,7 +54,8 @@
             </ul>
         </div>
     </header>
-<div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
+
+    <div class="page-header header-glow" style="padding: 80px 0; text-align: center;">
         <h1 style="font-size: 3rem;">Videos</h1>
         <p>Recorded sessions and expert talks on human values</p>
     </div>
@@ -78,7 +67,7 @@
 
             <div
                 style="background: var(--bg-surface); padding: 40px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-top: 20px;">
-                <h2 style="margin-bottom: 30px;">Featured Resources & Talks</h2>
+                <h2 style="margin-bottom: 30px;">Featured Resources &amp; Talks</h2>
 
                 <!-- Dynamic Video Grid -->
                 <div id="videoGrid"
@@ -93,7 +82,7 @@
     <!-- Video Modal -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
-            <span class="close-modal">&times;</span>
+            <button class="close-modal" aria-label="Close video">&times;</button>
             <div class="video-container" id="videoContainer">
                 <div id="custom-player-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
                 </div>
@@ -110,16 +99,16 @@
             display: none;
             position: fixed;
             z-index: 1000;
-            inset: 0; /* Modern shorthand for top/left/right/bottom: 0 */
+            inset: 0;
             width: 100%;
             height: 100%;
-            height: 100dvh; /* Dynamic viewport height for mobile browsers */
+            height: 100dvh;
             background-color: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(10px);
             align-items: center;
             justify-content: center;
-            padding: 15px; /* Prevent touching edges on mobile */
-            overflow-y: auto; /* Allow scrolling if content is too tall */
+            padding: 15px;
+            overflow-y: auto;
         }
 
         .video-modal-content {
@@ -129,13 +118,13 @@
             position: relative;
             background: var(--bg-surface);
             border-radius: 16px;
-            overflow: hidden; /* Hide overflow from border-radius */
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             border: 1px solid var(--primary-dim);
             box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
             animation: modalFadeIn 0.3s ease;
-            margin: auto; /* Center in scrollable flex container */
+            margin: auto;
         }
 
         @keyframes modalFadeIn {
@@ -143,7 +132,6 @@
                 opacity: 0;
                 transform: scale(0.9);
             }
-
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -155,12 +143,10 @@
                 transform: translate(-50%, -50%) scale(1);
                 box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
             }
-
             50% {
                 transform: translate(-50%, -50%) scale(1.1);
                 box-shadow: 0 0 40px rgba(0, 243, 255, 0.6);
             }
-
             100% {
                 transform: translate(-50%, -50%) scale(1);
                 box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
@@ -177,6 +163,9 @@
             cursor: pointer;
             z-index: 30;
             transition: color 0.3s;
+            background: none;
+            border: none;
+            line-height: 1;
         }
 
         .close-modal:hover {
@@ -186,15 +175,15 @@
         .video-container {
             position: relative;
             width: 100%;
-            aspect-ratio: 16 / 9; /* Modern aspect ratio property */
+            aspect-ratio: 16 / 9;
             background: #000;
             flex-shrink: 0;
-            max-height: calc(100dvh - 120px); /* Leave room for title on mobile */
+            max-height: calc(100dvh - 120px);
         }
 
         .video-info {
             padding: clamp(15px, 3vw, 25px);
-            overflow-y: auto; /* Scroll info if modal is constrained */
+            overflow-y: auto;
         }
 
         .video-info h3 {
@@ -208,8 +197,7 @@
             font-size: clamp(0.85rem, 2vw, 0.95rem);
             line-height: 1.5;
         }
-        
-        /* Mobile Specific Overrides */
+
         @media (max-width: 768px) {
             .close-modal {
                 top: 10px;
@@ -236,9 +224,11 @@
             card.style.animationDelay = `${index * 0.2}s`;
             card.style.cursor = 'pointer';
 
+            const thumb = video.thumbnail || '';
+
             card.innerHTML = `
                 <div style="aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                    <img src="${video.thumbnail}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: all 0.5s ease;" class="card-thumb" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
+                    ${thumb ? `<img src="${thumb}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: all 0.5s ease;" class="card-thumb" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">` : '<div class="card-thumb" style="width:100%;height:100%;background:#1a1a2e;"></div>'}
                     <div style="position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6));"></div>
                     <div class="play-trigger" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(0, 243, 255, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); border: 2px solid var(--primary); z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: pulsePlay 2s infinite ease-in-out;">
                         <i class="fa-solid fa-play" style="font-size: 2.5rem; color: var(--primary); margin-left: 8px; filter: drop-shadow(0 0 15px var(--primary));"></i>
@@ -254,13 +244,15 @@
             `;
 
             card.addEventListener('mouseenter', () => {
-                card.querySelector('.card-thumb').style.transform = 'scale(1.1)';
+                const ct = card.querySelector('.card-thumb');
+                if (ct && ct.tagName === 'IMG') ct.style.transform = 'scale(1.1)';
                 card.querySelector('.play-trigger').style.animation = 'none';
                 card.querySelector('.play-trigger').style.transform = 'translate(-50%, -50%) scale(1.2)';
                 card.querySelector('.play-trigger').style.boxShadow = '0 0 50px var(--primary)';
             });
             card.addEventListener('mouseleave', () => {
-                card.querySelector('.card-thumb').style.transform = 'scale(1)';
+                const ct = card.querySelector('.card-thumb');
+                if (ct && ct.tagName === 'IMG') ct.style.transform = 'scale(1)';
                 card.querySelector('.play-trigger').style.animation = 'pulsePlay 2s infinite ease-in-out';
                 card.querySelector('.play-trigger').style.transform = 'translate(-50%, -50%) scale(1)';
             });
@@ -330,4 +322,3 @@
 </body>
 
 </html>
-

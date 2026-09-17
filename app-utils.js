@@ -175,45 +175,39 @@
                 modal = document.createElement('div');
                 modal.id = 'videoModal';
                 modal.className = 'modal';
-                modal.style.display = 'none';
+                modal.style.cssText = 'display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,0.95); backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:15px; overflow-y:auto;';
                 modal.innerHTML = `
-                    <div class="modal-content" style="background:#111; border-radius:12px; overflow:hidden; max-width:850px; width:90%; position:relative; box-shadow:0 0 40px rgba(0,243,255,0.2); border:1px solid rgba(255,255,255,0.1);">
-                        <button class="close-modal" style="position:absolute; right:15px; top:15px; background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:36px; height:36px; cursor:pointer; font-size:1.2rem; z-index:10;"><i class="fa-solid fa-xmark"></i></button>
-                        <div id="custom-player-container" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;"></div>
+                    <div class="modal-content" style="background:#111; border-radius:16px; overflow:hidden; max-width:1000px; width:100%; position:relative; box-shadow:0 0 50px rgba(0,243,255,0.2); border:1px solid rgba(0,243,255,0.2); display:flex; flex-direction:column; margin:auto;">
+                        <button class="close-modal" style="position:absolute; right:15px; top:15px; background:rgba(0,0,0,0.7); color:#fff; border:none; border-radius:50%; width:38px; height:38px; cursor:pointer; font-size:1.2rem; z-index:30; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+                        <div id="custom-player-container" style="position:relative; width:100%; aspect-ratio:16/9; background:#000; flex-shrink:0;"></div>
                         <div style="padding:20px;">
-                            <h3 id="modalTitle" style="color:var(--primary); margin-bottom:8px;"></h3>
-                            <p id="modalDesc" style="color:var(--text-muted); font-size:0.9rem;"></p>
+                            <h3 id="modalTitle" style="color:var(--primary, #00f3ff); margin-bottom:8px;"></h3>
+                            <p id="modalDesc" style="color:#94a3b8; font-size:0.9rem;"></p>
                         </div>
                     </div>
                 `;
                 document.body.appendChild(modal);
                 playerContainer = modal.querySelector('#custom-player-container');
 
-                modal.querySelector('.close-modal').addEventListener('click', () => {
+                const doClose = () => {
                     modal.style.display = 'none';
-                    if (window.currentVideoPlayer && window.currentVideoPlayer.video) {
-                        window.currentVideoPlayer.video.pause();
+                    if (window.currentVideoPlayer) {
+                        if (window.currentVideoPlayer.video) window.currentVideoPlayer.video.pause();
+                        if (window.currentVideoPlayer.destroy) window.currentVideoPlayer.destroy();
+                        window.currentVideoPlayer = null;
                     }
                     playerContainer.innerHTML = '';
                     document.body.style.overflow = '';
-                });
+                };
 
-                window.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.style.display = 'none';
-                        if (window.currentVideoPlayer && window.currentVideoPlayer.video) {
-                            window.currentVideoPlayer.video.pause();
-                        }
-                        playerContainer.innerHTML = '';
-                        document.body.style.overflow = '';
-                    }
-                });
+                modal.querySelector('.close-modal').addEventListener('click', doClose);
+                window.addEventListener('click', (e) => { if (e.target === modal) doClose(); });
             }
 
             const modalTitle = document.getElementById('modalTitle');
             const modalDesc = document.getElementById('modalDesc');
 
-            if (!video?.videoUrl) return;
+            if (!video || (!video.videoUrl && (!video.sources || video.sources.length === 0))) return;
 
             if (modalTitle) modalTitle.textContent = video.title || 'Video';
             if (modalDesc) modalDesc.textContent = video.description || '';
@@ -244,7 +238,7 @@
                 }
             } catch (err) {
                 console.error("Video Player Error:", err);
-                playerContainer.innerHTML = '<div style="color:#ff4d4d; padding:20px; text-align:center;">Failed to initialize video player.</div>';
+                playerContainer.innerHTML = '<div style="color:#ff4d4d; padding:20px; text-align:center;"><i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;margin-bottom:10px;display:block;"></i>Failed to initialize video player.</div>';
             }
         };
 
@@ -254,6 +248,11 @@
         const hideModal = () => {
             if (!modal) return;
             modal.style.display = 'none';
+            if (window.currentVideoPlayer) {
+                if (window.currentVideoPlayer.video) window.currentVideoPlayer.video.pause();
+                if (window.currentVideoPlayer.destroy) window.currentVideoPlayer.destroy();
+                window.currentVideoPlayer = null;
+            }
             const playerContainer = document.getElementById('custom-player-container') || document.getElementById('dailymotion-player');
             if (playerContainer) playerContainer.innerHTML = '';
             document.body.style.overflow = '';
