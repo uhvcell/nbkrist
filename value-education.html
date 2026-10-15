@@ -17,8 +17,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-</head>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" media="print" onload="this.media='all'" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"></noscript>
+      <!-- uhv:seo:start -->
+    <meta name="description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta property="og:title" content="Value Education | UHV CELL NBKRIST">
+    <meta name="twitter:title" content="Value Education | UHV CELL NBKRIST">
+    <meta property="og:description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta name="twitter:description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta property="og:image" content="logo.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:type" content="website">
+    <!-- uhv:seo:end -->
+  </head>
 
 <body>
 
@@ -26,14 +39,14 @@
         <div class="container navbar">
             <a href="index.html" class="logo">
                 <div class="logo-left-group">
-                    <img src="logo.jpg" alt="Logo" class="logo-main-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
+                    <img src="logo.jpg" alt="UHV CELL NBKRIST logo" class="logo-main-img" data-cms-logo="main" fetchpriority="high" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <div class="logo-text">
-                        <span>UHV CELL NBKRIST</span>
-                        <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                        <span data-cms-title>UHV CELL NBKRIST</span>
+                        <span class="subtitle" data-cms-subtitle>UNIVERSAL HUMAN VALUES</span>
                     </div>
                 </div>
                 <div class="second-logo-wrapper">
-                    <img src="second_logo.png" alt="Logo" class="logo-second-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
+                    <img src="second_logo.png" alt="NBKRIST correspondent logo" class="logo-second-img" data-cms-logo="second" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <span class="correspondent-name">SRI N.RAM KUMAR</span>
                     <span class="logo-caption">Correspondent</span>
                 </div>
@@ -42,7 +55,7 @@
             <ul class="nav-links" id="site-nav">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
-                <li><a href="activities.html" class="active">Activities</a></li>
+                <li><a href="activities.html" class="active" aria-current="page">Activities</a></li>
                 <li><a href="resources.html">Resources</a></li>
                 <li><a href="team-structure.html">Our Team</a></li>
                 <li><a href="newsletter.html">Newsletter</a></li>
@@ -63,9 +76,15 @@
             
             <h2 style="margin-top: 20px; margin-bottom: 30px; text-align: center; color: var(--primary);" data-cms-bind="videoSection.title">Group Discussions Video</h2>
 
-            <div style="margin-bottom: 50px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); background: #000;">
-                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden; max-width: 100%;">
-                    <iframe data-cms-src="videoSection.embedUrl" sandbox="allow-scripts allow-same-origin allow-presentation" src="https://geo.dailymotion.com/player.html?video=xa2rzvy&autoplay=0&ui-logo=0&queue-enable=0&sharing-enable=0&ui-display-sharing=0&ui-display-logo=0&ui-display-cast=1&playsinline=1" style="width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden; border:none; max-width: 100%;" allowfullscreen title="Group Discussions Video" allow="web-share"></iframe>
+            <div id="dm-player-xa2rzvy" style="margin-bottom: 50px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); background: #000;">
+                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden; max-width: 100%; cursor:pointer;" onclick="(function(el){var f=el.querySelector('.dm-facade');if(f)f.remove();var d=document.createElement('iframe');d.src='https://www.dailymotion.com/embed/video/xa2rzvy?autoplay=1&ui-logo=0&queue-enable=0&sharing-enable=0&ui-start-screen-info=0';d.style='width:100%;height:100%;position:absolute;left:0;top:0;border:none;';d.allow='autoplay;fullscreen;encrypted-media;picture-in-picture;web-share';d.allowFullscreen=true;d.referrerPolicy='no-referrer-when-downgrade';d.title='Group Discussions Video';d.onerror=function(){window.open('https://www.dailymotion.com/video/xa2rzvy','_blank')};el.appendChild(d);setTimeout(function(){if(d.contentDocument&&d.contentDocument.body&&d.contentDocument.body.innerText.trim()==='Forbidden'){d.remove();window.open('https://www.dailymotion.com/video/xa2rzvy','_blank')}},4000)})(this)">
+                    <div class="dm-facade" style="width:100%;height:100%;position:absolute;left:0;top:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0a1a 0%,#1a1a3e 100%);">
+                        <img src="https://www.dailymotion.com/thumbnail/video/xa2rzvy" alt="Group Discussions Video" style="width:100%;height:100%;object-fit:cover;position:absolute;left:0;top:0;opacity:0.7;" onerror="this.style.display='none'">
+                        <div style="position:relative;z-index:2;text-align:center;">
+                            <div style="width:80px;height:80px;border-radius:50%;background:rgba(0,243,255,0.2);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border:2px solid rgba(0,243,255,0.5);transition:transform 0.3s;"><i class="fa-solid fa-play" style="font-size:28px;color:#00f3ff;margin-left:4px;"></i></div>
+                            <div style="color:#fff;font-weight:600;font-size:0.95rem;text-shadow:0 2px 8px rgba(0,0,0,0.6);">Click to Play Video</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -125,6 +144,7 @@
         </div>
     </footer>
     <script src="site-settings.js" defer></script>
+    <script src="navigation-data.js" defer></script>
     <script src="page-content.js" defer></script>
     <script src="app-utils.js" defer></script>
 </body>

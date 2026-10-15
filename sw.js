@@ -2,7 +2,9 @@
  * UHV CELL Modern Service Worker
  * Stale-while-revalidate for fast load & offline support
  */
-const CACHE_NAME = 'uhv-cache-v3';
+// Bump CACHE_NAME on every structural HTML/CSS/JS release so stale assets are
+// not served after a new build. (Data files are already network-first below.)
+const CACHE_NAME = 'uhv-cache-v5';
 const STATIC_ASSETS = [
     './',
     './index.html',

@@ -436,7 +436,7 @@
   box-shadow: 0 6px 20px rgba(0, 243, 255, 0.5);
 }
 
-/* Mobile Adjustments */
+/* Mobile Adjustments (<=768px) */
 @media (max-width: 768px) {
   .glass-controls {
     bottom: 10px;
@@ -445,24 +445,136 @@
     padding: 12px 15px;
     gap: 10px;
   }
-  
-  .uhv-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 0.9rem;
+
+  /* Allow the control row to wrap so no button is clipped off-viewport. */
+  .uhv-controls-row {
+    flex-wrap: wrap;
+    gap: 8px;
   }
-  
+
+  .uhv-controls-group {
+    gap: 8px;
+  }
+
+  /* Keep buttons as >=44px touch targets on mobile. */
+  .uhv-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+  }
+
   .uhv-volume-container {
     display: none; /* Hide volume slider on mobile for cleaner UI */
   }
-  
+
   .uhv-time-display {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
   }
-  
+
   .uhv-big-play {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+    width: 64px;
+    height: 64px;
+    font-size: 1.6rem;
   }
 }
+
+/* Small-phone adjustments (<=480px): keep the player and all of its controls
+   inside the viewport, controls wrapping, every tap target >=44px. */
+@media (max-width: 480px) {
+  .glass-controls {
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    padding: 10px 10px;
+    gap: 8px;
+    max-width: calc(100% - 16px);
+  }
+
+  .uhv-controls-row {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .uhv-controls-group {
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .uhv-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 0.95rem;
+  }
+
+  .uhv-time-display {
+    font-size: 0.75rem;
+    margin-left: 0;
+  }
+
+  .uhv-big-play {
+    width: 56px;
+    height: 56px;
+    font-size: 1.4rem;
+  }
+
+  /* Shrink double-tap indicators so they stay within a narrow viewport. */
+  .double-tap-indicator {
+    width: 76px;
+    height: 76px;
+    font-size: 1rem;
+  }
+
+  .double-tap-indicator i {
+    font-size: 1.5rem;
+  }
+
+  /* Error overlay copy fits a small screen. */
+  .uhv-error-overlay i {
+    font-size: 3rem;
+  }
+
+  .uhv-error-overlay h3 {
+    font-size: 1.25rem;
+  }
+}
+
+/* ========================================================
+   Embedded Player Mode (Dailymotion & Archive.org Embeds)
+   ======================================================== */
+.uhv-video-wrapper.uhv-embed-mode {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.uhv-embed-frame-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.uhv-embedded-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: #000;
+  border-radius: 12px;
+  display: block;
+}
+

@@ -49,10 +49,21 @@
             navLinks.setAttribute('aria-hidden', open ? 'false' : 'true');
         };
 
-        const closeMenu = () => setMenuOpen(false);
+        const closeMenu = () => {
+            setMenuOpen(false);
+            // Return focus to the toggle for keyboard users.
+            if (document.body.classList.contains('menu-was-open')) {
+                menuToggle.focus();
+                document.body.classList.remove('menu-was-open');
+            }
+        };
         const openMenu = () => {
             updateHeaderOffset();
             setMenuOpen(true);
+            document.body.classList.add('menu-was-open');
+            // Move focus to the first nav link in the drawer.
+            const firstLink = navLinks.querySelector('a');
+            if (firstLink) firstLink.focus();
         };
 
         menuToggle.addEventListener('click', (e) => {
@@ -165,8 +176,29 @@
         });
     }
 
+    async function ensureVideoPlayerLoaded() {
+        if (window.UHVVideoPlayer) return true;
+        if (!document.querySelector('link[href*="video-player.css"]')) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'video-player.css';
+            document.head.appendChild(link);
+        }
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'video-player.js';
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.head.appendChild(script);
+        });
+    }
+
     function initVideoModal() {
         window.openVideo = async function (video) {
+            if (!video) return;
+            const hasSource = video.videoUrl || video.videoId || video.id || (video.sources && video.sources.length > 0);
+            if (!hasSource) return;
+
             let modal = document.getElementById('videoModal');
             let playerContainer = document.getElementById('custom-player-container') || document.getElementById('dailymotion-player');
 
@@ -174,13 +206,15 @@
             if (!modal) {
                 modal = document.createElement('div');
                 modal.id = 'videoModal';
-                modal.className = 'modal';
+                modal.className = 'video-modal';
                 modal.style.cssText = 'display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,0.95); backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:15px; overflow-y:auto;';
                 modal.innerHTML = `
-                    <div class="modal-content" style="background:#111; border-radius:16px; overflow:hidden; max-width:1000px; width:100%; position:relative; box-shadow:0 0 50px rgba(0,243,255,0.2); border:1px solid rgba(0,243,255,0.2); display:flex; flex-direction:column; margin:auto;">
-                        <button class="close-modal" style="position:absolute; right:15px; top:15px; background:rgba(0,0,0,0.7); color:#fff; border:none; border-radius:50%; width:38px; height:38px; cursor:pointer; font-size:1.2rem; z-index:30; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
-                        <div id="custom-player-container" style="position:relative; width:100%; aspect-ratio:16/9; background:#000; flex-shrink:0;"></div>
-                        <div style="padding:20px;">
+                    <div class="video-modal-content" style="background:#111; border-radius:16px; overflow:hidden; max-width:1000px; width:100%; position:relative; box-shadow:0 0 50px rgba(0,243,255,0.2); border:1px solid rgba(0,243,255,0.2); display:flex; flex-direction:column; margin:auto;">
+                        <button class="close-modal" aria-label="Close video" style="position:absolute; right:15px; top:15px; background:rgba(0,0,0,0.7); color:#fff; border:none; border-radius:50%; width:38px; height:38px; cursor:pointer; font-size:1.2rem; z-index:30; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+                        <div class="video-container" style="position:relative; width:100%; aspect-ratio:16/9; background:#000; flex-shrink:0;">
+                            <div id="custom-player-container" style="position:absolute; inset:0; width:100%; height:100%;"></div>
+                        </div>
+                        <div class="video-info" style="padding:20px;">
                             <h3 id="modalTitle" style="color:var(--primary, #00f3ff); margin-bottom:8px;"></h3>
                             <p id="modalDesc" style="color:#94a3b8; font-size:0.9rem;"></p>
                         </div>
@@ -192,65 +226,82 @@
                 const doClose = () => {
                     modal.style.display = 'none';
                     if (window.currentVideoPlayer) {
-                        if (window.currentVideoPlayer.video) window.currentVideoPlayer.video.pause();
-                        if (window.currentVideoPlayer.destroy) window.currentVideoPlayer.destroy();
+                        try {
+                            if (window.currentVideoPlayer.video) window.currentVideoPlayer.video.pause();
+                            if (window.currentVideoPlayer.destroy) window.currentVideoPlayer.destroy();
+                        } catch (e) { /* noop */ }
                         window.currentVideoPlayer = null;
                     }
-                    playerContainer.innerHTML = '';
+                    if (playerContainer) playerContainer.innerHTML = '';
                     document.body.style.overflow = '';
                 };
 
-                modal.querySelector('.close-modal').addEventListener('click', doClose);
+                const closeBtn = modal.querySelector('.close-modal');
+                if (closeBtn) closeBtn.addEventListener('click', doClose);
                 window.addEventListener('click', (e) => { if (e.target === modal) doClose(); });
             }
 
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDesc = document.getElementById('modalDesc');
+            const modalTitle = modal.querySelector('#modalTitle') || document.getElementById('modalTitle');
+            const modalDesc = modal.querySelector('#modalDesc') || document.getElementById('modalDesc');
 
-            if (!video || (!video.videoUrl && (!video.sources || video.sources.length === 0))) return;
-
-            if (modalTitle) modalTitle.textContent = video.title || 'Video';
+            if (modalTitle) modalTitle.textContent = video.title || 'Video Resource';
             if (modalDesc) modalDesc.textContent = video.description || '';
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
 
-            // Use the advanced UHVVideoPlayer component
+            // Ensure player script is loaded
+            await ensureVideoPlayerLoaded();
+
+            if (!playerContainer) {
+                playerContainer = modal.querySelector('#custom-player-container') || modal.querySelector('#dailymotion-player') || modal.querySelector('.video-container');
+            }
+
+            if (!playerContainer) return;
             playerContainer.innerHTML = ''; // Clear loading state
-            
+
             try {
-                // Determine if we need to polyfill missing fields for legacy videos
                 const normalizedVideo = { ...video };
-                if (!normalizedVideo.sources && normalizedVideo.videoUrl) {
-                    if (normalizedVideo.videoUrl.includes('archive.org/details/')) {
-                        // For legacy archive.org/details links that haven't been migrated in the CMS yet, 
-                        // we'll pass the embed URL so the player can fallback to iframe.
-                        const id = normalizedVideo.videoUrl.split('/details/')[1].split('/')[0].split('?')[0];
-                        normalizedVideo.videoUrl = `https://archive.org/embed/${id}`;
-                    }
+
+                if (window.UHVVideoUtils && window.UHVVideoUtils.resolveVideoThumbnail && !normalizedVideo.thumbnail) {
+                    normalizedVideo.thumbnail = window.UHVVideoUtils.resolveVideoThumbnail(normalizedVideo);
                 }
 
                 // Create the player instance
-                window.currentVideoPlayer = new UHVVideoPlayer(playerContainer, normalizedVideo);
-                
-                // Auto-play the player if possible
+                window.currentVideoPlayer = new window.UHVVideoPlayer(playerContainer, normalizedVideo);
+
+                // Auto-play the native player if applicable
                 if (window.currentVideoPlayer.video) {
                     window.currentVideoPlayer.video.play().catch(e => console.log('Autoplay prevented:', e));
                 }
             } catch (err) {
                 console.error("Video Player Error:", err);
-                playerContainer.innerHTML = '<div style="color:#ff4d4d; padding:20px; text-align:center;"><i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;margin-bottom:10px;display:block;"></i>Failed to initialize video player.</div>';
+                playerContainer.innerHTML = '<div style="color:#ff4d4d; padding:30px; text-align:center;"><i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;margin-bottom:10px;display:block;"></i>Failed to initialize video player. Please check your network connection.</div>';
             }
         };
 
-        const closeModal = document.querySelector('.close-modal');
-        const modal = document.getElementById('videoModal');
+        // Global click handler for video links (Dailymotion & Internet Archive)
+        document.addEventListener('click', (e) => {
+          const link = e.target.closest('a');
+          if (!link || !link.href) return;
+          const href = link.href;
+          if (/dailymotion\.com|geo\.dailymotion\.com|archive\.org/.test(href)) {
+            e.preventDefault();
+            const videoObj = { videoUrl: href };
+            if (typeof window.openVideo === 'function') {
+              window.openVideo(videoObj);
+            }
+          }
+        });
 
         const hideModal = () => {
+            const modal = document.getElementById('videoModal');
             if (!modal) return;
             modal.style.display = 'none';
             if (window.currentVideoPlayer) {
-                if (window.currentVideoPlayer.video) window.currentVideoPlayer.video.pause();
-                if (window.currentVideoPlayer.destroy) window.currentVideoPlayer.destroy();
+                try {
+                    if (window.currentVideoPlayer.video) window.currentVideoPlayer.video.pause();
+                    if (window.currentVideoPlayer.destroy) window.currentVideoPlayer.destroy();
+                } catch (e) { /* noop */ }
                 window.currentVideoPlayer = null;
             }
             const playerContainer = document.getElementById('custom-player-container') || document.getElementById('dailymotion-player');
@@ -258,181 +309,25 @@
             document.body.style.overflow = '';
         };
 
-        if (closeModal) closeModal.addEventListener('click', hideModal);
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        closeModalButtons.forEach(btn => btn.addEventListener('click', hideModal));
 
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) hideModal();
-        });
+        const existingModal = document.getElementById('videoModal');
+        if (existingModal) {
+            existingModal.addEventListener('click', (event) => {
+                if (event.target === existingModal) hideModal();
+            });
+        }
 
         document.addEventListener('keydown', (event) => {
+            const modal = document.getElementById('videoModal');
             if (event.key === 'Escape' && modal && modal.style.display === 'flex') {
                 hideModal();
             }
         });
     }
 
-    function initCustomPlayerLogic(container) {
-        const video = container.querySelector('video');
-        const playPauseBtn = container.querySelector('.play-pause-btn');
-        const playPauseIcon = playPauseBtn.querySelector('i');
-        const progressContainer = container.querySelector('.progress-container');
-        const progressFilled = container.querySelector('.progress-filled');
-        const currentTimeEl = container.querySelector('.current-time');
-        const durationEl = container.querySelector('.duration');
-        const muteBtn = container.querySelector('.mute-btn');
-        const muteIcon = muteBtn.querySelector('i');
-        const volumeSlider = container.querySelector('.volume-slider');
-        const fullscreenBtn = container.querySelector('.fullscreen-btn');
-        const wrapper = container.querySelector('.custom-video-wrapper');
 
-        if (!video) return;
-
-        video.addEventListener('contextmenu', e => e.preventDefault());
-
-        const formatTime = (time) => {
-            if (isNaN(time)) return '0:00';
-            const minutes = Math.floor(time / 60);
-            const seconds = Math.floor(time % 60);
-            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        };
-
-        video.addEventListener('loadedmetadata', () => {
-            durationEl.textContent = formatTime(video.duration);
-        });
-
-        const togglePlay = () => {
-            if (video.paused) {
-                video.play();
-            } else {
-                video.pause();
-            }
-        };
-
-        playPauseBtn.addEventListener('click', togglePlay);
-        video.addEventListener('click', togglePlay);
-
-        video.addEventListener('play', () => {
-            playPauseIcon.className = 'fa-solid fa-pause';
-        });
-
-        video.addEventListener('pause', () => {
-            playPauseIcon.className = 'fa-solid fa-play';
-        });
-
-        video.addEventListener('timeupdate', () => {
-            const percent = (video.currentTime / video.duration) * 100;
-            progressFilled.style.width = `${percent}%`;
-            currentTimeEl.textContent = formatTime(video.currentTime);
-        });
-
-        progressContainer.addEventListener('click', (e) => {
-            const rect = progressContainer.getBoundingClientRect();
-            const pos = (e.clientX - rect.left) / rect.width;
-            video.currentTime = pos * video.duration;
-        });
-
-        muteBtn.addEventListener('click', () => {
-            video.muted = !video.muted;
-            if (video.muted || video.volume === 0) {
-                muteIcon.className = 'fa-solid fa-volume-xmark';
-                volumeSlider.value = 0;
-            } else {
-                muteIcon.className = 'fa-solid fa-volume-high';
-                volumeSlider.value = video.volume;
-            }
-        });
-
-        volumeSlider.addEventListener('input', (e) => {
-            video.volume = e.target.value;
-            video.muted = video.volume === 0;
-            if (video.muted) {
-                muteIcon.className = 'fa-solid fa-volume-xmark';
-            } else if (video.volume < 0.5) {
-                muteIcon.className = 'fa-solid fa-volume-low';
-            } else {
-                muteIcon.className = 'fa-solid fa-volume-high';
-            }
-        });
-
-        fullscreenBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                if (wrapper.requestFullscreen) wrapper.requestFullscreen().catch(err => {});
-                else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
-        });
-        
-        let hideControlsTimeout;
-        const controls = container.querySelector('.custom-video-controls');
-        const showControls = () => {
-            controls.style.opacity = '1';
-            controls.style.pointerEvents = 'auto';
-            wrapper.style.cursor = 'default';
-            clearTimeout(hideControlsTimeout);
-            if (!video.paused) {
-                hideControlsTimeout = setTimeout(() => {
-                    controls.style.opacity = '0';
-                    controls.style.pointerEvents = 'none';
-                    wrapper.style.cursor = 'none';
-                }, 3000);
-            }
-        };
-
-        wrapper.addEventListener('mousemove', showControls);
-        wrapper.addEventListener('mouseleave', () => {
-            if (!video.paused) {
-                controls.style.opacity = '0';
-                controls.style.pointerEvents = 'none';
-            }
-        });
-
-        // Mobile Touch Support: Tap on video to toggle controls visibility
-        let lastTap = 0;
-        video.addEventListener('touchend', (e) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
-            if (tapLength < 300 && tapLength > 0) {
-                // Double tap - toggle play/pause
-                e.preventDefault();
-                togglePlay();
-            } else {
-                // Single tap - toggle controls
-                if (controls.style.opacity === '1') {
-                    if (!video.paused) {
-                        controls.style.opacity = '0';
-                        controls.style.pointerEvents = 'none';
-                    }
-                } else {
-                    showControls();
-                }
-            }
-            lastTap = currentTime;
-        }, { passive: false });
-
-        // Ensure controls stay open during touch scrubber interaction
-        progressContainer.addEventListener('touchstart', () => {
-            clearTimeout(hideControlsTimeout);
-            controls.style.opacity = '1';
-            controls.style.pointerEvents = 'auto';
-        }, { passive: true });
-
-        progressContainer.addEventListener('touchmove', (e) => {
-            const touch = e.touches[0];
-            const rect = progressContainer.getBoundingClientRect();
-            let pos = (touch.clientX - rect.left) / rect.width;
-            pos = Math.max(0, Math.min(1, pos));
-            video.currentTime = pos * video.duration;
-        }, { passive: true });
-
-        video.addEventListener('play', showControls);
-        video.addEventListener('pause', () => {
-            clearTimeout(hideControlsTimeout);
-            controls.style.opacity = '1';
-            controls.style.pointerEvents = 'auto';
-            wrapper.style.cursor = 'default';
-        });
-    }
 
     function initSettings() {
         const defaultSettings = {
@@ -457,6 +352,47 @@
         if (settings.accentColor) {
             document.documentElement.style.setProperty('--accent', settings.accentColor);
         }
+
+        // Branding via stable CMS hooks (preferred over substring guessing).
+        if (settings.logoMain) {
+            document.querySelectorAll('[data-cms-logo="main"]').forEach(el => {
+                if (el.tagName === 'IMG') el.src = settings.logoMain;
+            });
+        }
+        if (settings.logoSecondary) {
+            document.querySelectorAll('[data-cms-logo="second"]').forEach(el => {
+                if (el.tagName === 'IMG') el.src = settings.logoSecondary;
+            });
+        }
+        if (settings.siteName) {
+            document.querySelectorAll('[data-cms-title]').forEach(el => {
+                el.textContent = settings.siteName;
+            });
+        }
+        if (settings.siteSubtitle) {
+            document.querySelectorAll('[data-cms-subtitle]').forEach(el => {
+                el.textContent = settings.siteSubtitle;
+            });
+        }
+        if (settings.favicon) {
+            document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]').forEach(el => {
+                el.href = settings.favicon;
+            });
+        }
+
+        // Footer fields via stable hooks (fallback to existing substring logic below).
+        document.querySelectorAll('[data-cms-footer="email"]').forEach(el => {
+            el.textContent = settings.email || defaultSettings.email;
+        });
+        document.querySelectorAll('[data-cms-footer="phone"]').forEach(el => {
+            el.textContent = settings.phone || defaultSettings.phone;
+        });
+        document.querySelectorAll('[data-cms-footer="address"]').forEach(el => {
+            el.textContent = settings.address || defaultSettings.address;
+        });
+        document.querySelectorAll('[data-cms-footer="copyright"]').forEach(el => {
+            if (settings.copyright) el.textContent = settings.copyright;
+        });
 
         // Apply Correspondent Name
         document.querySelectorAll('.correspondent-name').forEach(el => {
@@ -501,9 +437,56 @@
             if (navLinksUl) {
                 const currentPath = window.location.pathname.split('/').pop() || 'index.html';
                 const appDownloadLi = navLinksUl.querySelector('.download-item');
-                navLinksUl.innerHTML = window.UHV_NAVIGATION.items.map(item => `
-                    <li><a href="${item.href}" class="${currentPath === item.href ? 'active' : ''}">${item.label}</a></li>
-                `).join('') + (appDownloadLi ? appDownloadLi.outerHTML : '');
+                const escAttr = (s) => String(s == null ? '' : s)
+                    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                navLinksUl.innerHTML = window.UHV_NAVIGATION.items.map((item, i) => {
+                    const isActive = currentPath === item.href;
+                    const hasChildren = Array.isArray(item.children) && item.children.length > 0;
+                    if (!hasChildren) {
+                        return `<li><a href="${escAttr(item.href)}"${isActive ? ' class="active" aria-current="page"' : ''}>${escAttr(item.label)}</a></li>`;
+                    }
+                    // One-level dropdown: keyboard-operable disclosure.
+                    const submenuId = `nav-submenu-${i}`;
+                    const childActive = item.children.some(ch => ch.href === currentPath);
+                    const kids = item.children.map(ch => {
+                        const chActive = ch.href === currentPath;
+                        return `<li><a href="${escAttr(ch.href)}"${chActive ? ' class="active" aria-current="page"' : ''}>${escAttr(ch.label)}</a></li>`;
+                    }).join('');
+                    return `<li class="nav-has-children">
+                        <button type="button" class="nav-dropdown-toggle${(isActive || childActive) ? ' active' : ''}" aria-expanded="false" aria-controls="${submenuId}">${escAttr(item.label)} <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                        <ul class="nav-submenu" id="${submenuId}">${kids}</ul>
+                    </li>`;
+                }).join('') + (appDownloadLi ? appDownloadLi.outerHTML : '');
+
+                // Wire dropdown behavior (keyboard + outside-click close).
+                navLinksUl.querySelectorAll('.nav-has-children').forEach(li => {
+                    const btn = li.querySelector('.nav-dropdown-toggle');
+                    const submenu = li.querySelector('.nav-submenu');
+                    if (!btn || !submenu) return;
+                    const setOpen = (open) => {
+                        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                        li.classList.toggle('open', open);
+                    };
+                    btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+                    btn.addEventListener('keydown', (e) => {
+                        if (e.key === 'ArrowDown') { e.preventDefault(); setOpen(true); const a = submenu.querySelector('a'); if (a) a.focus(); }
+                        else if (e.key === 'Escape') { setOpen(false); btn.focus(); }
+                    });
+                    submenu.addEventListener('keydown', (e) => {
+                        const links = Array.from(submenu.querySelectorAll('a'));
+                        const idx = links.indexOf(document.activeElement);
+                        if (e.key === 'ArrowDown') { e.preventDefault(); if (links[idx + 1]) links[idx + 1].focus(); }
+                        else if (e.key === 'ArrowUp') { e.preventDefault(); if (idx > 0) links[idx - 1].focus(); else btn.focus(); }
+                        else if (e.key === 'Escape') { setOpen(false); btn.focus(); }
+                    });
+                    li.addEventListener('focusout', (e) => {
+                        if (!li.contains(e.relatedTarget)) setOpen(false);
+                    });
+                    document.addEventListener('click', (e) => {
+                        if (!li.contains(e.target)) setOpen(false);
+                    });
+                });
             }
         }
     }
@@ -532,6 +515,37 @@
         function getNestedValue(obj, path) {
             if (!path || !obj) return undefined;
             return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+        }
+
+        // Remove any {{...}} placeholder that survived substitution, both in element
+        // text and in attribute values, so an unresolved token can never render as a
+        // literal src/text node again. Scoped to a single rendered list item.
+        function stripUnresolvedTokens(rootEl) {
+            if (!rootEl) return;
+            const TOKEN = /{{\s*[\w.$-]+\s*}}/g;
+            // Attribute values across the item and its descendants.
+            const scope = [rootEl, ...rootEl.querySelectorAll('*')];
+            scope.forEach((el) => {
+                for (const attr of Array.from(el.attributes)) {
+                    if (attr.value.indexOf('{{') === -1) continue;
+                    const cleaned = attr.value.replace(TOKEN, '');
+                    if (attr.name === 'src' && cleaned.trim() === '') {
+                        // An emptied src would resolve to the page URL; drop it so the
+                        // standard placeholder/onerror handling applies instead.
+                        el.removeAttribute('src');
+                    } else {
+                        el.setAttribute(attr.name, cleaned);
+                    }
+                }
+            });
+            // Text nodes.
+            const walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT, null);
+            let node;
+            while ((node = walker.nextNode())) {
+                if (node.nodeValue.indexOf('{{') !== -1) {
+                    node.nodeValue = node.nodeValue.replace(TOKEN, '');
+                }
+            }
         }
 
         document.querySelectorAll('[data-cms-bind]').forEach(el => {
@@ -607,17 +621,65 @@
                 const templateHtml = templateItem.outerHTML;
                 templateContainer.innerHTML = '';
 
+                // Token matcher: supports dotted/indexed paths like {{images.0}} and
+                // nested objects, resolved via the same getNestedValue helper used by
+                // data-cms-bind / data-cms-src / data-cms-href.
+                const TOKEN_RE = /{{\s*([\w.$-]+)\s*}}/g;
+
                 arrayData.forEach((item) => {
                     let itemHtml = templateHtml;
-                    if (typeof item === 'object') {
-                        for (const [key, val] of Object.entries(item)) {
-                            const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-                            itemHtml = itemHtml.replace(regex, val || '');
-                        }
+                    if (item && typeof item === 'object') {
+                        // Resolve EVERY placeholder path against the item (not just
+                        // top-level keys), so dotted/indexed paths like {{images.0}}
+                        // and {{nested.key}} resolve. A bare {{title}} is just a
+                        // 1-segment path, so top-level keys keep working.
+                        itemHtml = itemHtml.replace(TOKEN_RE, (match, path) => {
+                            // {{value}} and {{index}} are reserved for data-cms-each
+                            // sub-templates and are resolved during that expansion
+                            // (below), so leave them intact here.
+                            if (path === 'value' || path === 'index') return match;
+                            const resolved = getNestedValue(item, path);
+                            return resolved === undefined || resolved === null ? '' : String(resolved);
+                        });
                     } else if (typeof item === 'string') {
+                        // Primitive string arrays keep the {{value}} contract.
                         itemHtml = itemHtml.replace(/{{\s*value\s*}}/g, item || '');
                     }
+
                     templateContainer.insertAdjacentHTML('beforeend', itemHtml);
+                    const itemEl = templateContainer.lastElementChild;
+                    if (!itemEl) return;
+
+                    // Generic nested-array expansion: any element carrying
+                    // data-cms-each="<path>" is treated as a sub-template whose first
+                    // element child is cloned once per entry of the array at <path>
+                    // (resolved relative to the current item). Inside each clone,
+                    // {{value}} is the entry and {{index}} is its position. This lets
+                    // the workshops gallery render exactly as many <img> as the day has.
+                    if (item && typeof item === 'object') {
+                        itemEl.querySelectorAll('[data-cms-each]').forEach((container) => {
+                            const eachPath = container.getAttribute('data-cms-each');
+                            const list = getNestedValue(item, eachPath);
+                            container.removeAttribute('data-cms-each');
+                            const cloneTemplate = container.firstElementChild;
+                            if (!cloneTemplate) return;
+                            const cloneHtml = cloneTemplate.outerHTML;
+                            container.innerHTML = '';
+                            if (Array.isArray(list)) {
+                                list.forEach((entry, index) => {
+                                    const html = cloneHtml
+                                        .replace(/{{\s*value\s*}}/g, entry === undefined || entry === null ? '' : String(entry))
+                                        .replace(/{{\s*index\s*}}/g, String(index));
+                                    container.insertAdjacentHTML('beforeend', html);
+                                });
+                            }
+                        });
+                    }
+
+                    // Prevent-recurrence safeguard: strip any placeholder that did not
+                    // resolve so no literal {{token}} can ever survive into the DOM
+                    // (neither as element text nor as an attribute value such as src).
+                    stripUnresolvedTokens(itemEl);
                 });
             }
         });

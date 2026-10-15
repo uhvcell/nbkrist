@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "cd cms && npm run dev",
-    "start": "cd cms && npm start"
+    "start": "cd cms && npm start",
+    "build": "cd cms && npm run build"
   },
   "dependencies": {
     "jsdom": "^30.0.1"

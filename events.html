@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#060612">
     <meta name="color-scheme" content="dark">
-    <title>Events & Festivals | UHV CELL NBKRIST</title>
+    <title>Events &amp; Festivals | UHV CELL NBKRIST</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
@@ -17,8 +17,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-</head>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" media="print" onload="this.media='all'" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"></noscript>
+      <!-- uhv:seo:start -->
+    <meta name="description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta property="og:title" content="Events &amp; Festivals | UHV CELL NBKRIST">
+    <meta name="twitter:title" content="Events &amp; Festivals | UHV CELL NBKRIST">
+    <meta property="og:description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta name="twitter:description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta property="og:image" content="logo.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:type" content="website">
+    <!-- uhv:seo:end -->
+  </head>
 
 <body>
 
@@ -26,14 +39,14 @@
         <div class="container navbar">
             <a href="index.html" class="logo">
                 <div class="logo-left-group">
-                    <img src="logo.jpg" alt="Logo" class="logo-main-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
+                    <img src="logo.jpg" alt="UHV CELL NBKRIST logo" class="logo-main-img" data-cms-logo="main" fetchpriority="high" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <div class="logo-text">
-                        <span>UHV CELL NBKRIST</span>
-                        <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                        <span data-cms-title>UHV CELL NBKRIST</span>
+                        <span class="subtitle" data-cms-subtitle>UNIVERSAL HUMAN VALUES</span>
                     </div>
                 </div>
                 <div class="second-logo-wrapper">
-                    <img src="second_logo.png" alt="Logo" class="logo-second-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
+                    <img src="second_logo.png" alt="NBKRIST correspondent logo" class="logo-second-img" data-cms-logo="second" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <span class="correspondent-name">SRI N.RAM KUMAR</span>
                     <span class="logo-caption">Correspondent</span>
                 </div>
@@ -43,7 +56,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="activities.html">Activities</a></li>
-                <li><a href="resources.html" class="active">Resources</a></li>
+                <li><a href="resources.html" class="active" aria-current="page">Resources</a></li>
                 <li><a href="team-structure.html">Our Team</a></li>
                 <li><a href="newsletter.html">Newsletter</a></li>
                 <li><a href="contact.html">Contact</a></li>
@@ -65,7 +78,7 @@
             <div data-cms-list="events">
                 <div class="cms-list-item"
                     style="background: var(--bg-surface); padding: 40px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-top: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px;">
-                    <img src="{{imageUrl}}" alt="{{title}}" loading="lazy" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-height: 400px; object-fit: contain;" referrerpolicy="no-referrer-when-downgrade">
+                    <img src="{{imageUrl}}" alt="{{title}}" loading="lazy" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-height: 400px; object-fit: contain;" onerror="this.onerror=null;this.src='assets/placeholder.svg'" referrerpolicy="no-referrer-when-downgrade">
                     <a href="{{link}}" class="btn btn-primary btn-lg" style="font-size: 1.2rem; padding: 15px 40px; text-transform: uppercase; letter-spacing: 1px;">{{buttonText}}</a>
                 </div>
             </div>
@@ -115,6 +128,7 @@
         </div>
     </footer>
     <script src="site-settings.js" defer></script>
+    <script src="navigation-data.js" defer></script>
     <script src="page-content.js" defer></script>
     <script src="app-utils.js" defer></script>
 </body>

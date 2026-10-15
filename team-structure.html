@@ -8,7 +8,6 @@
     <meta name="theme-color" content="#060612">
     <meta name="color-scheme" content="dark">
     <title>Team Structure | UHV CELL NBKRIST</title>
-    <meta name="description" content="UHV Cell Organizational Hierarchy - Leadership, Governance and Department Wings at NBKRIST.">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
@@ -18,7 +17,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" media="print" onload="this.media='all'" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"></noscript>
     <style>
         /* Container & Scroll Controls */
         .org-scroll-wrapper {
@@ -986,8 +988,47 @@
             line-height: 1.4;
             margin: 0;
         }
+
+        /* FEAT-003: mobile responsiveness for the directory. Filter tabs keep
+           wrapping and become >=44px touch targets; the member grid reflows to
+           1-2 columns on small screens. Scoped to this page's own markup. */
+        @media (max-width: 768px) {
+            .filter-btn {
+                min-height: 44px;
+                padding: 10px 18px;
+                display: inline-flex;
+                align-items: center;
+                font-size: 0.9rem;
+            }
+
+            .directory-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .directory-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .member-card-dept,
+            .member-card-detail {
+                font-size: 0.8125rem; /* ~13px -> keep legible */
+            }
+        }
     </style>
-</head>
+      <!-- uhv:seo:start -->
+    <meta name="description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta property="og:title" content="Team Structure | UHV CELL NBKRIST">
+    <meta name="twitter:title" content="Team Structure | UHV CELL NBKRIST">
+    <meta property="og:description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta name="twitter:description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta property="og:image" content="logo.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:type" content="website">
+    <!-- uhv:seo:end -->
+  </head>
 
 <body>
 
@@ -995,14 +1036,14 @@
         <div class="container navbar">
             <a href="index.html" class="logo">
                 <div class="logo-left-group">
-                    <img src="logo.jpg" alt="Logo" class="logo-main-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
+                    <img src="logo.jpg" alt="UHV CELL NBKRIST logo" class="logo-main-img" data-cms-logo="main" fetchpriority="high" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <div class="logo-text">
-                        <span>UHV CELL NBKRIST</span>
-                        <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                        <span data-cms-title>UHV CELL NBKRIST</span>
+                        <span class="subtitle" data-cms-subtitle>UNIVERSAL HUMAN VALUES</span>
                     </div>
                 </div>
                 <div class="second-logo-wrapper">
-                    <img src="second_logo.png" alt="Logo" class="logo-second-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
+                    <img src="second_logo.png" alt="NBKRIST correspondent logo" class="logo-second-img" data-cms-logo="second" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <span class="correspondent-name">SRI N.RAM KUMAR</span>
                     <span class="logo-caption">Correspondent</span>
                 </div>
@@ -1013,7 +1054,7 @@
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="activities.html">Activities</a></li>
                 <li><a href="resources.html">Resources</a></li>
-                <li><a href="team-structure.html" class="active">Our Team</a></li>
+                <li><a href="team-structure.html" class="active" aria-current="page">Our Team</a></li>
                 <li><a href="newsletter.html">Newsletter</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li class="download-item"><a href="#" class="btn-download-app"><i class="fa-solid fa-download"></i>
@@ -1381,6 +1422,8 @@
                                 </div>
 
                             </div>
+                            <!-- Added wings (not in the seeded 5) are rendered here from window.UHV_TEAMS -->
+                            <div id="dynamic-wings"></div>
                         </div>
 
                     </div>
@@ -1407,18 +1450,14 @@
                 <div class="directory-header">
                     <h2 class="section-title" style="font-size: 2.2rem; margin-bottom: 8px;">Team Directory & Wings</h2>
                     <p style="color: var(--text-muted);">Explore all dedicated faculty and student coordinators across every department.</p>
+                    <p style="color: var(--text-muted); margin-top: 6px;"><strong style="color: var(--primary);"><span id="wingCount">0</span></strong> Department Wings</p>
                 </div>
 
-                <!-- Filter Tabs -->
+                <!-- Filter Tabs (fixed all/ab/sb; wing tabs built dynamically from window.UHV_TEAMS) -->
                 <div class="directory-filters" id="directoryFilters">
                     <button type="button" class="filter-btn active" data-filter="all">All Members (<span id="totalMemberCount">0</span>)</button>
                     <button type="button" class="filter-btn" data-filter="ab">Administrative Body (AB)</button>
                     <button type="button" class="filter-btn" data-filter="sb">Student Body (SB)</button>
-                    <button type="button" class="filter-btn" data-filter="volunteers">Volunteers Team</button>
-                    <button type="button" class="filter-btn" data-filter="technical">Technical Team</button>
-                    <button type="button" class="filter-btn" data-filter="marketing">Marketing Team</button>
-                    <button type="button" class="filter-btn" data-filter="design">Design Team</button>
-                    <button type="button" class="filter-btn" data-filter="innovation">Innovation Team</button>
                 </div>
 
                 <!-- Member Cards Grid -->
@@ -1475,7 +1514,9 @@
 
     <!-- Shared Team Data -->
     <script src="team-data.js" defer></script>
+    <script src="teams-data.js" defer></script>
     <script src="site-settings.js" defer></script>
+    <script src="navigation-data.js" defer></script>
     <script src="page-content.js" defer></script>
     <script src="app-utils.js" defer></script>
 
@@ -1486,6 +1527,13 @@
             const members = typeof allTeamMembers !== 'undefined'
                 ? allTeamMembers
                 : [...(facultyCoordinators || []), ...(studentCoordinators || [])];
+
+            // Escape CMS-injected values before they go into innerHTML (XSS safety).
+            function escHtml(v) {
+                return String(v == null ? '' : v)
+                    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
 
             // --- Department Resolver ---
             // Uses the exact 'department' field saved by the admin panel.
@@ -1505,21 +1553,50 @@
                 return 'Volunteers Team';
             }
 
+            // --- Teams source (CMS window.UHV_TEAMS) with a seed fallback ---
+            // Day-one shape matches cms/content/collections/teams.json: ab, sb (kind:'body'),
+            // then the 5 wings (kind:'wing') in order. Wing 'name' equals the member department string.
+            const SEED_TEAMS = [
+                { id: 'ab',         name: 'Administrative Body', subtitle: 'Administrative Body (AB)',    icon: 'fa-user-shield',   order: 1, kind: 'body' },
+                { id: 'sb',         name: 'Student Body',        subtitle: 'Student Body (SB)',           icon: 'fa-graduation-cap', order: 2, kind: 'body' },
+                { id: 'volunteers', name: 'Volunteers Team',     subtitle: 'Volunteers Wing',             icon: 'fa-people-group',  order: 3, kind: 'wing' },
+                { id: 'technical',  name: 'Technical Team',      subtitle: 'Technical Wing',              icon: 'fa-laptop-code',   order: 4, kind: 'wing' },
+                { id: 'marketing',  name: 'Marketing Team',      subtitle: 'Marketing & Content Wing',    icon: 'fa-bullhorn',      order: 5, kind: 'wing' },
+                { id: 'design',     name: 'Design Team',         subtitle: 'Design & Skill Wing',         icon: 'fa-palette',       order: 6, kind: 'wing' },
+                { id: 'innovation', name: 'Innovation Team',     subtitle: 'Innovation Wing',             icon: 'fa-lightbulb',     order: 7, kind: 'wing' }
+            ];
+            const teamsData = (window.UHV_TEAMS && Array.isArray(window.UHV_TEAMS.items) && window.UHV_TEAMS.items.length)
+                ? window.UHV_TEAMS.items
+                : SEED_TEAMS;
+            const wingTeams = teamsData.filter(t => t.kind === 'wing');
+            // The volunteers wing also catches 'President' (preserve today's special-case for parity).
+            const VOLUNTEERS_ID = 'volunteers';
+
             function getMemberFilterCategory(m) {
                 const dept = getMemberDepartment(m);
                 if (['Administrator', 'General Secretary', 'Joint Secretary'].includes(dept)) return 'ab';
                 if (['President', 'Vice President'].includes(dept)) return 'sb';
-                if (dept === 'Technical Team')  return 'technical';
-                if (dept === 'Marketing Team')  return 'marketing';
-                if (dept === 'Design Team')     return 'design';
-                if (dept === 'Innovation Team') return 'innovation';
-                return 'volunteers'; // Volunteers Team + fallback
+                // Map department === wing name -> wing id (data-driven across all wings).
+                const wing = wingTeams.find(w => w.name === dept);
+                if (wing) return wing.id;
+                return VOLUNTEERS_ID; // Volunteers Team + fallback
             }
 
             // Safely resolve image URL
             function resolveImg(src) {
                 if (!src) return null;
                 return src;
+            }
+
+            // --- 0. Build Wing Filter Tabs Dynamically ---
+            // Fixed all/ab/sb tabs stay in the markup; append one tab per wing team in order.
+            // A deleted seeded wing simply never gets a tab here (and its fixed card is hidden below).
+            const directoryFilters = document.getElementById('directoryFilters');
+            if (directoryFilters) {
+                const wingTabsHtml = wingTeams.map(w =>
+                    `<button type="button" class="filter-btn" data-filter="${escHtml(w.id)}">${escHtml(w.name)}</button>`
+                ).join('');
+                directoryFilters.insertAdjacentHTML('beforeend', wingTabsHtml);
             }
 
             // --- 1. Bind Leader Photo Slots in Org Chart ---
@@ -1541,7 +1618,7 @@
                 if (member) {
                     const img = resolveImg(member.image);
                     if (img) {
-                        slot.innerHTML = `<img src="${img}" alt="${member.name || ''}" class="node-avatar-img" onerror="this.style.display='none'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">`;
+                        slot.innerHTML = `<img src="${escHtml(img)}" alt="${escHtml(member.name || '')}" class="node-avatar-img" onerror="this.outerHTML='<i class=\\'fa-solid ${escHtml(member.icon || 'fa-user')} node-avatar-icon\\'></i>'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">`;
                     }
                     if (nameEl && member.name) {
                         nameEl.textContent = member.name;
@@ -1550,53 +1627,104 @@
                 }
             });
 
-            // --- 2. Populate Team Cards (5 Department Wings) ---
-            const teamConfigs = [
-                { id: 'volunteers', depts: ['Volunteers Team', 'President'], slotId: 'slot-team-volunteers' },
-                { id: 'technical',  depts: ['Technical Team'],               slotId: 'slot-team-technical' },
-                { id: 'marketing',  depts: ['Marketing Team'],               slotId: 'slot-team-marketing' },
-                { id: 'design',     depts: ['Design Team'],                  slotId: 'slot-team-design' },
-                { id: 'innovation', depts: ['Innovation Team'],              slotId: 'slot-team-innovation' }
-            ];
+            // --- 2. Populate Team Cards (Department Wings, data-driven, HYBRID render) ---
+            // Derive configs from the wings. The volunteers wing also includes 'President'
+            // (preserve today's special-case for day-one parity).
+            const teamConfigs = wingTeams.map(w => ({
+                id: w.id,
+                name: w.name,
+                subtitle: w.subtitle || '',
+                icon: w.icon || 'fa-people-group',
+                depts: w.id === VOLUNTEERS_ID ? [w.name, 'President'] : [w.name],
+                slotId: `slot-team-${w.id}`
+            }));
+
+            // Builds the member chip list markup shared by seeded + dynamic wings.
+            function buildMemberListHtml(teamMembers) {
+                return teamMembers.length > 0
+                    ? teamMembers.map(m => {
+                        const img = resolveImg(m.image);
+                        return `
+                            <div class="team-member-chip" title="${escHtml(m.name || '')} — ${escHtml(m.role || '')}">
+                                ${img
+                                    ? `<img src="${escHtml(img)}" alt="${escHtml(m.name || '')}" class="team-member-chip-img" onerror="this.outerHTML='<i class=\\'fa-solid ${escHtml(m.icon || 'fa-user')}\\' style=\\'font-size:0.8rem;color:var(--primary);min-width:24px;text-align:center;\\'></i>'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">`
+                                    : `<i class="fa-solid ${escHtml(m.icon || 'fa-user')}" style="font-size:0.8rem;color:var(--primary);min-width:24px;text-align:center;"></i>`
+                                }
+                                <div class="team-member-chip-info">
+                                    <span class="team-member-chip-name">${escHtml(m.name || '')}${m.isLead ? ' ⭐' : ''}</span>
+                                    <span class="team-member-chip-role">${escHtml(m.role || '')}</span>
+                                </div>
+                            </div>`;
+                    }).join('')
+                    : `<span style="font-size:0.72rem;color:var(--text-muted);font-style:italic;">No members added yet</span>`;
+            }
+
+            const dynamicWingsContainer = document.getElementById('dynamic-wings');
 
             teamConfigs.forEach(cfg => {
                 const teamMembers = members.filter(m => cfg.depts.includes(getMemberDepartment(m)));
-                const listEl  = document.getElementById(`list-${cfg.id}`);
-                const countEl = document.getElementById(`count-${cfg.id}`);
-                const slot    = document.getElementById(cfg.slotId);
+                const featured = teamMembers.find(m => m.isLead && m.image) || teamMembers.find(m => m.image);
+                const featuredImg = featured ? resolveImg(featured.image) : null;
+
+                let listEl  = document.getElementById(`list-${cfg.id}`);
+                let countEl = document.getElementById(`count-${cfg.id}`);
+                let slot    = document.getElementById(cfg.slotId);
+
+                // HYBRID: a seeded wing already has its hand-crafted card/slot in the DOM.
+                // An added wing (no existing slot) is rendered into #dynamic-wings.
+                if (!slot && !listEl && dynamicWingsContainer) {
+                    const card = document.createElement('div');
+                    card.className = 'team-column-card';
+                    card.setAttribute('data-team-id', cfg.id);
+                    card.innerHTML = `
+                        <div class="node-pill-tag">UHV CELL</div>
+                        <div>
+                            <div class="team-card-header">
+                                <div class="team-avatar-slot" id="slot-team-${escHtml(cfg.id)}">
+                                    <i class="fa-solid ${escHtml(cfg.icon)} team-avatar-icon"></i>
+                                </div>
+                                <h4 class="team-card-title">${escHtml(cfg.name)}</h4>
+                            </div>
+                            ${cfg.subtitle ? `<p class="team-card-subtitle">${escHtml(cfg.subtitle)}</p>` : ''}
+                            <div class="team-members-container" id="members-container-${escHtml(cfg.id)}">
+                                <div class="team-members-heading">
+                                    <span>Team Members</span>
+                                    <span class="member-count-badge" id="count-${escHtml(cfg.id)}">0</span>
+                                </div>
+                                <div class="team-members-list" id="list-${escHtml(cfg.id)}"></div>
+                            </div>
+                        </div>`;
+                    dynamicWingsContainer.appendChild(card);
+                    listEl  = document.getElementById(`list-${cfg.id}`);
+                    countEl = document.getElementById(`count-${cfg.id}`);
+                    slot    = document.getElementById(cfg.slotId);
+                }
 
                 if (countEl) countEl.textContent = teamMembers.length;
 
-                // Show wing lead (or first member with photo) as the team card avatar
-                const featured = teamMembers.find(m => m.isLead && m.image) || teamMembers.find(m => m.image);
-                if (featured && slot) {
-                    const img = resolveImg(featured.image);
-                    if (img) slot.innerHTML = `<img src="${img}" alt="${featured.name || ''}" class="team-avatar-img" onerror="this.style.display='none'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">`;
+                // Show wing lead (or first member with photo) as the team card avatar.
+                if (featuredImg && slot) {
+                    slot.innerHTML = `<img src="${escHtml(featuredImg)}" alt="${escHtml(featured.name || '')}" class="team-avatar-img" onerror="this.outerHTML='<i class=\\'fa-solid ${escHtml(cfg.icon || 'fa-users')} team-avatar-icon\\'></i>'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">`;
                 }
 
-                if (listEl) {
-                    listEl.innerHTML = teamMembers.length > 0
-                        ? teamMembers.map(m => {
-                            const img = resolveImg(m.image);
-                            return `
-                            <div class="team-member-chip" title="${m.name || ''} — ${m.role || ''}">
-                                ${img
-                                    ? `<img src="${img}" alt="${m.name || ''}" class="team-member-chip-img" onerror="this.style.display='none'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">`
-                                    : `<i class="fa-solid ${m.icon || 'fa-user'}" style="font-size:0.8rem;color:var(--primary);min-width:24px;text-align:center;"></i>`
-                                }
-                                <div class="team-member-chip-info">
-                                    <span class="team-member-chip-name">${m.name || ''}${m.isLead ? ' ⭐' : ''}</span>
-                                    <span class="team-member-chip-role">${m.role || ''}</span>
-                                </div>
-                            </div>`;
-                        }).join('')
-                        : `<span style="font-size:0.72rem;color:var(--text-muted);font-style:italic;">No members added yet</span>`;
-                }
+                if (listEl) listEl.innerHTML = buildMemberListHtml(teamMembers);
+            });
+
+            // HYBRID: hide any seeded fixed wing card whose team was DELETED in CMS
+            // (a card is present in the markup but has no matching wing in the data).
+            const liveWingIds = new Set(wingTeams.map(w => w.id));
+            document.querySelectorAll('.teams-5-grid .team-column-card[data-team-id]').forEach(card => {
+                const tid = card.getAttribute('data-team-id');
+                if (tid && !liveWingIds.has(tid)) card.style.display = 'none';
             });
 
             // --- 3. Full Team Directory Grid ---
             const totalEl = document.getElementById('totalMemberCount');
             if (totalEl) totalEl.textContent = members.length;
+
+            // Data-driven wing counter (derived from wingTeams so it never drifts from the cards).
+            const wc = document.getElementById('wingCount');
+            if (wc) wc.textContent = wingTeams.length;
 
             const directoryGrid = document.getElementById('directoryGrid');
             if (directoryGrid) {
@@ -1606,15 +1734,15 @@
                     const img      = resolveImg(m.image);
                     const iconClass = m.icon || 'fa-user';
                     return `
-                        <div class="member-card-box" data-category="${category}">
+                        <div class="member-card-box" data-category="${escHtml(category)}">
                             ${img
-                                ? `<img src="${img}" alt="${m.name || ''}" class="member-card-photo" onerror="this.outerHTML='<div class=\\'member-card-placeholder\\' loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade"><i class=\\'fa-solid ${iconClass}\\'></i></div>'">`
-                                : `<div class="member-card-placeholder"><i class="fa-solid ${iconClass}"></i></div>`
+                                ? `<img src="${escHtml(img)}" alt="${escHtml(m.name || '')}" class="member-card-photo" onerror="this.outerHTML='<div class=\\'member-card-placeholder\\'><i class=\\'fa-solid ${escHtml(iconClass)}\\'></i></div>'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">`
+                                : `<div class="member-card-placeholder"><i class="fa-solid ${escHtml(iconClass)}"></i></div>`
                             }
-                            <h3 class="member-card-name">${m.name || ''}${m.special ? ' <span style="color:var(--primary);font-size:0.8em;">★</span>' : ''}</h3>
-                            <div class="member-card-role">${m.role || ''}</div>
-                            <div class="member-card-dept">${dept}</div>
-                            ${m.detail ? `<p class="member-card-detail">${m.detail}</p>` : ''}
+                            <h3 class="member-card-name">${escHtml(m.name || '')}${m.special ? ' <span style="color:var(--primary);font-size:0.8em;">★</span>' : ''}</h3>
+                            <div class="member-card-role">${escHtml(m.role || '')}</div>
+                            <div class="member-card-dept">${escHtml(dept)}</div>
+                            ${m.detail ? `<p class="member-card-detail">${escHtml(m.detail)}</p>` : ''}
                         </div>`;
                 }).join('');
             }

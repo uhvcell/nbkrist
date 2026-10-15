@@ -8,7 +8,6 @@
     <meta name="theme-color" content="#060612">
     <meta name="color-scheme" content="dark">
     <title>Videos &amp; Media | UHV CELL NBKRIST</title>
-    <meta name="description" content="Watch recorded sessions, expert talks, and short films on Universal Human Values from UHV CELL NBKRIST.">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
@@ -19,8 +18,21 @@
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="video-player.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-</head>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" media="print" onload="this.media='all'" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"></noscript>
+      <!-- uhv:seo:start -->
+    <meta name="description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta property="og:title" content="Videos &amp; Media | UHV CELL NBKRIST">
+    <meta name="twitter:title" content="Videos &amp; Media | UHV CELL NBKRIST">
+    <meta property="og:description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta name="twitter:description" content="Universal Human Values Cell at NBKRIST - nurturing responsible, ethical individuals through self-exploration and holistic development.">
+    <meta property="og:image" content="logo.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:type" content="website">
+    <!-- uhv:seo:end -->
+  </head>
 
 <body>
 
@@ -28,14 +40,14 @@
         <div class="container navbar">
             <a href="index.html" class="logo">
                 <div class="logo-left-group">
-                    <img src="logo.jpg" alt="Logo" class="logo-main-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
+                    <img src="logo.jpg" alt="UHV CELL NBKRIST logo" class="logo-main-img" data-cms-logo="main" fetchpriority="high" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <div class="logo-text">
-                        <span>UHV CELL NBKRIST</span>
-                        <span class="subtitle">UNIVERSAL HUMAN VALUES</span>
+                        <span data-cms-title>UHV CELL NBKRIST</span>
+                        <span class="subtitle" data-cms-subtitle>UNIVERSAL HUMAN VALUES</span>
                     </div>
                 </div>
                 <div class="second-logo-wrapper">
-                    <img src="second_logo.png" alt="Logo" class="logo-second-img" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
+                    <img src="second_logo.png" alt="NBKRIST correspondent logo" class="logo-second-img" data-cms-logo="second" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                     <span class="correspondent-name">SRI N.RAM KUMAR</span>
                     <span class="logo-caption">Correspondent</span>
                 </div>
@@ -45,7 +57,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="activities.html">Activities</a></li>
-                <li><a href="resources.html" class="active">Resources</a></li>
+                <li><a href="resources.html" class="active" aria-current="page">Resources</a></li>
                 <li><a href="team-structure.html">Our Team</a></li>
                 <li><a href="newsletter.html">Newsletter</a></li>
                 <li><a href="contact.html">Contact</a></li>
@@ -224,11 +236,13 @@
             card.style.animationDelay = `${index * 0.2}s`;
             card.style.cursor = 'pointer';
 
-            const thumb = video.thumbnail || '';
+            const thumb = (window.UHVVideoUtils && window.UHVVideoUtils.resolveVideoThumbnail)
+                ? window.UHVVideoUtils.resolveVideoThumbnail(video)
+                : (video.thumbnail || '');
 
             card.innerHTML = `
                 <div style="aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                    ${thumb ? `<img src="${thumb}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: all 0.5s ease;" class="card-thumb" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">` : '<div class="card-thumb" style="width:100%;height:100%;background:#1a1a2e;"></div>'}
+                    ${thumb ? `<img src="${thumb}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: all 0.5s ease;" class="card-thumb" onerror="this.onerror=null;this.src='assets/placeholder.svg'" loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">` : '<div class="card-thumb" style="width:100%;height:100%;background:#1a1a2e;"></div>'}
                     <div style="position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6));"></div>
                     <div class="play-trigger" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(0, 243, 255, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); border: 2px solid var(--primary); z-index: 5; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: pulsePlay 2s infinite ease-in-out;">
                         <i class="fa-solid fa-play" style="font-size: 2.5rem; color: var(--primary); margin-left: 8px; filter: drop-shadow(0 0 15px var(--primary));"></i>
@@ -316,6 +330,7 @@
         </div>
     </footer>
     <script src="site-settings.js" defer></script>
+    <script src="navigation-data.js" defer></script>
     <script src="page-content.js" defer></script>
     <script src="video-player.js" defer></script>
     <script src="app-utils.js" defer></script>

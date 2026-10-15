@@ -2200,3 +2200,267 @@ img, video, iframe, canvas { max-width: 100%; height: auto; }
 .card, .container { width: 100%; max-width: var(--container-width, 1400px); box-sizing: border-box; }
 .grid-2, .grid-3 { grid-template-columns: repeat(auto-fit, minmax(clamp(250px, 30vw, 350px), 1fr)) !important; }
 
+/* ==========================================================================
+   Accessibility + responsive sweep (F9 / §10)
+   ========================================================================== */
+
+/* Visible focus indicator for keyboard users on all interactive elements. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Minimum 44x44 touch targets for primary interactive controls. */
+.menu-toggle {
+    min-width: 44px;
+    min-height: 44px;
+}
+.nav-links a,
+.nav-dropdown-toggle {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Keep media and interactive surfaces within the viewport. */
+table, form, .uhv-video-wrapper { max-width: 100%; }
+.uhv-controls-row { flex-wrap: wrap; }
+.uhv-btn { min-width: 40px; min-height: 40px; }
+
+/* One-level nav dropdown (additive; renders only when children exist). */
+.nav-has-children { position: relative; }
+.nav-dropdown-toggle {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    gap: 0.35rem;
+}
+.nav-submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+    background: var(--bg-surface);
+    border: var(--border-glow);
+    border-radius: 10px;
+    box-shadow: var(--glow);
+    z-index: 120;
+}
+.nav-has-children.open .nav-submenu { display: block; }
+.nav-submenu li { display: block; }
+.nav-submenu a { display: block; padding: 0.6rem 1rem; min-height: 44px; }
+
+@media (max-width: 1200px) {
+    /* Inside the mobile drawer the submenu expands inline, not as an overlay. */
+    .nav-submenu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        padding-left: 1rem;
+    }
+    .nav-has-children.open .nav-submenu { display: block; }
+}
+
+/* Respect reduced-motion for animations/transitions. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+    .team-marquee-track { animation: none !important; }
+}
+
+/* ==========================================================================
+   CLS prevention (FEAT-002) — reserve space for image slots so the layout
+   does not jump as lazy/CMS-rendered images decode. Uses aspect-ratio on the
+   slot classes (not per-img width/height) so galleries built by the CMS are
+   covered without template churn.
+   ========================================================================== */
+
+/* Team headshots: fixed circular boxes already reserve space; pin the ratio
+   so an un-decoded image never collapses the slot. */
+.profile-img-container,
+.marquee-item,
+.marquee-img {
+    aspect-ratio: 1 / 1;
+}
+
+/* Workshops gallery items (CMS-rendered <img class="gallery-item ...">). The
+   image carries width:100%;height:auto inline, so reserve the box via ratio. */
+.gallery-item,
+.gallery-grid img,
+.gallery-item.large-view img {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Poster cards (posters.html + CMS gallery). Portrait-ish posters; the wrapper
+   already caps max-height, so reserve a sane portrait ratio on the slot. */
+.poster-item,
+.poster-img-wrapper {
+    aspect-ratio: 3 / 4;
+}
+.poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Hero/poster slider slides keep a wide reserved box. */
+.slider-slide,
+.slider-slide img {
+    aspect-ratio: 16 / 9;
+}
+
+/* Generic content images inside article/section bodies: reserve a ratio only
+   when the author has not set explicit dimensions. */
+.content-img,
+.page-content img:not([width]):not([style*="aspect-ratio"]) {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* ==========================================================================
+   Mobile responsiveness sweep (FEAT-003)
+   Target the REAL horizontal-overflow offenders instead of relying only on
+   body{overflow-x:hidden}; reflow grids; make filter tabs wrap with >=44px
+   targets; guarantee >=14px body text. Desktop, prefers-reduced-motion,
+   focus-visible and the CMS admin UI are untouched (all rules are gated to
+   <=768/<=480 or add min-width:0 that is layout-neutral on desktop).
+   ========================================================================== */
+
+/* 1. Overflow offenders: flex/grid children that refuse to shrink are the most
+   common cause of horizontal scroll. Allow them to shrink below content size. */
+.navbar,
+.nav-links,
+.section-row,
+.footer-grid,
+.grid-2,
+.grid-3,
+.directory-grid,
+.posters-grid,
+.gallery-grid {
+    min-width: 0;
+}
+
+.footer-col,
+.section-row__text,
+.card {
+    min-width: 0;
+}
+
+@media (max-width: 768px) {
+    /* The footer site title is forced to a single line (white-space:nowrap at
+       ~line 880). "UHV CELL NBKRIST" overflows a narrow column, so let it wrap
+       inside the stacked, centred mobile footer. */
+    footer .logo-text span:first-child {
+        white-space: normal;
+    }
+
+    /* Ensure every page body does not scroll sideways from stray wide children
+       (belt-and-braces alongside the per-element min-width:0 fixes above). */
+    .container,
+    .page-section,
+    section {
+        max-width: 100%;
+    }
+
+    /* Grid reflow: team directory, posters and workshops galleries collapse to
+       a comfortable 1-2 column layout on tablets/phones. */
+    .directory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 18px;
+    }
+
+    .posters-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+    }
+
+    /* Filter tabs: keep the row wrapping (already flex-wrap) and lift every tab
+       to a >=44px touch target. */
+    .directory-filters {
+        gap: 8px;
+    }
+
+    .filter-btn {
+        min-height: 44px;
+        padding: 10px 18px;
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Single column on small phones so cards never shrink below a legible size
+       or force horizontal scroll. */
+    .directory-grid,
+    .posters-grid,
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Posters/gallery fixed heights trimmed so portrait cards fit the viewport. */
+    .poster-img-wrapper {
+        height: 320px;
+    }
+
+    .gallery-item {
+        height: 180px;
+    }
+
+    /* Filter tabs can be scrolled horizontally as a fallback when wrapping
+       produces too many rows, without clipping, keeping 44px targets. */
+    .directory-filters {
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        min-height: 44px;
+    }
+}
+
+/* 2. Typography floor: never render body/content text below ~14px on mobile.
+   The fluid clamp() rules already keep most text >=1rem; this pins the small
+   helper/detail classes that use fixed sub-14px sizes. */
+@media (max-width: 480px) {
+    body {
+        font-size: 1rem;
+    }
+
+    .profile-detail,
+    .member-card-detail,
+    .member-card-dept,
+    .nav-links a,
+    .footer-col ul li a {
+        font-size: 0.875rem; /* 14px */
+    }
+}
