@@ -4,12 +4,13 @@
  */
 // Bump CACHE_NAME on every structural HTML/CSS/JS release so stale assets are
 // not served after a new build. (Data files are already network-first below.)
-const CACHE_NAME = 'uhv-cache-v5';
+const CACHE_NAME = 'uhv-cache-v6';
 const STATIC_ASSETS = [
     './',
     './index.html',
     './about.html',
     './activities.html',
+    './yoga-meditation.html',
     './resources.html',
     './team-structure.html',
     './newsletter.html',
